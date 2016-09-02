@@ -1,4 +1,5 @@
 // Copyright 2009 The Go Authors. All rights reserved.
+// Copyright 2016 David Lechner <david@lechnology.com>
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -7,11 +8,6 @@
 // through repeated calls to the Scan function. For compatibility with
 // existing tools, the NUL character is not allowed. If the first character
 // in the source is a UTF-8 encoded byte order mark (BOM), it is discarded.
-//
-// By default, a Scanner skips white space and Go comments and recognizes all
-// literals as defined by the Go language specification. It may be
-// customized to recognize only a subset of those literals and to recognize
-// different identifier and white space characters.
 package scanner
 
 import (
@@ -19,7 +15,6 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"unicode"
 	"unicode/utf8"
 )
 
@@ -46,52 +41,23 @@ func (pos Position) String() string {
 	return s
 }
 
-// Predefined mode bits to control recognition of tokens. For instance,
-// to configure a Scanner such that it only recognizes (Go) identifiers,
-// integers, and skips comments, set the Scanner's Mode field to:
-//
-//	ScanIdents | ScanInts | SkipComments
-//
-// With the exceptions of comments, which are skipped if SkipComments is
-// set, unrecognized tokens are not ignored. Instead, the scanner simply
-// returns the respective individual characters (or possibly sub-tokens).
-// For instance, if the mode is ScanIdents (not ScanStrings), the string
-// "foo" is scanned as the token sequence '"' Ident '"'.
-//
-const (
-	ScanIdents     = 1 << -Ident
-	ScanInts       = 1 << -Int
-	ScanFloats     = 1 << -Float // includes Ints
-	ScanChars      = 1 << -Char
-	ScanStrings    = 1 << -String
-	ScanRawStrings = 1 << -RawString
-	ScanComments   = 1 << -Comment
-	SkipComments   = 1 << -skipComment // if set with ScanComments, comments become white space
-	GoTokens       = ScanIdents | ScanFloats | ScanChars | ScanStrings | ScanRawStrings | ScanComments | SkipComments
-)
-
 // The result of Scan is one of these tokens or a Unicode character.
 const (
 	EOF = -(iota + 1)
 	Ident
 	Int
 	Float
-	Char
 	String
-	RawString
-	Comment
-	skipComment
+	comment
 )
 
 var tokenString = map[rune]string{
-	EOF:       "EOF",
-	Ident:     "Ident",
-	Int:       "Int",
-	Float:     "Float",
-	Char:      "Char",
-	String:    "String",
-	RawString: "RawString",
-	Comment:   "Comment",
+	EOF:     "EOF",
+	Ident:   "Ident",
+	Int:     "Int",
+	Float:   "Float",
+	String:  "String",
+	comment: "Comment",
 }
 
 // TokenString returns a printable string for a token or Unicode character.
@@ -102,9 +68,7 @@ func TokenString(tok rune) string {
 	return fmt.Sprintf("%q", string(tok))
 }
 
-// GoWhitespace is the default value for the Scanner's Whitespace field.
-// Its value selects Go's white space characters.
-const GoWhitespace = 1<<'\t' | 1<<'\n' | 1<<'\r' | 1<<' '
+const whitespace = 1<<'\t' | 1<<'\n' | 1<<'\r' | 1<<' '
 
 const bufLen = 1024 // at least utf8.UTFMax
 
@@ -143,24 +107,6 @@ type Scanner struct {
 	// ErrorCount is incremented by one for each error encountered.
 	ErrorCount int
 
-	// The Mode field controls which tokens are recognized. For instance,
-	// to recognize Ints, set the ScanInts bit in Mode. The field may be
-	// changed at any time.
-	Mode uint
-
-	// The Whitespace field controls which characters are recognized
-	// as white space. To recognize a character ch <= ' ' as white space,
-	// set the ch'th bit in Whitespace (the Scanner's behavior is undefined
-	// for values ch > ' '). The field may be changed at any time.
-	Whitespace uint64
-
-	// IsIdentRune is a predicate controlling the characters accepted
-	// as the ith rune in an identifier. The set of valid characters
-	// must not intersect with the set of white space characters.
-	// If no IsIdentRune function is set, regular Go identifiers are
-	// accepted instead. The field may be changed at any time.
-	IsIdentRune func(ch rune, i int) bool
-
 	// Start position of most recently scanned token; set by Scan.
 	// Calling Init or Next invalidates the position (Line == 0).
 	// The Filename field is always left untouched by the Scanner.
@@ -171,8 +117,7 @@ type Scanner struct {
 }
 
 // Init initializes a Scanner with a new source and returns s.
-// Error is set to nil, ErrorCount is set to 0, Mode is set to GoTokens,
-// and Whitespace is set to GoWhitespace.
+// Error is set to nil, ErrorCount is set to 0.
 func (s *Scanner) Init(src io.Reader) *Scanner {
 	s.src = src
 
@@ -199,8 +144,6 @@ func (s *Scanner) Init(src io.Reader) *Scanner {
 	// initialize public fields
 	s.Error = nil
 	s.ErrorCount = 0
-	s.Mode = GoTokens
-	s.Whitespace = GoWhitespace
 	s.Line = 0 // invalidate token position
 
 	return s
@@ -290,22 +233,6 @@ func (s *Scanner) next() rune {
 	return ch
 }
 
-// Next reads and returns the next Unicode character.
-// It returns EOF at the end of the source. It reports
-// a read error by calling s.Error, if not nil; otherwise
-// it prints an error message to os.Stderr. Next does not
-// update the Scanner's Position field; use Pos() to
-// get the current position.
-func (s *Scanner) Next() rune {
-	s.tokPos = -1 // don't collect token text
-	s.Line = 0    // invalidate token position
-	ch := s.Peek()
-	if ch != EOF {
-		s.ch = s.next()
-	}
-	return ch
-}
-
 // Peek returns the next Unicode character in the source without advancing
 // the scanner. It returns EOF if the scanner's position is at the last
 // character of the source.
@@ -334,10 +261,7 @@ func (s *Scanner) error(msg string) {
 }
 
 func (s *Scanner) isIdentRune(ch rune, i int) bool {
-	if s.IsIdentRune != nil {
-		return s.IsIdentRune(ch, i)
-	}
-	return ch == '_' || unicode.IsLetter(ch) || unicode.IsDigit(ch) && i > 0
+	return ch == '_' || ('a' <= ch && ch <= 'z') || ('A' <= ch && ch <= 'Z') || (isDecimal(ch) && i > 0)
 }
 
 func (s *Scanner) scanIdentifier() rune {
@@ -413,7 +337,7 @@ func (s *Scanner) scanNumber(ch rune) (rune, rune) {
 				}
 				ch = s.next()
 			}
-			if s.Mode&ScanFloats != 0 && (ch == '.' || ch == 'e' || ch == 'E') {
+			if ch == '.' || ch == 'e' || ch == 'E' {
 				// float
 				ch = s.scanFraction(ch)
 				ch = s.scanExponent(ch)
@@ -428,7 +352,7 @@ func (s *Scanner) scanNumber(ch rune) (rune, rune) {
 	}
 	// decimal int or float
 	ch = s.scanMantissa(ch)
-	if s.Mode&ScanFloats != 0 && (ch == '.' || ch == 'e' || ch == 'E') {
+	if ch == '.' || ch == 'e' || ch == 'E' {
 		// float
 		ch = s.scanFraction(ch)
 		ch = s.scanExponent(ch)
@@ -451,24 +375,25 @@ func (s *Scanner) scanDigits(ch rune, base, n int) rune {
 func (s *Scanner) scanEscape(quote rune) rune {
 	ch := s.next() // read character after '/'
 	switch ch {
-	case 'a', 'b', 'f', 'n', 'r', 't', 'v', '\\', quote:
+	// case 'a', 'b', 'f', 'n', 'r', 't', 'v', '\\', quote:
+	case 'n', 'r', 't', 'q':
 		// nothing to do
 		ch = s.next()
-	case '0', '1', '2', '3', '4', '5', '6', '7':
-		ch = s.scanDigits(ch, 8, 3)
-	case 'x':
-		ch = s.scanDigits(s.next(), 16, 2)
-	case 'u':
-		ch = s.scanDigits(s.next(), 16, 4)
-	case 'U':
-		ch = s.scanDigits(s.next(), 16, 8)
+	// case '0', '1', '2', '3', '4', '5', '6', '7':
+	// 	ch = s.scanDigits(ch, 8, 3)
+	// case 'x':
+	// 	ch = s.scanDigits(s.next(), 16, 2)
+	// case 'u':
+	// 	ch = s.scanDigits(s.next(), 16, 4)
+	// case 'U':
+	// 	ch = s.scanDigits(s.next(), 16, 8)
 	default:
 		s.error("illegal char escape")
 	}
 	return ch
 }
 
-func (s *Scanner) scanString(quote rune) (n int) {
+func (s *Scanner) scanString(quote rune) {
 	ch := s.next() // read character after quote
 	for ch != quote {
 		if ch == '\n' || ch < 0 {
@@ -480,26 +405,8 @@ func (s *Scanner) scanString(quote rune) (n int) {
 		} else {
 			ch = s.next()
 		}
-		n++
 	}
 	return
-}
-
-func (s *Scanner) scanRawString() {
-	ch := s.next() // read character after '`'
-	for ch != '`' {
-		if ch < 0 {
-			s.error("literal not terminated")
-			return
-		}
-		ch = s.next()
-	}
-}
-
-func (s *Scanner) scanChar() {
-	if s.scanString('\'') != 1 {
-		s.error("illegal char literal")
-	}
 }
 
 func (s *Scanner) scanComment(ch rune) rune {
@@ -531,7 +438,6 @@ func (s *Scanner) scanComment(ch rune) rune {
 }
 
 // Scan reads the next token or Unicode character from source and returns it.
-// It only recognizes tokens t for which the respective Mode bit (1<<-t) is set.
 // It returns EOF at the end of the source. It reports scanner errors (read and
 // token errors) by calling s.Error, if not nil; otherwise it prints an error
 // message to os.Stderr.
@@ -544,7 +450,7 @@ func (s *Scanner) Scan() rune {
 
 redo:
 	// skip white space
-	for s.Whitespace&(1<<uint(ch)) != 0 {
+	for whitespace&(1<<uint(ch)) != 0 {
 		ch = s.next()
 	}
 
@@ -571,58 +477,33 @@ redo:
 	tok := ch
 	switch {
 	case s.isIdentRune(ch, 0):
-		if s.Mode&ScanIdents != 0 {
-			tok = Ident
-			ch = s.scanIdentifier()
-		} else {
-			ch = s.next()
-		}
+		tok = Ident
+		ch = s.scanIdentifier()
 	case isDecimal(ch):
-		if s.Mode&(ScanInts|ScanFloats) != 0 {
-			tok, ch = s.scanNumber(ch)
-		} else {
-			ch = s.next()
-		}
+		tok, ch = s.scanNumber(ch)
 	default:
 		switch ch {
 		case EOF:
 			break
-		case '"':
-			if s.Mode&ScanStrings != 0 {
-				s.scanString('"')
-				tok = String
-			}
-			ch = s.next()
 		case '\'':
-			if s.Mode&ScanChars != 0 {
-				s.scanChar()
-				tok = Char
-			}
+			s.scanString('\'')
+			tok = String
 			ch = s.next()
 		case '.':
 			ch = s.next()
-			if isDecimal(ch) && s.Mode&ScanFloats != 0 {
+			if isDecimal(ch) {
+				// TODO: check for "F"
 				tok = Float
 				ch = s.scanMantissa(ch)
 				ch = s.scanExponent(ch)
 			}
 		case '/':
 			ch = s.next()
-			if (ch == '/' || ch == '*') && s.Mode&ScanComments != 0 {
-				if s.Mode&SkipComments != 0 {
-					s.tokPos = -1 // don't collect token text
-					ch = s.scanComment(ch)
-					goto redo
-				}
+			if ch == '/' || ch == '*' {
+				s.tokPos = -1 // don't collect token text
 				ch = s.scanComment(ch)
-				tok = Comment
+				goto redo
 			}
-		case '`':
-			if s.Mode&ScanRawStrings != 0 {
-				s.scanRawString()
-				tok = String
-			}
-			ch = s.next()
 		default:
 			ch = s.next()
 		}
