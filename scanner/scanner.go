@@ -13,60 +13,11 @@ package scanner
 import (
 	"bytes"
 	"fmt"
+	"github.com/ev3dev/lmsasm/token"
 	"io"
 	"os"
 	"unicode/utf8"
 )
-
-// A source position is represented by a Position value.
-// A position is valid if Line > 0.
-type Position struct {
-	Filename string // filename, if any
-	Offset   int    // byte offset, starting at 0
-	Line     int    // line number, starting at 1
-	Column   int    // column number, starting at 1 (character count per line)
-}
-
-// IsValid reports whether the position is valid.
-func (pos *Position) IsValid() bool { return pos.Line > 0 }
-
-func (pos Position) String() string {
-	s := pos.Filename
-	if s == "" {
-		s = "<input>"
-	}
-	if pos.IsValid() {
-		s += fmt.Sprintf(":%d:%d", pos.Line, pos.Column)
-	}
-	return s
-}
-
-// The result of Scan is one of these tokens or a Unicode character.
-const (
-	EOF = -(iota + 1)
-	Ident
-	Int
-	Float
-	String
-	comment
-)
-
-var tokenString = map[rune]string{
-	EOF:     "EOF",
-	Ident:   "Ident",
-	Int:     "Int",
-	Float:   "Float",
-	String:  "String",
-	comment: "Comment",
-}
-
-// TokenString returns a printable string for a token or Unicode character.
-func TokenString(tok rune) string {
-	if s, found := tokenString[tok]; found {
-		return s
-	}
-	return fmt.Sprintf("%q", string(tok))
-}
 
 const whitespace = 1<<'\t' | 1<<'\n' | 1<<'\r' | 1<<' '
 
@@ -113,12 +64,12 @@ type Scanner struct {
 	// If an error is reported (via Error) and Position is invalid,
 	// the scanner is not inside a token. Call Pos to obtain an error
 	// position in that case.
-	Position
+	Position token.Position
 }
 
 // Init initializes a Scanner with a new source and returns s.
 // Error is set to nil, ErrorCount is set to 0.
-func (s *Scanner) Init(src io.Reader) *Scanner {
+func (s *Scanner) Init(src io.Reader, filename string) *Scanner {
 	s.src = src
 
 	// initialize source buffer
@@ -144,7 +95,8 @@ func (s *Scanner) Init(src io.Reader) *Scanner {
 	// initialize public fields
 	s.Error = nil
 	s.ErrorCount = 0
-	s.Line = 0 // invalidate token position
+	s.Position.Line = 0 // invalidate token position
+	s.Position.Filename = filename
 
 	return s
 }
@@ -189,7 +141,7 @@ func (s *Scanner) next() rune {
 						s.column++
 					}
 					s.lastCharLen = 0
-					return EOF
+					return -1
 				}
 				// If err == EOF, we won't be getting more
 				// bytes; break to avoid infinite loop. If
@@ -234,7 +186,7 @@ func (s *Scanner) next() rune {
 }
 
 // Peek returns the next Unicode character in the source without advancing
-// the scanner. It returns EOF if the scanner's position is at the last
+// the scanner. It returns -1 if the scanner's position is at the last
 // character of the source.
 func (s *Scanner) Peek() rune {
 	if s.ch == -2 {
@@ -312,7 +264,7 @@ func (s *Scanner) scanExponent(ch rune) rune {
 	return ch
 }
 
-func (s *Scanner) scanNumber(ch rune) (rune, rune) {
+func (s *Scanner) scanNumber(ch rune) (token.Token, rune) {
 	// isDecimal(ch)
 	if ch == '0' {
 		// int or float
@@ -341,14 +293,14 @@ func (s *Scanner) scanNumber(ch rune) (rune, rune) {
 				// float
 				ch = s.scanFraction(ch)
 				ch = s.scanExponent(ch)
-				return Float, ch
+				return token.FLOAT, ch
 			}
 			// octal int
 			if has8or9 {
 				s.error("illegal octal number")
 			}
 		}
-		return Int, ch
+		return token.INT, ch
 	}
 	// decimal int or float
 	ch = s.scanMantissa(ch)
@@ -356,9 +308,9 @@ func (s *Scanner) scanNumber(ch rune) (rune, rune) {
 		// float
 		ch = s.scanFraction(ch)
 		ch = s.scanExponent(ch)
-		return Float, ch
+		return token.FLOAT, ch
 	}
-	return Int, ch
+	return token.INT, ch
 }
 
 func (s *Scanner) scanDigits(ch rune, base, n int) rune {
@@ -441,12 +393,12 @@ func (s *Scanner) scanComment(ch rune) rune {
 // It returns EOF at the end of the source. It reports scanner errors (read and
 // token errors) by calling s.Error, if not nil; otherwise it prints an error
 // message to os.Stderr.
-func (s *Scanner) Scan() rune {
+func (s *Scanner) Scan() token.Token {
 	ch := s.Peek()
 
 	// reset token text position
 	s.tokPos = -1
-	s.Line = 0
+	s.Position.Line = 0
 
 redo:
 	// skip white space
@@ -460,50 +412,80 @@ redo:
 
 	// set token position
 	// (this is a slightly optimized version of the code in Pos())
-	s.Offset = s.srcBufOffset + s.tokPos
+	s.Position.Offset = s.srcBufOffset + s.tokPos
 	if s.column > 0 {
 		// common case: last character was not a '\n'
-		s.Line = s.line
-		s.Column = s.column
+		s.Position.Line = s.line
+		s.Position.Column = s.column
 	} else {
 		// last character was a '\n'
 		// (we cannot be at the beginning of the source
 		// since we have called next() at least once)
-		s.Line = s.line - 1
-		s.Column = s.lastLineLen
+		s.Position.Line = s.line - 1
+		s.Position.Column = s.lastLineLen
 	}
 
 	// determine token value
-	tok := ch
+	tok := token.ILLEGAL
 	switch {
 	case s.isIdentRune(ch, 0):
-		tok = Ident
+		tok = token.IDENT
 		ch = s.scanIdentifier()
 	case isDecimal(ch):
 		tok, ch = s.scanNumber(ch)
 	default:
 		switch ch {
-		case EOF:
-			break
+		case -1:
+			tok = token.EOF
 		case '\'':
 			s.scanString('\'')
-			tok = String
+			tok = token.STRING
 			ch = s.next()
 		case '.':
 			ch = s.next()
 			if isDecimal(ch) {
 				// TODO: check for "F"
-				tok = Float
+				tok = token.FLOAT
 				ch = s.scanMantissa(ch)
 				ch = s.scanExponent(ch)
 			}
+		case '+':
+			tok = token.ADD
+			ch = s.next()
+		case '-':
+			// negitive numbers should already be handled
+			tok = token.SUB
+			ch = s.next()
+		case '*':
+			tok = token.MUL
+			ch = s.next()
 		case '/':
 			ch = s.next()
 			if ch == '/' || ch == '*' {
 				s.tokPos = -1 // don't collect token text
 				ch = s.scanComment(ch)
 				goto redo
+			} else {
+				tok = token.QUO
 			}
+		case '(':
+			tok = token.LPAREN
+			ch = s.next()
+		case ')':
+			tok = token.RPAREN
+			ch = s.next()
+		case '{':
+			tok = token.LBRACE
+			ch = s.next()
+		case '}':
+			tok = token.RBRACE
+			ch = s.next()
+		case ',':
+			tok = token.COMMA
+			ch = s.next()
+		case ':':
+			tok = token.COLON
+			ch = s.next()
 		default:
 			ch = s.next()
 		}
@@ -518,8 +500,8 @@ redo:
 
 // Pos returns the position of the character immediately after
 // the character or token returned by the last call to Next or Scan.
-func (s *Scanner) Pos() (pos Position) {
-	pos.Filename = s.Filename
+func (s *Scanner) Pos() (pos token.Position) {
+	pos.Filename = s.Position.Filename
 	pos.Offset = s.srcBufOffset + s.srcPos - s.lastCharLen
 	switch {
 	case s.column > 0:

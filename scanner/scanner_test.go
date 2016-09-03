@@ -7,136 +7,123 @@ package scanner
 import (
 	"bytes"
 	"fmt"
+	"github.com/ev3dev/lmsasm/token"
 	"io"
 	"strings"
 	"testing"
-	"unicode/utf8"
 )
 
-// A StringReader delivers its data one string segment at a time via Read.
-type StringReader struct {
-	data []string
-	step int
-}
+const filename = "george.file"
 
-func (r *StringReader) Read(p []byte) (n int, err error) {
-	if r.step < len(r.data) {
-		s := r.data[r.step]
-		n = copy(p, s)
-		r.step++
-	} else {
-		err = io.EOF
-	}
-	return
-}
-
-type token struct {
-	tok  rune
+type tokenInfo struct {
+	tok  token.Token
 	text string
 }
 
 var f100 = "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
 
-var tokenList = []token{
-	{comment, "// line comments"},
-	{comment, "//"},
-	{comment, "////"},
-	{comment, "// comment"},
-	{comment, "// /* comment */"},
-	{comment, "// // comment //"},
-	{comment, "//" + f100},
+var tokenList = []tokenInfo{
+	{token.COMMENT, "// line comments"},
+	{token.COMMENT, "//"},
+	{token.COMMENT, "////"},
+	{token.COMMENT, "// comment"},
+	{token.COMMENT, "// /* comment */"},
+	{token.COMMENT, "// // comment //"},
+	{token.COMMENT, "//" + f100},
 
-	{comment, "// general comments"},
-	{comment, "/**/"},
-	{comment, "/***/"},
-	{comment, "/* comment */"},
-	{comment, "/* // comment */"},
-	{comment, "/* /* comment */"},
-	{comment, "/*\n comment\n*/"},
-	{comment, "/*" + f100 + "*/"},
+	{token.COMMENT, "// general comments"},
+	{token.COMMENT, "/**/"},
+	{token.COMMENT, "/***/"},
+	{token.COMMENT, "/* comment */"},
+	{token.COMMENT, "/* // comment */"},
+	{token.COMMENT, "/* /* comment */"},
+	{token.COMMENT, "/*\n comment\n*/"},
+	{token.COMMENT, "/*" + f100 + "*/"},
 
-	{comment, "// identifiers"},
-	{Ident, "a"},
-	{Ident, "a0"},
-	{Ident, "foobar"},
-	{Ident, "abc123"},
-	{Ident, "LGTM"},
-	{Ident, "_"},
-	{Ident, "_abc123"},
-	{Ident, "abc123_"},
-	{Ident, "_abc_123_"},
-	{Ident, f100},
+	{token.COMMENT, "// identifiers"},
+	{token.IDENT, "a"},
+	{token.IDENT, "a0"},
+	{token.IDENT, "foobar"},
+	{token.IDENT, "abc123"},
+	{token.IDENT, "LGTM"},
+	{token.IDENT, "_"},
+	{token.IDENT, "_abc123"},
+	{token.IDENT, "abc123_"},
+	{token.IDENT, "_abc_123_"},
+	{token.IDENT, f100},
 
-	{comment, "// decimal ints"},
-	{Int, "0"},
-	{Int, "1"},
-	{Int, "9"},
-	{Int, "42"},
-	{Int, "1234567890"},
+	{token.COMMENT, "// decimal ints"},
+	{token.INT, "0"},
+	{token.INT, "1"},
+	{token.INT, "9"},
+	{token.INT, "42"},
+	{token.INT, "1234567890"},
 
-	{comment, "// hexadecimal ints"},
-	{Int, "0x0"},
-	{Int, "0x1"},
-	{Int, "0xf"},
-	{Int, "0x42"},
-	{Int, "0x123456789abcDEF"},
-	{Int, "0x" + f100},
-	{Int, "0X0"},
-	{Int, "0X1"},
-	{Int, "0XF"},
-	{Int, "0X42"},
-	{Int, "0X123456789abcDEF"},
-	{Int, "0X" + f100},
+	{token.COMMENT, "// hexadecimal ints"},
+	{token.INT, "0x0"},
+	{token.INT, "0x1"},
+	{token.INT, "0xf"},
+	{token.INT, "0x42"},
+	{token.INT, "0x123456789abcDEF"},
+	{token.INT, "0x" + f100},
+	{token.INT, "0X0"},
+	{token.INT, "0X1"},
+	{token.INT, "0XF"},
+	{token.INT, "0X42"},
+	{token.INT, "0X123456789abcDEF"},
+	{token.INT, "0X" + f100},
 
-	{comment, "// floats"},
-	{Float, "0."},
-	{Float, "1."},
-	{Float, "42."},
-	{Float, "01234567890."},
-	{Float, ".0"},
-	{Float, ".1"},
-	{Float, ".42"},
-	{Float, ".0123456789"},
-	{Float, "0.0"},
-	{Float, "1.0"},
-	{Float, "42.0"},
-	{Float, "01234567890.0"},
-	{Float, "0e0"},
-	{Float, "1e0"},
-	{Float, "42e0"},
-	{Float, "01234567890e0"},
-	{Float, "0E0"},
-	{Float, "1E0"},
-	{Float, "42E0"},
-	{Float, "01234567890E0"},
-	{Float, "0e+10"},
-	{Float, "1e-10"},
-	{Float, "42e+10"},
-	{Float, "01234567890e-10"},
-	{Float, "0E+10"},
-	{Float, "1E-10"},
-	{Float, "42E+10"},
-	{Float, "01234567890E-10"},
+	{token.COMMENT, "// floats"},
+	{token.FLOAT, "0."},
+	{token.FLOAT, "1."},
+	{token.FLOAT, "42."},
+	{token.FLOAT, "01234567890."},
+	{token.FLOAT, ".0"},
+	{token.FLOAT, ".1"},
+	{token.FLOAT, ".42"},
+	{token.FLOAT, ".0123456789"},
+	{token.FLOAT, "0.0"},
+	{token.FLOAT, "1.0"},
+	{token.FLOAT, "42.0"},
+	{token.FLOAT, "01234567890.0"},
+	{token.FLOAT, "0e0"},
+	{token.FLOAT, "1e0"},
+	{token.FLOAT, "42e0"},
+	{token.FLOAT, "01234567890e0"},
+	{token.FLOAT, "0E0"},
+	{token.FLOAT, "1E0"},
+	{token.FLOAT, "42E0"},
+	{token.FLOAT, "01234567890E0"},
+	{token.FLOAT, "0e+10"},
+	{token.FLOAT, "1e-10"},
+	{token.FLOAT, "42e+10"},
+	{token.FLOAT, "01234567890e-10"},
+	{token.FLOAT, "0E+10"},
+	{token.FLOAT, "1E-10"},
+	{token.FLOAT, "42E+10"},
+	{token.FLOAT, "01234567890E-10"},
 
-	{comment, "// strings"},
-	{String, "''"},
-	{String, "' '"},
-	{String, "'a'"},
-	{String, "'\\n'"},
-	{String, "'\\r'"},
-	{String, "'\\t'"},
-	{String, "'\\q'"},
-	{String, "'" + f100 + "'"},
+	{token.COMMENT, "// strings"},
+	{token.STRING, "''"},
+	{token.STRING, "' '"},
+	{token.STRING, "'a'"},
+	{token.STRING, "'\\n'"},
+	{token.STRING, "'\\r'"},
+	{token.STRING, "'\\t'"},
+	{token.STRING, "'\\q'"},
+	{token.STRING, "'" + f100 + "'"},
 
-	{comment, "// individual characters"},
-	// NUL character is not allowed
-	{'\x01', "\x01"},
-	{' ' - 1, string(' ' - 1)},
-	{'+', "+"},
-	{'/', "/"},
-	{'.', "."},
-	{'~', "~"},
-	{'(', "("},
+	{token.COMMENT, "// operators"},
+	{token.ADD, "+"},
+	{token.SUB, "-"},
+	{token.MUL, "*"},
+	{token.QUO, "/"},
+	{token.LPAREN, "("},
+	{token.LBRACE, "{"},
+	{token.COMMA, ","},
+	{token.RPAREN, ")"},
+	{token.RBRACE, "}"},
+	{token.COLON, ":"},
 }
 
 func makeSource(pattern string) *bytes.Buffer {
@@ -147,12 +134,12 @@ func makeSource(pattern string) *bytes.Buffer {
 	return &buf
 }
 
-func checkTok(t *testing.T, s *Scanner, line int, got, want rune, text string) {
+func checkTok(t *testing.T, s *Scanner, line int, got, want token.Token, text string) {
 	if got != want {
-		t.Fatalf("tok = %s, want %s for %q", TokenString(got), TokenString(want), text)
+		t.Fatalf("tok = %s, want %s for %q", got.String(), want.String(), text)
 	}
-	if s.Line != line {
-		t.Errorf("line = %d, want %d for %q", s.Line, line, text)
+	if s.Position.Line != line {
+		t.Errorf("line = %d, want %d for %q", s.Position.Line, line, text)
 	}
 	stext := s.TokenText()
 	if stext != text {
@@ -177,34 +164,34 @@ func countNewlines(s string) int {
 }
 
 func TestScan(t *testing.T) {
-	s := new(Scanner).Init(makeSource(" \t%s\n"))
+	s := new(Scanner).Init(makeSource(" \t%s\n"), filename)
 	tok := s.Scan()
 	line := 1
 	for _, k := range tokenList {
-		if k.tok != comment {
+		if k.tok != token.COMMENT {
 			checkTok(t, s, line, tok, k.tok, k.text)
 			tok = s.Scan()
 		}
 		line += countNewlines(k.text) + 1 // each token is on a new line
 	}
-	checkTok(t, s, line, tok, EOF, "")
+	checkTok(t, s, line, tok, token.EOF, "")
 }
 
 func TestPosition(t *testing.T) {
 	src := makeSource("\t\t\t\t%s\n")
-	s := new(Scanner).Init(src)
+	s := new(Scanner).Init(src, filename)
 	s.Scan()
-	pos := Position{"", 4, 1, 5}
+	pos := token.Position{"", 4, 1, 5}
 	for _, k := range tokenList {
-		if k.tok != comment {
-			if s.Offset != pos.Offset {
-				t.Errorf("offset = %d, want %d for %q", s.Offset, pos.Offset, k.text)
+		if k.tok != token.COMMENT {
+			if s.Position.Offset != pos.Offset {
+				t.Errorf("offset = %d, want %d for %q", s.Position.Offset, pos.Offset, k.text)
 			}
-			if s.Line != pos.Line {
-				t.Errorf("line = %d, want %d for %q", s.Line, pos.Line, k.text)
+			if s.Position.Line != pos.Line {
+				t.Errorf("line = %d, want %d for %q", s.Position.Line, pos.Line, k.text)
 			}
-			if s.Column != pos.Column {
-				t.Errorf("column = %d, want %d for %q", s.Column, pos.Column, k.text)
+			if s.Position.Column != pos.Column {
+				t.Errorf("column = %d, want %d for %q", s.Position.Column, pos.Column, k.text)
 			}
 			s.Scan()
 		}
@@ -217,13 +204,13 @@ func TestPosition(t *testing.T) {
 	}
 }
 
-func testScanSelectedMode(t *testing.T, mode uint, class rune) {
+func testScanSelectedMode(t *testing.T, mode uint, class token.Token) {
 	src := makeSource("%s\n")
-	s := new(Scanner).Init(src)
+	s := new(Scanner).Init(src, filename)
 	tok := s.Scan()
-	for tok != EOF {
+	for tok != token.EOF {
 		if tok < 0 && tok != class {
-			t.Fatalf("tok = %s, want %s", TokenString(tok), TokenString(class))
+			t.Fatalf("tok = %s, want %s", tok.String(), class.String())
 		}
 		tok = s.Scan()
 	}
@@ -232,8 +219,8 @@ func testScanSelectedMode(t *testing.T, mode uint, class rune) {
 	}
 }
 
-func testError(t *testing.T, src, pos, msg string, tok rune) {
-	s := new(Scanner).Init(strings.NewReader(src))
+func testError(t *testing.T, src, pos, msg string, tok token.Token) {
+	s := new(Scanner).Init(strings.NewReader(src), filename)
 	errorCalled := false
 	s.Error = func(s *Scanner, m string) {
 		if !errorCalled {
@@ -249,7 +236,7 @@ func testError(t *testing.T, src, pos, msg string, tok rune) {
 	}
 	tk := s.Scan()
 	if tk != tok {
-		t.Errorf("tok = %s, want %s for %q", TokenString(tk), TokenString(tok), src)
+		t.Errorf("tok = %s, want %s for %q", tk.String(), tok.String(), src)
 	}
 	if !errorCalled {
 		t.Errorf("error handler not called for %q", src)
@@ -260,28 +247,28 @@ func testError(t *testing.T, src, pos, msg string, tok rune) {
 }
 
 func TestError(t *testing.T) {
-	testError(t, "\x00", "<input>:1:1", "illegal character NUL", 0)
-	testError(t, "\x80", "<input>:1:1", "illegal UTF-8 encoding", utf8.RuneError)
-	testError(t, "\xff", "<input>:1:1", "illegal UTF-8 encoding", utf8.RuneError)
+	testError(t, "\x00", filename + ":1:1", "illegal character NUL", 0)
+	testError(t, "\x80", filename + ":1:1", "illegal UTF-8 encoding", token.ILLEGAL)
+	testError(t, "\xff", filename + ":1:1", "illegal UTF-8 encoding", token.ILLEGAL)
 
-	testError(t, "a\x00", "<input>:1:2", "illegal character NUL", Ident)
-	testError(t, "ab\x80", "<input>:1:3", "illegal UTF-8 encoding", Ident)
-	testError(t, "abc\xff", "<input>:1:4", "illegal UTF-8 encoding", Ident)
+	testError(t, "a\x00", filename + ":1:2", "illegal character NUL", token.IDENT)
+	testError(t, "ab\x80", filename + ":1:3", "illegal UTF-8 encoding", token.IDENT)
+	testError(t, "abc\xff", filename + ":1:4", "illegal UTF-8 encoding", token.IDENT)
 
-	testError(t, "'a\x00", "<input>:1:3", "illegal character NUL", String)
-	testError(t, "'ab\x80", "<input>:1:4", "illegal UTF-8 encoding", String)
-	testError(t, "'abc\xff", "<input>:1:5", "illegal UTF-8 encoding", String)
+	testError(t, "'a\x00", filename + ":1:3", "illegal character NUL", token.STRING)
+	testError(t, "'ab\x80", filename + ":1:4", "illegal UTF-8 encoding", token.STRING)
+	testError(t, "'abc\xff", filename + ":1:5", "illegal UTF-8 encoding", token.STRING)
 
-	testError(t, "'\\''", "<input>:1:3", "illegal char escape", String)
+	testError(t, "'\\''", filename + ":1:3", "illegal char escape", token.STRING)
 
-	testError(t, `01238`, "<input>:1:6", "illegal octal number", Int)
-	testError(t, `01238123`, "<input>:1:9", "illegal octal number", Int)
-	testError(t, `0x`, "<input>:1:3", "illegal hexadecimal number", Int)
-	testError(t, `0xg`, "<input>:1:3", "illegal hexadecimal number", Int)
+	testError(t, `01238`, filename + ":1:6", "illegal octal number", token.INT)
+	testError(t, `01238123`, filename + ":1:9", "illegal octal number", token.INT)
+	testError(t, `0x`, filename + ":1:3", "illegal hexadecimal number", token.INT)
+	testError(t, `0xg`, filename + ":1:3", "illegal hexadecimal number", token.INT)
 
-	testError(t, "'abc", "<input>:1:5", "literal not terminated", String)
-	testError(t, "'abc\n", "<input>:1:5", "literal not terminated", String)
-	testError(t, `/*/`, "<input>:1:4", "comment not terminated", EOF)
+	testError(t, "'abc", filename + ":1:5", "literal not terminated", token.STRING)
+	testError(t, "'abc\n", filename + ":1:5", "literal not terminated", token.STRING)
+	testError(t, `/*/`, filename + ":1:4", "comment not terminated", token.EOF)
 }
 
 // An errReader returns (0, err) where err is not io.EOF.
@@ -292,7 +279,7 @@ func (errReader) Read(b []byte) (int, error) {
 }
 
 func TestIOError(t *testing.T) {
-	s := new(Scanner).Init(errReader{})
+	s := new(Scanner).Init(errReader{}, filename)
 	errorCalled := false
 	s.Error = func(s *Scanner, msg string) {
 		if !errorCalled {
@@ -303,26 +290,26 @@ func TestIOError(t *testing.T) {
 		}
 	}
 	tok := s.Scan()
-	if tok != EOF {
-		t.Errorf("tok = %s, want EOF", TokenString(tok))
+	if tok != token.EOF {
+		t.Errorf("tok = %s, want token.EOF", tok.String())
 	}
 	if !errorCalled {
 		t.Errorf("error handler not called")
 	}
 }
 
-func checkPos(t *testing.T, got, want Position) {
+func checkPos(t *testing.T, got, want token.Position) {
 	if got.Offset != want.Offset || got.Line != want.Line || got.Column != want.Column {
 		t.Errorf("got offset, line, column = %d, %d, %d; want %d, %d, %d",
 			got.Offset, got.Line, got.Column, want.Offset, want.Line, want.Column)
 	}
 }
 
-func checkScanPos(t *testing.T, s *Scanner, offset, line, column int, char rune) {
-	want := Position{Offset: offset, Line: line, Column: column}
+func checkScanPos(t *testing.T, s *Scanner, offset, line, column int, char token.Token) {
+	want := token.Position{Offset: offset, Line: line, Column: column}
 	checkPos(t, s.Pos(), want)
 	if ch := s.Scan(); ch != char {
-		t.Errorf("ch = %s, want %s", TokenString(ch), TokenString(char))
+		t.Errorf("ch = %s, want %s", ch.String(), char.String())
 		if string(ch) != s.TokenText() {
 			t.Errorf("tok = %q, want %q", s.TokenText(), string(ch))
 		}
@@ -332,32 +319,32 @@ func checkScanPos(t *testing.T, s *Scanner, offset, line, column int, char rune)
 
 func TestPos(t *testing.T) {
 	// corner case: empty source
-	s := new(Scanner).Init(strings.NewReader(""))
-	checkPos(t, s.Pos(), Position{Offset: 0, Line: 1, Column: 1})
+	s := new(Scanner).Init(strings.NewReader(""), filename)
+	checkPos(t, s.Pos(), token.Position{Offset: 0, Line: 1, Column: 1})
 	s.Peek() // peek doesn't affect the position
-	checkPos(t, s.Pos(), Position{Offset: 0, Line: 1, Column: 1})
+	checkPos(t, s.Pos(), token.Position{Offset: 0, Line: 1, Column: 1})
 
 	// corner case: source with only a newline
-	s = new(Scanner).Init(strings.NewReader("\n"))
-	checkPos(t, s.Pos(), Position{Offset: 0, Line: 1, Column: 1})
-	if s.Scan() != EOF {
-		t.Errorf("expecting EOF")
+	s = new(Scanner).Init(strings.NewReader("\n"), filename)
+	checkPos(t, s.Pos(), token.Position{Offset: 0, Line: 1, Column: 1})
+	if s.Scan() != token.EOF {
+		t.Errorf("expecting token.EOF")
 	}
-	// after EOF position doesn't change
+	// after token.EOF position doesn't change
 	for i := 10; i > 0; i-- {
-		checkScanPos(t, s, 1, 2, 1, EOF)
+		checkScanPos(t, s, 1, 2, 1, token.EOF)
 	}
 	if s.ErrorCount != 0 {
 		t.Errorf("%d errors", s.ErrorCount)
 	}
 
 	// corner case: source with only a single character
-	s = new(Scanner).Init(strings.NewReader("x"))
-	checkPos(t, s.Pos(), Position{Offset: 0, Line: 1, Column: 1})
-	checkScanPos(t, s, 0, 1, 1, Ident)
-	// after EOF position doesn't change
+	s = new(Scanner).Init(strings.NewReader("x"), filename)
+	checkPos(t, s.Pos(), token.Position{Offset: 0, Line: 1, Column: 1})
+	checkScanPos(t, s, 0, 1, 1, token.IDENT)
+	// after token.EOF position doesn't change
 	for i := 10; i > 0; i-- {
-		checkScanPos(t, s, 1, 1, 2, EOF)
+		checkScanPos(t, s, 1, 1, 2, token.EOF)
 	}
 	if s.ErrorCount != 0 {
 		t.Errorf("%d errors", s.ErrorCount)
@@ -367,14 +354,14 @@ func TestPos(t *testing.T) {
 	// s.Scan()
 
 	// positions after calling Scan
-	// s = new(Scanner).Init(strings.NewReader("abc\nde\n\nx"))
-	// checkScanPos(t, s, 0, 1, 1, Ident)
+	// s = new(Scanner).Init(strings.NewReader("abc\nde\n\nx"), filename)
+	// checkScanPos(t, s, 0, 1, 1, token.IDENT)
 	// s.Peek() // peek doesn't affect the position
-	// checkScanPos(t, s, 4, 2, 1, Ident)
-	// checkScanPos(t, s, 8, 4, 1, Ident)
-	// // after EOF position doesn't change
+	// checkScanPos(t, s, 4, 2, 1, token.IDENT)
+	// checkScanPos(t, s, 8, 4, 1, token.IDENT)
+	// // after token.EOF position doesn't change
 	// for i := 10; i > 0; i-- {
-	// 	checkScanPos(t, s, 9, 4, 2, EOF)
+	// 	checkScanPos(t, s, 9, 4, 2, token.EOF)
 	// }
 	// if s.ErrorCount != 0 {
 	// 	t.Errorf("%d errors", s.ErrorCount)
@@ -392,15 +379,14 @@ func TestScanEOFHandling(t *testing.T) {
 	var r countReader
 
 	// corner case: empty source
-	s := new(Scanner).Init(&r)
+	s := new(Scanner).Init(&r, filename)
 
 	tok := s.Scan()
-	if tok != EOF {
-		t.Error("1) EOF not reported")
+	if tok != token.EOF {
+		t.Error("1) token.EOF not reported")
 	}
 
-	tok = s.Peek()
-	if tok != EOF {
+	if s.Peek() != -1 {
 		t.Error("2) EOF not reported")
 	}
 
