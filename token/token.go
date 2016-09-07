@@ -153,7 +153,7 @@ func Lookup(ident string) Token {
 	}
 	switch ident {
 	case "DATA8", "DATA16", "DATA32", "DATAF", "DATAS",
-			"ARRAY8", "ARRAY16", "ARRAY32", "ARRAYF", "ARRAYS",
+			"ARRAY8", "ARRAY16", "ARRAY32", "ARRAYF",
 			"HANDLE":
 		return DATATYPE
 	case "IN_8", "IN_16", "IN_32", "IN_F", "IN_S",

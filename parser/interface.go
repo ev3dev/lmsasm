@@ -152,7 +152,7 @@ func ParseExprFrom(fset *token.FileSet, filename string, src interface{}, mode M
 	// in case of an erroneous x.
 	p.openScope()
 	p.pkgScope = p.topScope
-	e := p.parseRhsOrType()
+	e := p.parseExpr()
 	p.closeScope()
 	assert(p.topScope == nil, "unbalanced scopes")
 

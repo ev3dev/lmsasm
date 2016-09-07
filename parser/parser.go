@@ -702,21 +702,17 @@ func (p *parser) tryType() ast.Expr {
 // ----------------------------------------------------------------------------
 // Expressions
 
-// parseOperand may return an expression or a raw type (incl. array
-// types of the form [...]T. Callers must verify the result.
-// If lhs is set and the result is an identifier, it is not resolved.
+// parseExpr may return an expression or a raw type.
 //
-func (p *parser) parseOperand(lhs bool) ast.Expr {
+func (p *parser) parseExpr() ast.Expr {
 	if p.trace {
-		defer un(trace(p, "Operand"))
+		defer un(trace(p, "Expr"))
 	}
 
 	switch p.tok {
 	case token.IDENT:
 		x := p.parseIdent()
-		if !lhs {
-			p.resolve(x)
-		}
+		//p.resolve(x)
 		return x
 
 	case token.INT, token.FLOAT, token.STRING:
@@ -728,17 +724,10 @@ func (p *parser) parseOperand(lhs bool) ast.Expr {
 		lparen := p.pos
 		p.next()
 		p.exprLev++
-		x := p.parseRhsOrType() // types may be parenthesized: (some type)
+		x := p.parseBinaryExpr()
 		p.exprLev--
 		rparen := p.expect(token.RPAREN)
 		return &ast.ParenExpr{Lparen: lparen, X: x, Rparen: rparen}
-	}
-
-	if typ := p.tryIdentOrType(); typ != nil {
-		// could be type for composite literal or conversion
-		_, isIdent := typ.(*ast.Ident)
-		assert(!isIdent, "type cannot be identifier")
-		return typ
 	}
 
 	// we have an error
@@ -748,46 +737,11 @@ func (p *parser) parseOperand(lhs bool) ast.Expr {
 	return &ast.BadExpr{From: pos, To: p.pos}
 }
 
-func (p *parser) parseValue(keyOk bool) ast.Expr {
-	if p.trace {
-		defer un(trace(p, "Element"))
-	}
-
-	// Because the parser doesn't know the composite literal type, it cannot
-	// know if a key that's an identifier is a struct field name or a name
-	// denoting a value. The former is not resolved by the parser or the
-	// resolver.
-	//
-	// Instead, _try_ to resolve such a key if possible. If it resolves,
-	// it a) has correctly resolved, or b) incorrectly resolved because
-	// the key is a struct field with a name matching another identifier.
-	// In the former case we are done, and in the latter case we don't
-	// care because the type checker will do a separate field lookup.
-	//
-	// If the key does not resolve, it a) must be defined at the top
-	// level in another file of the same package, the universe scope, or be
-	// undeclared; or b) it is a struct field. In the former case, the type
-	// checker can do a top-level lookup, and in the latter case it will do
-	// a separate field lookup.
-	x := p.checkExpr(p.parseExpr(keyOk))
-	if keyOk {
-		if p.tok == token.COLON {
-			// Try to resolve the key but don't collect it
-			// as unresolved identifier if it fails so that
-			// we don't get (possibly false) errors about
-			// undeclared names.
-			p.tryResolve(x, false)
-		} else {
-			// not a key
-			p.resolve(x)
-		}
-	}
-
-	return x
-}
-
 // checkExpr checks that x is an expression (and not a type).
 func (p *parser) checkExpr(x ast.Expr) ast.Expr {
+	if x == nil {
+		return nil
+	}
 	switch unparen(x).(type) {
 	case *ast.BadExpr:
 	case *ast.Ident:
@@ -835,22 +789,7 @@ func unparen(x ast.Expr) ast.Expr {
 	return x
 }
 
-// checkExprOrType checks that x is an expression or a type
-// (and not a raw type such as [...]T).
-//
-func (p *parser) checkExprOrType(x ast.Expr) ast.Expr {
-	switch unparen(x).(type) {
-	case *ast.ParenExpr:
-		panic("unreachable")
-	case *ast.UnaryExpr:
-	}
-
-	// all other nodes are expressions or types
-	return x
-}
-
-// If lhs is set and the result is an identifier, it is not resolved.
-func (p *parser) parseUnaryExpr(lhs bool) ast.Expr {
+func (p *parser) parseUnaryExpr() ast.Expr {
 	if p.trace {
 		defer un(trace(p, "UnaryExpr"))
 	}
@@ -859,11 +798,11 @@ func (p *parser) parseUnaryExpr(lhs bool) ast.Expr {
 	case token.ADD, token.SUB:
 		pos, op := p.pos, p.tok
 		p.next()
-		x := p.parseUnaryExpr(false)
+		x := p.parseUnaryExpr()
 		return &ast.UnaryExpr{OpPos: pos, Op: op, X: p.checkExpr(x)}
 	}
 
-	return nil
+	return p.parseExpr()
 }
 
 func (p *parser) tokPrec() (token.Token, int) {
@@ -871,54 +810,22 @@ func (p *parser) tokPrec() (token.Token, int) {
 	return tok, tok.Precedence()
 }
 
-// If lhs is set and the result is an identifier, it is not resolved.
-func (p *parser) parseBinaryExpr(lhs bool, prec1 int) ast.Expr {
+func (p *parser) parseBinaryExpr() ast.Expr {
 	if p.trace {
 		defer un(trace(p, "BinaryExpr"))
 	}
 
-	x := p.parseUnaryExpr(lhs)
+	x := p.parseUnaryExpr()
 	for {
 		op, oprec := p.tokPrec()
-		if oprec < prec1 {
+		if oprec < token.LowestPrec+1 {
 			return x
 		}
 		pos := p.expect(op)
-		if lhs {
-			p.resolve(x)
-			lhs = false
-		}
-		y := p.parseBinaryExpr(false, oprec+1)
+		//p.resolve(x)
+		y := p.parseUnaryExpr()
 		x = &ast.BinaryExpr{X: p.checkExpr(x), OpPos: pos, Op: op, Y: p.checkExpr(y)}
 	}
-}
-
-// If lhs is set and the result is an identifier, it is not resolved.
-// The result may be a type or even a raw type ([...]int). Callers must
-// check the result (using checkExpr or checkExprOrType), depending on
-// context.
-func (p *parser) parseExpr(lhs bool) ast.Expr {
-	if p.trace {
-		defer un(trace(p, "Expression"))
-	}
-
-	return p.parseBinaryExpr(lhs, token.LowestPrec+1)
-}
-
-func (p *parser) parseRhs() ast.Expr {
-	old := p.inRhs
-	p.inRhs = true
-	x := p.checkExpr(p.parseExpr(false))
-	p.inRhs = old
-	return x
-}
-
-func (p *parser) parseRhsOrType() ast.Expr {
-	old := p.inRhs
-	p.inRhs = true
-	x := p.checkExprOrType(p.parseExpr(false))
-	p.inRhs = old
-	return x
 }
 
 // ----------------------------------------------------------------------------
@@ -1087,7 +994,7 @@ func (p *parser) parseDefineSpec(_ string) ast.Spec {
 	}
 
 	ident := p.parseIdent()
-	value := p.parseOperand(false)
+	value := p.parseExpr()
 
 	spec := &ast.DefineSpec{
 		Name:  ident,
@@ -1106,8 +1013,9 @@ func (p *parser) parseValueSpec(lit string) ast.Spec {
 	typ := lit
 	ident := p.parseIdent()
 	var length ast.Expr = nil
-	if typ == "DATAS" {
-		length = p.parseOperand(true)
+	switch typ {
+	case "DATAS", "ARRAY8", "ARRAY16", "ARRAY32", "ARRAYF":
+		length = p.parseExpr()
 	}
 
 	spec := &ast.ValueSpec{
@@ -1128,8 +1036,9 @@ func (p *parser) parseParamSpec(lit string) ast.Spec {
 	typ := lit
 	ident := p.parseIdent()
 	var length ast.Expr = nil
-	if typ == "IN_S" || typ == "OUT_S" || typ == "IO_S" {
-		length = p.parseOperand(true)
+	switch typ {
+	case "IN_S", "OUT_S", "IO_S":
+		length = p.parseExpr()
 	}
 
 	spec := &ast.ParamSpec{
