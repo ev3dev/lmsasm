@@ -247,28 +247,28 @@ func testError(t *testing.T, src, pos, msg string, tok token.Token) {
 }
 
 func TestError(t *testing.T) {
-	testError(t, "\x00", filename + ":1:1", "illegal character NUL", 0)
-	testError(t, "\x80", filename + ":1:1", "illegal UTF-8 encoding", token.ILLEGAL)
-	testError(t, "\xff", filename + ":1:1", "illegal UTF-8 encoding", token.ILLEGAL)
+	testError(t, "\x00", filename+":1:1", "illegal character NUL", 0)
+	testError(t, "\x80", filename+":1:1", "illegal UTF-8 encoding", token.ILLEGAL)
+	testError(t, "\xff", filename+":1:1", "illegal UTF-8 encoding", token.ILLEGAL)
 
-	testError(t, "a\x00", filename + ":1:2", "illegal character NUL", token.IDENT)
-	testError(t, "ab\x80", filename + ":1:3", "illegal UTF-8 encoding", token.IDENT)
-	testError(t, "abc\xff", filename + ":1:4", "illegal UTF-8 encoding", token.IDENT)
+	testError(t, "a\x00", filename+":1:2", "illegal character NUL", token.IDENT)
+	testError(t, "ab\x80", filename+":1:3", "illegal UTF-8 encoding", token.IDENT)
+	testError(t, "abc\xff", filename+":1:4", "illegal UTF-8 encoding", token.IDENT)
 
-	testError(t, "'a\x00", filename + ":1:3", "illegal character NUL", token.STRING)
-	testError(t, "'ab\x80", filename + ":1:4", "illegal UTF-8 encoding", token.STRING)
-	testError(t, "'abc\xff", filename + ":1:5", "illegal UTF-8 encoding", token.STRING)
+	testError(t, "'a\x00", filename+":1:3", "illegal character NUL", token.STRING)
+	testError(t, "'ab\x80", filename+":1:4", "illegal UTF-8 encoding", token.STRING)
+	testError(t, "'abc\xff", filename+":1:5", "illegal UTF-8 encoding", token.STRING)
 
-	testError(t, "'\\''", filename + ":1:3", "illegal char escape", token.STRING)
+	testError(t, "'\\''", filename+":1:3", "illegal char escape", token.STRING)
 
-	testError(t, `01238`, filename + ":1:6", "illegal octal number", token.INT)
-	testError(t, `01238123`, filename + ":1:9", "illegal octal number", token.INT)
-	testError(t, `0x`, filename + ":1:3", "illegal hexadecimal number", token.INT)
-	testError(t, `0xg`, filename + ":1:3", "illegal hexadecimal number", token.INT)
+	testError(t, `01238`, filename+":1:6", "illegal octal number", token.INT)
+	testError(t, `01238123`, filename+":1:9", "illegal octal number", token.INT)
+	testError(t, `0x`, filename+":1:3", "illegal hexadecimal number", token.INT)
+	testError(t, `0xg`, filename+":1:3", "illegal hexadecimal number", token.INT)
 
-	testError(t, "'abc", filename + ":1:5", "literal not terminated", token.STRING)
-	testError(t, "'abc\n", filename + ":1:5", "literal not terminated", token.STRING)
-	testError(t, `/*/`, filename + ":1:4", "comment not terminated", token.EOF)
+	testError(t, "'abc", filename+":1:5", "literal not terminated", token.STRING)
+	testError(t, "'abc\n", filename+":1:5", "literal not terminated", token.STRING)
+	testError(t, `/*/`, filename+":1:4", "comment not terminated", token.EOF)
 }
 
 // An errReader returns (0, err) where err is not io.EOF.
