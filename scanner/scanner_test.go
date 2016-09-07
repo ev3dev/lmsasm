@@ -74,34 +74,34 @@ var tokenList = []tokenInfo{
 	{token.INT, "0X" + f100},
 
 	{token.COMMENT, "// floats"},
-	{token.FLOAT, "0."},
-	{token.FLOAT, "1."},
-	{token.FLOAT, "42."},
-	{token.FLOAT, "01234567890."},
-	{token.FLOAT, ".0"},
-	{token.FLOAT, ".1"},
-	{token.FLOAT, ".42"},
-	{token.FLOAT, ".0123456789"},
-	{token.FLOAT, "0.0"},
-	{token.FLOAT, "1.0"},
-	{token.FLOAT, "42.0"},
-	{token.FLOAT, "01234567890.0"},
-	{token.FLOAT, "0e0"},
-	{token.FLOAT, "1e0"},
-	{token.FLOAT, "42e0"},
-	{token.FLOAT, "01234567890e0"},
-	{token.FLOAT, "0E0"},
-	{token.FLOAT, "1E0"},
-	{token.FLOAT, "42E0"},
-	{token.FLOAT, "01234567890E0"},
-	{token.FLOAT, "0e+10"},
-	{token.FLOAT, "1e-10"},
-	{token.FLOAT, "42e+10"},
-	{token.FLOAT, "01234567890e-10"},
-	{token.FLOAT, "0E+10"},
-	{token.FLOAT, "1E-10"},
-	{token.FLOAT, "42E+10"},
-	{token.FLOAT, "01234567890E-10"},
+	{token.FLOAT, "0F"},
+	{token.FLOAT, "1F"},
+	{token.FLOAT, "42F"},
+	{token.FLOAT, "01234567890F"},
+	{token.FLOAT, ".0F"},
+	{token.FLOAT, ".1F"},
+	{token.FLOAT, ".42F"},
+	{token.FLOAT, ".0123456789F"},
+	{token.FLOAT, "0.0F"},
+	{token.FLOAT, "1.0F"},
+	{token.FLOAT, "42.0F"},
+	{token.FLOAT, "01234567890.0F"},
+	{token.FLOAT, "0e0F"},
+	{token.FLOAT, "1e0F"},
+	{token.FLOAT, "42e0F"},
+	{token.FLOAT, "01234567890e0F"},
+	{token.FLOAT, "0E0F"},
+	{token.FLOAT, "1E0F"},
+	{token.FLOAT, "42E0F"},
+	{token.FLOAT, "01234567890E0F"},
+	{token.FLOAT, "0e+10F"},
+	{token.FLOAT, "1e-10F"},
+	{token.FLOAT, "42e+10F"},
+	{token.FLOAT, "01234567890e-10F"},
+	{token.FLOAT, "0E+10F"},
+	{token.FLOAT, "1E-10F"},
+	{token.FLOAT, "42E+10F"},
+	{token.FLOAT, "01234567890E-10F"},
 
 	{token.COMMENT, "// strings"},
 	{token.STRING, "''"},
@@ -269,6 +269,10 @@ func TestError(t *testing.T) {
 	testError(t, "'abc", filename+":1:5", "literal not terminated", token.STRING)
 	testError(t, "'abc\n", filename+":1:5", "literal not terminated", token.STRING)
 	testError(t, `/*/`, filename+":1:4", "comment not terminated", token.EOF)
+
+	testError(t, "0.0", filename+":1:4", "float is missing 'F' suffix", token.FLOAT)
+	testError(t, "42.", filename+":1:4", "float is missing 'F' suffix", token.FLOAT)
+	testError(t, ".0", filename+":1:3", "float is missing 'F' suffix", token.FLOAT)
 }
 
 // An errReader returns (0, err) where err is not io.EOF.

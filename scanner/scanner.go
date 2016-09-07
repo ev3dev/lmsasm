@@ -282,6 +282,10 @@ func (s *Scanner) scanNumber(ch rune) (token.Token, rune) {
 			}
 		} else {
 			// octal int or float
+			if ch == 'F' {
+				ch = s.next()
+				return token.FLOAT, ch
+			}
 			has8or9 := false
 			for isDecimal(ch) {
 				if ch > '7' {
@@ -289,10 +293,19 @@ func (s *Scanner) scanNumber(ch rune) (token.Token, rune) {
 				}
 				ch = s.next()
 			}
+			if ch == 'F' {
+				ch = s.next()
+				return token.FLOAT, ch
+			}
 			if ch == '.' || ch == 'e' || ch == 'E' {
 				// float
 				ch = s.scanFraction(ch)
 				ch = s.scanExponent(ch)
+				if ch == 'F' {
+					ch = s.next()
+				} else {
+					s.error("float is missing 'F' suffix")
+				}
 				return token.FLOAT, ch
 			}
 			// octal int
@@ -304,10 +317,19 @@ func (s *Scanner) scanNumber(ch rune) (token.Token, rune) {
 	}
 	// decimal int or float
 	ch = s.scanMantissa(ch)
+	if ch == 'F' {
+		ch = s.next()
+		return token.FLOAT, ch
+	}
 	if ch == '.' || ch == 'e' || ch == 'E' {
 		// float
 		ch = s.scanFraction(ch)
 		ch = s.scanExponent(ch)
+		if ch == 'F' {
+			ch = s.next()
+		} else {
+			s.error("float is missing 'F' suffix")
+		}
 		return token.FLOAT, ch
 	}
 	return token.INT, ch
@@ -444,10 +466,14 @@ redo:
 		case '.':
 			ch = s.next()
 			if isDecimal(ch) {
-				// TODO: check for "F"
 				tok = token.FLOAT
 				ch = s.scanMantissa(ch)
 				ch = s.scanExponent(ch)
+				if ch == 'F' {
+					ch = s.next()
+				} else {
+					s.error("float is missing 'F' suffix")
+				}
 			}
 		case '+':
 			tok = token.ADD
