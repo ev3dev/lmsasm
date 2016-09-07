@@ -828,6 +828,26 @@ func (p *parser) parseBinaryExpr() ast.Expr {
 }
 
 // ----------------------------------------------------------------------------
+// Arguments
+
+func (p *parser) parseArgList() (a []ast.Expr) {
+	if p.trace {
+		defer un(trace(p, "ArgList"))
+	}
+
+	for {
+		switch p.tok {
+		case token.COMMA:
+			p.next()
+		case token.RPAREN, token.EOF:
+			return
+		default:
+			a = append(a, p.parseExpr())
+		}
+	}
+}
+
+// ----------------------------------------------------------------------------
 // Statements
 
 func (p *parser) parseSimpleStmt() (ast.Stmt, bool) {
@@ -846,12 +866,13 @@ func (p *parser) parseSimpleStmt() (ast.Stmt, bool) {
 		p.declare(stmt, nil, p.labelScope, ast.Lbl, x)
 		return stmt, false
 
-		// case token.LPAREN:
-		// 	// send statement
-		// 	lparen := p.pos
-		// 	p.next()
-		// 	y := p.parseParameterList()
-		// 	return &ast.CallStmt{Chan: x[0], Arrow: arrow, Value: y}, false
+	case token.LPAREN:
+		// call statement
+		lparen := p.pos
+		p.next()
+		y := p.parseArgList()
+		rparen := p.expect(token.RPAREN)
+		return &ast.CallStmt{Op: x, Lparen: lparen, Args: y, Rparen: rparen}, false
 	}
 
 	// unexpcted

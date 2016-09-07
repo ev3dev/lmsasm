@@ -292,3 +292,93 @@ func TestObject(t *testing.T) {
 		t.Errorf("parseSnippit(%q): %v", src, err)
 	}
 }
+
+func TestFullObject(t *testing.T) {
+	src := `subcall mysub {
+	IN_8 a
+	DATA8 b
+	OP(1,a,b)
+l1:
+	NOP()
+end:
+}`
+	f, err := parseSnippit(src)
+	if err == nil {
+		if len(f.Decls) != 1 {
+			t.Errorf("parseSnippit(%q): incorrect number of Decls (%d)", src, len(f.Decls))
+		}
+		d := f.Decls[0].(*ast.ObjDecl)
+		if d == nil {
+			t.Errorf("parseSnippit(%q): expecting ast.ObjDecl but got %T", src, f.Decls[0])
+		} else {
+			if d.Tok != token.SUBCALL {
+				t.Errorf("parseSnippit(%q): expecting 'subcall' but got '%v'", src, d.Tok)
+			}
+			if d.Name.Name != "mysub" {
+				t.Errorf("parseSnippit(%q): expecting 'mysub' but got '%v'", src, d.Name.Name)
+			}
+			if len(d.Body) == 5 {
+				s0 := d.Body[0].(*ast.DeclStmt)
+				if s0 == nil {
+					t.Errorf("parseSnippit(%q): expecting ast.DeclStmt but got %T", src, d.Body[0])
+				}
+				s1 := d.Body[1].(*ast.DeclStmt)
+				if s1 == nil {
+					t.Errorf("parseSnippit(%q): expecting ast.DeclStmt but got %T", src, d.Body[1])
+				}
+				s2 := d.Body[2].(*ast.CallStmt)
+				if s2 == nil {
+					t.Errorf("parseSnippit(%q): expecting ast.CallStmt but got %T", src, d.Body[2])
+				} else {
+					if s2.Op.Name != "OP" {
+						t.Errorf("parseSnippit(%q): expecting 'OP' but got '%v'", src, s2.Op.Name)
+					}
+					if len(s2.Args) == 3 {
+						a0 := s2.Args[0].(*ast.BasicLit)
+						if a0 == nil {
+							t.Errorf("parseSnippit(%q): expecting ast.BasicLit but got %T", src, s2.Args[0])
+						}
+						a1 := s2.Args[1].(*ast.Ident)
+						if a1 == nil {
+							t.Errorf("parseSnippit(%q): expecting ast.Ident but got %T", src, s2.Args[1])
+						}
+						a2 := s2.Args[2].(*ast.Ident)
+						if a2 == nil {
+							t.Errorf("parseSnippit(%q): expecting ast.Ident but got %T", src, s2.Args[2])
+						}
+					} else {
+						t.Errorf("parseSnippit(%q): expecting '3' but got %v", src, len(s2.Args))
+					}
+				}
+				s3 := d.Body[3].(*ast.LabeledStmt)
+				if s3 == nil {
+					t.Errorf("parseSnippit(%q): expecting ast.CallStmt but got %T", src, d.Body[3])
+				} else {
+					if s3.Label.Name != "l1" {
+						t.Errorf("parseSnippit(%q): expecting 'l1' but got '%v'", src, s3.Label.Name)
+					}
+					s3s := s3.Stmt.(*ast.CallStmt)
+					if s3s == nil {
+						t.Errorf("parseSnippit(%q): expecting ast.CallStmt but got %T", src, s3.Stmt)
+					}
+				}
+				s4 := d.Body[4].(*ast.LabeledStmt)
+				if s4 == nil {
+					t.Errorf("parseSnippit(%q): expecting ast.EmptyStmt but got %T", src, d.Body[4])
+				} else {
+					if s4.Label.Name != "end" {
+						t.Errorf("parseSnippit(%q): expecting 'end' but got '%v'", src, s3.Label.Name)
+					}
+					s4s := s4.Stmt.(*ast.EmptyStmt)
+					if s4s == nil {
+						t.Errorf("parseSnippit(%q): expecting ast.EmptyStmt but got %T", src, s4.Stmt)
+					}
+				}
+			} else {
+				t.Errorf("parseSnippit(%q): expecting '5' but got '%v'", src, len(d.Body))
+			}
+		}
+	} else {
+		t.Errorf("parseSnippit(%q): %v", src, err)
+	}
+}
