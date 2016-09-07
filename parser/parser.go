@@ -671,33 +671,33 @@ func (p *parser) tryType() ast.Expr {
 // ----------------------------------------------------------------------------
 // Blocks
 
-// func (p *parser) parseStmtList() (list []ast.Stmt) {
-// 	if p.trace {
-// 		defer un(trace(p, "StatementList"))
-// 	}
+func (p *parser) parseStmtList() (list []ast.Stmt) {
+	if p.trace {
+		defer un(trace(p, "StatementList"))
+	}
 
-// 	for p.tok != token.EOF {
-// 		list = append(list, p.parseStmt())
-// 	}
+	for p.tok != token.RBRACE && p.tok != token.EOF {
+		list = append(list, p.parseStmt())
+	}
 
-// 	return
-// }
+	return
+}
 
-// func (p *parser) parseBody(scope *ast.Scope) []ast.Stmt {
-// 	if p.trace {
-// 		defer un(trace(p, "Body"))
-// 	}
+func (p *parser) parseBody() []ast.Stmt {
+	if p.trace {
+		defer un(trace(p, "Body"))
+	}
 
-// 	_ = p.expect(token.LBRACE)
-// 	p.topScope = scope // open function scope
-// 	p.openLabelScope()
-// 	list := p.parseStmtList()
-// 	p.closeLabelScope()
-// 	p.closeScope()
-// 	_ = p.expect(token.RBRACE)
+	_ = p.expect(token.LBRACE)
+	p.openScope()
+	p.openLabelScope()
+	list := p.parseStmtList()
+	p.closeLabelScope()
+	p.closeScope()
+	_ = p.expect(token.RBRACE)
 
-// 	return list
-// }
+	return list
+}
 
 // ----------------------------------------------------------------------------
 // Expressions
@@ -748,7 +748,6 @@ func (p *parser) checkExpr(x ast.Expr) ast.Expr {
 	case *ast.BasicLit:
 	case *ast.ParenExpr:
 		panic("unreachable")
-	case *ast.CallExpr:
 	case *ast.UnaryExpr:
 	case *ast.BinaryExpr:
 	default:
@@ -831,157 +830,61 @@ func (p *parser) parseBinaryExpr() ast.Expr {
 // ----------------------------------------------------------------------------
 // Statements
 
-// // Parsing modes for parseSimpleStmt.
-// const (
-// 	basic = iota
-// 	labelOk
-// 	rangeOk
-// )
+func (p *parser) parseSimpleStmt() (ast.Stmt, bool) {
+	if p.trace {
+		defer un(trace(p, "SimpleStmt"))
+	}
 
-// // parseSimpleStmt returns true as 2nd result if it parsed the assignment
-// // of a range clause (with mode == rangeOk). The returned statement is an
-// // assignment with a right-hand side that is a single unary expression of
-// // the form "range x". No guarantees are given for the left-hand side.
-// func (p *parser) parseSimpleStmt(mode int) (ast.Stmt, bool) {
-// 	if p.trace {
-// 		defer un(trace(p, "SimpleStmt"))
-// 	}
+	x := p.parseIdent()
 
-// 	x := p.parseLhsList()
+	switch p.tok {
+	case token.COLON:
+		// labeled statement
+		colon := p.pos
+		p.next()
+		stmt := &ast.LabeledStmt{Label: x, Colon: colon, Stmt: p.parseStmt()}
+		p.declare(stmt, nil, p.labelScope, ast.Lbl, x)
+		return stmt, false
 
-// 	switch p.tok {
-// 	case
-// 		token.DEFINE, token.ASSIGN, token.ADD_ASSIGN,
-// 		token.SUB_ASSIGN, token.MUL_ASSIGN, token.QUO_ASSIGN,
-// 		token.REM_ASSIGN, token.AND_ASSIGN, token.OR_ASSIGN,
-// 		token.XOR_ASSIGN, token.SHL_ASSIGN, token.SHR_ASSIGN, token.AND_NOT_ASSIGN:
-// 		// assignment statement, possibly part of a range clause
-// 		pos, tok := p.pos, p.tok
-// 		p.next()
-// 		var y []ast.Expr
-// 		isRange := false
-// 		if mode == rangeOk && p.tok == token.RANGE && (tok == token.DEFINE || tok == token.ASSIGN) {
-// 			pos := p.pos
-// 			p.next()
-// 			y = []ast.Expr{&ast.UnaryExpr{OpPos: pos, Op: token.RANGE, X: p.parseRhs()}}
-// 			isRange = true
-// 		} else {
-// 			y = p.parseRhsList()
-// 		}
-// 		as := &ast.AssignStmt{Lhs: x, TokPos: pos, Tok: tok, Rhs: y}
-// 		if tok == token.DEFINE {
-// 			p.shortVarDecl(as, x)
-// 		}
-// 		return as, isRange
-// 	}
+		// case token.LPAREN:
+		// 	// send statement
+		// 	lparen := p.pos
+		// 	p.next()
+		// 	y := p.parseParameterList()
+		// 	return &ast.CallStmt{Chan: x[0], Arrow: arrow, Value: y}, false
+	}
 
-// 	if len(x) > 1 {
-// 		p.errorExpected(x[0].Pos(), "1 expression")
-// 		// continue with first expression
-// 	}
+	// unexpcted
+	return &ast.BadStmt{From: x.Pos(), To: p.pos}, false
+}
 
-// 	switch p.tok {
-// 	case token.COLON:
-// 		// labeled statement
-// 		colon := p.pos
-// 		p.next()
-// 		if label, isIdent := x[0].(*ast.Ident); mode == labelOk && isIdent {
-// 			// Go spec: The scope of a label is the body of the function
-// 			// in which it is declared and excludes the body of any nested
-// 			// function.
-// 			stmt := &ast.LabeledStmt{Label: label, Colon: colon, Stmt: p.parseStmt()}
-// 			p.declare(stmt, nil, p.labelScope, ast.Lbl, label)
-// 			return stmt, false
-// 		}
-// 		// The label declaration typically starts at x[0].Pos(), but the label
-// 		// declaration may be erroneous due to a token after that position (and
-// 		// before the ':'). If SpuriousErrors is not set, the (only) error re-
-// 		// ported for the line is the illegal label error instead of the token
-// 		// before the ':' that caused the problem. Thus, use the (latest) colon
-// 		// position for error reporting.
-// 		p.error(colon, "illegal label declaration")
-// 		return &ast.BadStmt{From: x[0].Pos(), To: colon + 1}, false
+func (p *parser) parseStmt() (s ast.Stmt) {
+	if p.trace {
+		defer un(trace(p, "Statement"))
+	}
 
-// 	case token.ARROW:
-// 		// send statement
-// 		arrow := p.pos
-// 		p.next()
-// 		y := p.parseRhs()
-// 		return &ast.SendStmt{Chan: x[0], Arrow: arrow, Value: y}, false
+	switch p.tok {
+	case token.IDENT:
+		switch token.Lookup(p.lit) {
+		case token.DEFINE, token.DATATYPE, token.PARAMTYPE:
+			s = &ast.DeclStmt{Decl: p.parseDecl(syncStmt)}
+		default:
+			// label or opcode call
+			s, _ = p.parseSimpleStmt()
+		}
+	case token.RBRACE:
+		// a semicolon may be omitted before a closing "}"
+		s = &ast.EmptyStmt{Semicolon: p.pos, Implicit: true}
+	default:
+		// no statement found
+		pos := p.pos
+		p.errorExpected(pos, "statement")
+		syncStmt(p)
+		s = &ast.BadStmt{From: pos, To: p.pos}
+	}
 
-// 	case token.INC, token.DEC:
-// 		// increment or decrement
-// 		s := &ast.IncDecStmt{X: x[0], TokPos: p.pos, Tok: p.tok}
-// 		p.next()
-// 		return s, false
-// 	}
-
-// 	// expression
-// 	return &ast.ExprStmt{X: x[0]}, false
-// }
-
-// func (p *parser) parseCallExpr(callType string) *ast.CallExpr {
-// 	x := p.parseRhsOrType() // could be a conversion: (some type)(x)
-// 	if call, isCall := x.(*ast.CallExpr); isCall {
-// 		return call
-// 	}
-// 	if _, isBad := x.(*ast.BadExpr); !isBad {
-// 		// only report error if it's a new one
-// 		p.error(p.safePos(x.End()), fmt.Sprintf("function must be invoked in %s statement", callType))
-// 	}
-// 	return nil
-// }
-
-// func (p *parser) makeExpr(s ast.Stmt, kind string) ast.Expr {
-// 	if s == nil {
-// 		return nil
-// 	}
-// 	if es, isExpr := s.(*ast.ExprStmt); isExpr {
-// 		return p.checkExpr(es.X)
-// 	}
-// 	p.error(s.Pos(), fmt.Sprintf("expected %s, found simple statement (missing parentheses around composite literal?)", kind))
-// 	return &ast.BadExpr{From: s.Pos(), To: p.safePos(s.End())}
-// }
-
-// func (p *parser) parseStmt() (s ast.Stmt) {
-// 	if p.trace {
-// 		defer un(trace(p, "Statement"))
-// 	}
-
-// 	switch p.tok {
-// 	case token.CONST, token.TYPE, token.VAR:
-// 		s = &ast.DeclStmt{Decl: p.parseDecl(syncStmt)}
-// 	case
-// 		// tokens that may start an expression
-// 		token.IDENT, token.INT, token.FLOAT, token.IMAG, token.CHAR, token.STRING, token.FUNC, token.LPAREN, // operands
-// 		token.LBRACK, token.STRUCT, token.MAP, token.CHAN, token.INTERFACE, // composite types
-// 		token.ADD, token.SUB, token.MUL, token.AND, token.XOR, token.ARROW, token.NOT: // unary operators
-// 		s, _ = p.parseSimpleStmt(labelOk)
-// 		// because of the required look-ahead, labeled statements are
-// 		// parsed by parseSimpleStmt - don't expect a semicolon after
-// 		// them
-// 		if _, isLabeledStmt := s.(*ast.LabeledStmt); !isLabeledStmt {
-// 			p.expectSemi()
-// 		}
-// 	case token.SEMICOLON:
-// 		// Is it ever possible to have an implicit semicolon
-// 		// producing an empty statement in a valid program?
-// 		// (handle correctly anyway)
-// 		s = &ast.EmptyStmt{Semicolon: p.pos, Implicit: p.lit == "\n"}
-// 		p.next()
-// 	case token.RBRACE:
-// 		// a semicolon may be omitted before a closing "}"
-// 		s = &ast.EmptyStmt{Semicolon: p.pos, Implicit: true}
-// 	default:
-// 		// no statement found
-// 		pos := p.pos
-// 		p.errorExpected(pos, "statement")
-// 		syncStmt(p)
-// 		s = &ast.BadStmt{From: pos, To: p.pos}
-// 	}
-
-// 	return
-// }
+	return
+}
 
 // ----------------------------------------------------------------------------
 // Declarations
@@ -1066,8 +969,22 @@ func (p *parser) parseGenDecl(tok token.Token, lit string, f parseSpecFunction) 
 	}
 }
 
-func (p *parser) parseObjDecl() ast.Decl {
-	return nil
+func (p *parser) parseObjDecl(tok token.Token) ast.Decl {
+	if p.trace {
+		defer un(trace(p, "ObjDecl"))
+	}
+
+	pos := p.pos
+	_ = p.expect(token.IDENT)
+	name := p.parseIdent()
+	body := p.parseBody()
+
+	return &ast.ObjDecl{
+		TokPos: pos,
+		Tok:    tok,
+		Name:   name,
+		Body:   body,
+	}
 }
 
 func (p *parser) parseDecl(sync func(*parser)) ast.Decl {
@@ -1088,7 +1005,7 @@ func (p *parser) parseDecl(sync func(*parser)) ast.Decl {
 		f = p.parseParamSpec
 
 	case token.VMTHREAD, token.SUBCALL:
-		return p.parseObjDecl()
+		return p.parseObjDecl(tok)
 
 	default:
 		pos := p.pos

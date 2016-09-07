@@ -65,10 +65,6 @@ func Walk(v Visitor, node Node) {
 	case *ParenExpr:
 		Walk(v, n.X)
 
-	case *CallExpr:
-		Walk(v, n.Fun)
-		walkExprList(v, n.Args)
-
 	case *UnaryExpr:
 		Walk(v, n.X)
 
@@ -90,8 +86,9 @@ func Walk(v Visitor, node Node) {
 		Walk(v, n.Label)
 		Walk(v, n.Stmt)
 
-	case *ExprStmt:
-		Walk(v, n.X)
+	case *CallStmt:
+		Walk(v, n.Op)
+		walkExprList(v, n.Args)
 
 	// Declarations
 	case *DefineSpec:
@@ -118,7 +115,6 @@ func Walk(v Visitor, node Node) {
 
 	case *ObjDecl:
 		Walk(v, n.Name)
-		Walk(v, n.Type)
 		walkStmtList(v, n.Body)
 
 	// Files

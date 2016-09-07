@@ -21,8 +21,6 @@ func print(node Node) bool {
 		fmt.Println("BasicLit:", n.ValuePos, n.Kind, n.Value)
 	case *ParenExpr:
 		fmt.Println("ParenExpr:")
-	case *CallExpr:
-		fmt.Println("CallExpr:", n.Fun)
 	case *UnaryExpr:
 		fmt.Println("UnaryExpr:", n.OpPos, n.Op)
 	case *BinaryExpr:

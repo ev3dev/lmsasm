@@ -89,14 +89,6 @@ type (
 		Rparen token.Pos // position of ")"
 	}
 
-	// A CallExpr node represents an identifier followed by an argument list.
-	CallExpr struct {
-		Fun    *Ident    // function identifier (opcode)
-		Lparen token.Pos // position of "("
-		Args   []Expr    // function arguments; or nil
-		Rparen token.Pos // position of ")"
-	}
-
 	// A UnaryExpr node represents a unary expression.
 	UnaryExpr struct {
 		OpPos token.Pos   // position of Op
@@ -119,7 +111,6 @@ func (x *BadExpr) Pos() token.Pos    { return x.From }
 func (x *Ident) Pos() token.Pos      { return x.NamePos }
 func (x *BasicLit) Pos() token.Pos   { return x.ValuePos }
 func (x *ParenExpr) Pos() token.Pos  { return x.Lparen }
-func (x *CallExpr) Pos() token.Pos   { return x.Fun.Pos() }
 func (x *UnaryExpr) Pos() token.Pos  { return x.OpPos }
 func (x *BinaryExpr) Pos() token.Pos { return x.X.Pos() }
 
@@ -127,7 +118,6 @@ func (x *BadExpr) End() token.Pos    { return x.To }
 func (x *Ident) End() token.Pos      { return token.Pos(int(x.NamePos) + len(x.Name)) }
 func (x *BasicLit) End() token.Pos   { return token.Pos(int(x.ValuePos) + len(x.Value)) }
 func (x *ParenExpr) End() token.Pos  { return x.Rparen + 1 }
-func (x *CallExpr) End() token.Pos   { return x.Rparen + 1 }
 func (x *UnaryExpr) End() token.Pos  { return x.X.End() }
 func (x *BinaryExpr) End() token.Pos { return x.Y.End() }
 
@@ -138,7 +128,6 @@ func (*BadExpr) exprNode()    {}
 func (*Ident) exprNode()      {}
 func (*BasicLit) exprNode()   {}
 func (*ParenExpr) exprNode()  {}
-func (*CallExpr) exprNode()   {}
 func (*UnaryExpr) exprNode()  {}
 func (*BinaryExpr) exprNode() {}
 
@@ -193,11 +182,13 @@ type (
 		Stmt  Stmt
 	}
 
-	// An ExprStmt node represents a (stand-alone) expression
-	// in a statement list.
+	// An CallStmt node represents an opcode call
 	//
-	ExprStmt struct {
-		X Expr // expression
+	CallStmt struct {
+		Op    *Ident     // opcode identifier
+		Lparen token.Pos // position of "("
+		Args   []Expr    // function arguments; or nil
+		Rparen token.Pos // position of ")"
 	}
 )
 
@@ -207,7 +198,7 @@ func (s *BadStmt) Pos() token.Pos     { return s.From }
 func (s *DeclStmt) Pos() token.Pos    { return s.Decl.Pos() }
 func (s *EmptyStmt) Pos() token.Pos   { return s.Semicolon }
 func (s *LabeledStmt) Pos() token.Pos { return s.Label.Pos() }
-func (s *ExprStmt) Pos() token.Pos    { return s.X.Pos() }
+func (s *CallStmt) Pos() token.Pos    { return s.Op.Pos() }
 
 func (s *BadStmt) End() token.Pos  { return s.To }
 func (s *DeclStmt) End() token.Pos { return s.Decl.End() }
@@ -218,7 +209,7 @@ func (s *EmptyStmt) End() token.Pos {
 	return s.Semicolon + 1 /* len(";") */
 }
 func (s *LabeledStmt) End() token.Pos { return s.Stmt.End() }
-func (s *ExprStmt) End() token.Pos    { return s.X.End() }
+func (s *CallStmt) End() token.Pos    { return s.Rparen }
 
 // stmtNode() ensures that only statement nodes can be
 // assigned to a Stmt.
@@ -227,7 +218,7 @@ func (*BadStmt) stmtNode()     {}
 func (*DeclStmt) stmtNode()    {}
 func (*EmptyStmt) stmtNode()   {}
 func (*LabeledStmt) stmtNode() {}
-func (*ExprStmt) stmtNode()    {}
+func (*CallStmt) stmtNode()    {}
 
 // ----------------------------------------------------------------------------
 // Declarations
@@ -318,11 +309,10 @@ type (
 
 	// A ObjDecl node represents a function declaration.
 	ObjDecl struct {
-		Type   *Ident // "vmthread" or "subcall"
+		TokPos token.Pos   // position of Tok
+		Tok    token.Token // VMTHREAD, SUBCALL
 		Name   *Ident
-		Lbrace token.Pos // position of "{"
 		Body   []Stmt    // function body
-		Rbrace token.Pos // position of "}"
 	}
 )
 
@@ -332,11 +322,11 @@ type ObjType byte
 
 func (d *BadDecl) Pos() token.Pos { return d.From }
 func (d *GenDecl) Pos() token.Pos { return d.TokPos }
-func (d *ObjDecl) Pos() token.Pos { return d.Type.Pos() }
+func (d *ObjDecl) Pos() token.Pos { return d.TokPos }
 
 func (d *BadDecl) End() token.Pos { return d.To }
 func (d *GenDecl) End() token.Pos { return d.Spec.End() }
-func (d *ObjDecl) End() token.Pos { return d.Rbrace + 1 }
+func (d *ObjDecl) End() token.Pos { return d.Body[len(d.Body) - 1].End() }
 
 // declNode() ensures that only declaration nodes can be
 // assigned to a Decl.
