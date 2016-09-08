@@ -185,7 +185,7 @@ type (
 	// An CallStmt node represents an opcode call
 	//
 	CallStmt struct {
-		Op    *Ident     // opcode identifier
+		Op     *Ident    // opcode identifier
 		Lparen token.Pos // position of "("
 		Args   []Expr    // function arguments; or nil
 		Rparen token.Pos // position of ")"
@@ -312,7 +312,7 @@ type (
 		TokPos token.Pos   // position of Tok
 		Tok    token.Token // VMTHREAD, SUBCALL
 		Name   *Ident
-		Body   []Stmt    // function body
+		Body   []Stmt // function body
 	}
 )
 
@@ -326,7 +326,7 @@ func (d *ObjDecl) Pos() token.Pos { return d.TokPos }
 
 func (d *BadDecl) End() token.Pos { return d.To }
 func (d *GenDecl) End() token.Pos { return d.Spec.End() }
-func (d *ObjDecl) End() token.Pos { return d.Body[len(d.Body) - 1].End() }
+func (d *ObjDecl) End() token.Pos { return d.Body[len(d.Body)-1].End() }
 
 // declNode() ensures that only declaration nodes can be
 // assigned to a Decl.
