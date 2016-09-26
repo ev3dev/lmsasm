@@ -57,6 +57,7 @@ type parser struct {
 
 func (p *parser) init(fset *token.FileSet, filename string, src []byte, mode Mode) {
 	p.file = fset.AddFile(filename, -1, len(src))
+	p.file.SetLinesForContent(src)
 	eh := func(pos token.Position, msg string) { p.errors.Add(pos, msg) }
 	p.scanner.Init(bytes.NewBuffer(src), filename)
 	p.scanner.Error = func(s *scanner.Scanner, msg string) { eh(s.Pos(), msg) }
