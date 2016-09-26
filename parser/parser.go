@@ -464,6 +464,10 @@ func (p *parser) parseExpr() ast.Expr {
 		p.next()
 		return x
 
+	case token.ADD, token.SUB:
+		x := p.parseUnaryExpr()
+		return x
+
 	case token.LPAREN:
 		lparen := p.pos
 		p.next()
