@@ -84,9 +84,9 @@ var tokens = [...]string{
 	COLON:     ":",
 	SEMICOLON: ";",
 
-	DEFINE:    "define",
-	VMTHREAD:  "vmthread",
-	SUBCALL:   "subcall",
+	DEFINE:   "define",
+	VMTHREAD: "vmthread",
+	SUBCALL:  "subcall",
 
 	DATATYPE:  "DATATYPE",
 	PARAMTYPE: "PARAMTYPE",
@@ -153,12 +153,12 @@ func Lookup(ident string) Token {
 	}
 	switch ident {
 	case "DATA8", "DATA16", "DATA32", "DATAF", "DATAS",
-			"ARRAY8", "ARRAY16", "ARRAY32", "ARRAYF",
-			"HANDLE":
+		"ARRAY8", "ARRAY16", "ARRAY32", "ARRAYF",
+		"HANDLE":
 		return DATATYPE
 	case "IN_8", "IN_16", "IN_32", "IN_F", "IN_S",
-			"OUT_8", "OUT_16", "OUT_32", "OUT_F", "OUT_S",
-			"IO_8", "IO_16", "IO_32", "IO_F", "IO_S":
+		"OUT_8", "OUT_16", "OUT_32", "OUT_F", "OUT_S",
+		"IO_8", "IO_16", "IO_32", "IO_F", "IO_S":
 		return PARAMTYPE
 	default:
 		return IDENT
