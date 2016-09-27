@@ -8370,6 +8370,7 @@ ops:
 
   COM_READDATA:
     value: 0xD1
+    desc: This code does not exist in normal program
     params:
       -
         name: "VALUE1"
@@ -8383,14 +8384,11 @@ ops:
       -
         name: "VALUE4"
         type: PAR8
-    support:
-      official: no
-      xtended: no
-      compat: no
-    remarks: This bytecode is defined but not implemented
+    remarks: Dispatch status changes to INSTRBREAK
 
   COM_WRITEDATA:
     value: 0xD2
+    desc: This code does not exist in normal program
     params:
       -
         name: "VALUE1"
@@ -8404,11 +8402,7 @@ ops:
       -
         name: "VALUE4"
         type: PAR8
-    support:
-      official: no
-      xtended: no
-      compat: no
-    remarks: This bytecode is defined but not implemented
+    remarks: Dispatch status changes to INSTRBREAK
 
   COM_GET:
     desc: Communication get entry
@@ -9056,40 +9050,40 @@ ops:
       If name is 0 then own adapter busy status is returned.
 
   COM_REMOVE:
+    desc: Removes a know remote device from the brick
     value: 0xD6
     params:
       -
         name: "HARDWARE"
         type: PAR8
+        enum: *HWTYPE
       -
         name: "REMOTE_NAME"
+        desc: Pointer to remote brick name
         type: PAR8
-    support:
-      official: no
-      xtended: no
-      compat: no
-    remarks: This bytecode is defined but not implemented
+    remarks: Dispatch status can return FAILBREAK
 
   COM_WRITEFILE:
+    desc: Sends a file or folder to remote brick.
     value: 0xD7
     params:
       -
         name: "HARDWARE"
         type: PAR8
+        enum: *HWTYPE
       -
         name: "REMOTE_NAME"
+        desc: Pointer to remote brick name
         type: PAR8
       -
         name: "FILE_NAME"
+        desc: File/folder name to send
         type: PAR8
       -
         name: "FILE_TYPE"
+        desc: File or folder type to send
         type: PAR8
-    support:
-      official: no
-      xtended: no
-      compat: no
-    remarks: This bytecode is defined but not implemented
+    remarks: Dispatch status can return FAILBREAK
 
   MAILBOX_OPEN:
     desc: Open a mail box on the brick
