@@ -15,6 +15,7 @@ before_install:
   ) ||
     go generate ./bytecodes'
 script:
+- go test -v ./assembler
 - go test -v ./bytecodes
 - go test -v ./parser
 - go test -v ./scanner
