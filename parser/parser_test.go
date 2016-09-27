@@ -12,7 +12,7 @@ import (
 
 func parseSnippit(code string) (file *ast.File, err error) {
 	// change `0` to `Trace` for debugging
-	return ParseFile(token.NewFileSet(), "", code, 0)
+	return ParseFile(token.NewFileSet(), "", code, nil, 0)
 }
 
 func TestDefine(t *testing.T) {

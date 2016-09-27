@@ -90,8 +90,9 @@ func (p *parser) closeLabelScope() {
 	scope := p.labelScope
 	for _, ident := range p.targetStack[n] {
 		ident.Obj = scope.Lookup(ident.Name)
-		if ident.Obj == nil && p.mode&DeclarationErrors != 0 {
-			p.error(ident.Pos(), fmt.Sprintf("label %s undefined", ident.Name))
+		if ident.Obj == nil {
+			ident.Obj = unresolved
+			p.unresolved = append(p.unresolved, ident)
 		}
 	}
 	// pop label scope
@@ -153,7 +154,15 @@ func (p *parser) tryResolve(x ast.Expr, collectUnresolved bool) {
 	// them so that they can be resolved later
 	if collectUnresolved {
 		ident.Obj = unresolved
-		p.unresolved = append(p.unresolved, ident)
+		if n := len(p.targetStack) - 1; n >= 0 {
+			// If there is a label scope open, collect the identifiers there.
+			// They will be resolved when the scope is closed. Any unresolved
+			// identifies in p.targetStack[n] will be moved to p.unresolved
+			// at that time to be resolved later.
+			p.targetStack[n] = append(p.targetStack[n], ident)
+		} else {
+			p.unresolved = append(p.unresolved, ident)
+		}
 	}
 }
 
@@ -457,7 +466,7 @@ func (p *parser) parseExpr() ast.Expr {
 	switch p.tok {
 	case token.IDENT:
 		x := p.parseIdent()
-		//p.resolve(x)
+		p.resolve(x)
 		return x
 
 	case token.INT, token.FLOAT, token.STRING:
@@ -575,7 +584,6 @@ func (p *parser) parseBinaryExpr() ast.Expr {
 			return x
 		}
 		pos := p.expect(op)
-		//p.resolve(x)
 		y := p.parseUnaryExpr()
 		x = &ast.BinaryExpr{X: p.checkExpr(x), OpPos: pos, Op: op, Y: p.checkExpr(y)}
 	}
@@ -622,6 +630,7 @@ func (p *parser) parseSimpleStmt() (ast.Stmt, bool) {
 
 	case token.LPAREN:
 		// call statement
+		p.resolve(x)
 		lparen := p.pos
 		p.next()
 		y := p.parseArgList()
@@ -754,12 +763,15 @@ func (p *parser) parseObjDecl(tok token.Token) ast.Decl {
 	name := p.parseIdent()
 	body := p.parseBody()
 
-	return &ast.ObjDecl{
+	obj := &ast.ObjDecl{
 		TokPos: pos,
 		Tok:    tok,
 		Name:   name,
 		Body:   body,
 	}
+	p.declare(obj, nil, p.topScope, ast.Obj, name)
+
+	return obj
 }
 
 func (p *parser) parseDecl(sync func(*parser)) ast.Decl {
@@ -806,6 +818,7 @@ func (p *parser) parseFile() *ast.File {
 		return nil
 	}
 
+	s := p.topScope
 	p.openScope()
 	p.pkgScope = p.topScope
 	var decls []ast.Decl
@@ -815,7 +828,7 @@ func (p *parser) parseFile() *ast.File {
 	}
 
 	p.closeScope()
-	assert(p.topScope == nil, "unbalanced scopes")
+	assert(p.topScope == s, "unbalanced scopes")
 	assert(p.labelScope == nil, "unbalanced label scopes")
 
 	// resolve global identifiers within the same file

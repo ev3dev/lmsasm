@@ -70,7 +70,7 @@ func (s *Scope) String() string {
 // The Data fields contains object-specific data:
 //
 //	Kind    Data type         Data value
-//	Pkg	*types.Package    package scope
+//	Pkg     *types.Package    package scope
 //	Con     int               iota for the respective declaration
 //	Con     != nil            constant value
 //	Typ     *Scope            (used as method scope during type checking - transient)
@@ -120,27 +120,34 @@ func (obj *Object) Pos() token.Pos {
 	return token.NoPos
 }
 
+func (obj *Object) String() string {
+	if obj == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("%v %v", obj.Kind, obj.Name)
+}
+
 // ObjKind describes what an object represents.
 type ObjKind int
 
 // The list of possible Object kinds.
 const (
 	Bad ObjKind = iota // for error handling
-	Pkg                // package
 	Con                // constant
-	Typ                // type
+	Obj                // object
 	Var                // variable
-	Fun                // function or method
+	Op                 // opcode
+	Cmd                // opcode subcommand
 	Lbl                // label
 )
 
 var objKindStrings = [...]string{
 	Bad: "bad",
-	Pkg: "package",
 	Con: "const",
-	Typ: "type",
+	Obj: "obj",
 	Var: "var",
-	Fun: "func",
+	Op:  "op",
+	Cmd: "cmd",
 	Lbl: "label",
 }
 
