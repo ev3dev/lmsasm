@@ -933,20 +933,12 @@ ops:
     desc: This code does not exist in normal program
     value: 0x00
     params: []
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
     remarks: Dispatch status changes to INSTRBREAK
 
   NOP:
     desc: This code does absolutely nothing
     value: 0x01
     params: []
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   PROGRAM_STOP:
     desc: Stops specific program id slot
@@ -958,10 +950,6 @@ ops:
         type: PAR16
         dir: in
         enum: *SLOT
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
     remarks: Dispatch status changes to PRGBREAK
 
   PROGRAM_START:
@@ -989,10 +977,6 @@ ops:
         desc: Debug mode (0=normal, 1=debug, 2=don't execute)
         type: PAR8
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
     remarks: Dispatch status unchanged
 
   OBJECT_STOP:
@@ -1004,10 +988,6 @@ ops:
         desc: Object id
         type: PAR16
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
     remarks: Dispatch status changes to STOPBREAK
 
   OBJECT_START:
@@ -1019,10 +999,6 @@ ops:
         desc: Object id
         type: PAR16
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
     remarks: Dispatch status unchanged
 
   OBJECT_TRIG:
@@ -1034,10 +1010,6 @@ ops:
         desc: Object id
         type: PAR16
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
     remarks: Dispatch status unchanged
 
   OBJECT_WAIT:
@@ -1049,20 +1021,12 @@ ops:
         type: PAR16
         dir: in
         desc: Object id
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
     remarks: Dispatch status can change to BUSYBREAK
 
   RETURN:
     desc: Return from byte code subroutine
     value: 0x08
     params: []
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
     remarks: Dispatch status changes to STOPBREAK
 
   CALL:
@@ -1079,30 +1043,18 @@ ops:
         desc: Number of parameters
         type: PARNO
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
     remarks: Dispatch status changes to STOPBREAK or BUSYBREAK
 
   OBJECT_END:
     desc: Stops current object
     value: 0x0A
     params: []
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
     remarks: Dispatch status changes to STOPBREAK
 
   SLEEP:
     desc: Breaks execution of current VMTHREAD
     value: 0x0B
     params: []
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
     remarks: Dispatch status changes to INSTRBREAK
 
   PROGRAM_INFO:
@@ -1129,10 +1081,6 @@ ops:
                 desc: Object id
                 type: PAR16
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           OBJ_START:
             value: 4
@@ -1148,10 +1096,6 @@ ops:
                 desc: Object id
                 type: PAR16
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_STATUS:
             value: 22
@@ -1167,10 +1111,6 @@ ops:
                 desc: Program status
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_SPEED:
             value: 23
@@ -1186,10 +1126,6 @@ ops:
                 desc: Program speed [instr/S]
                 type: PAR32
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_PRGRESULT:
             value: 24
@@ -1205,10 +1141,6 @@ ops:
                 desc: Program result [OK, BUSY, FAIL]
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           SET_INSTR:
             desc: Set number of instructions before VMThread change
@@ -1220,10 +1152,6 @@ ops:
                 type: PAR16
                 dir: in
                 enum: *SLOT
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_PRGNAME:
             value: 26
@@ -1243,11 +1171,6 @@ ops:
               official: no
               xtended: yes
               compat: yes
-
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
     remarks: Dispatch status can change to FAILBREAK
 
   LABEL:
@@ -1259,10 +1182,6 @@ ops:
         desc: Label number
         type: PARLAB
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   PROBE:
     desc: Display globals or object locals on terminal
@@ -1289,10 +1208,6 @@ ops:
         desc: Size (length of dump) zero means all (max 1024)
         type: PAR32
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
     remarks: Dispatch status unchanged
 
   DO:
@@ -1315,10 +1230,6 @@ ops:
         desc: Address of global variables
         type: PAR32
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
     remarks: Dispatch status can change to BUSYBREAK
 
   # cMath "MATH"
@@ -1339,10 +1250,6 @@ ops:
         name: "DESTINATION"
         type: PAR8
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   ADD16:
     desc: Add two 16-bit values DESTINATION = SOURCE1 + SOURCE2
@@ -1360,10 +1267,6 @@ ops:
         name: "DESTINATION"
         type: PAR16
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   ADD32:
     desc: Add two 32-bit values DESTINATION = SOURCE1 + SOURCE2
@@ -1381,10 +1284,6 @@ ops:
         name: "DESTINATION"
         type: PAR32
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   ADDF:
     desc: Add two floating point values DESTINATION = SOURCE1 + SOURCE2
@@ -1402,10 +1301,6 @@ ops:
         name: "DESTINATION"
         type: PARF
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   SUB8:
     desc: Subtract two 8 bit values DESTINATION = SOURCE1 - SOURCE2
@@ -1423,10 +1318,6 @@ ops:
         name: "DESTINATION"
         type: PAR8
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   SUB16:
     desc: Subtract two 16 bit values DESTINATION = SOURCE1 - SOURCE2
@@ -1444,10 +1335,6 @@ ops:
         name: "DESTINATION"
         type: PAR16
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   SUB32:
     desc: Subtract two 32 bit values DESTINATION = SOURCE1 - SOURCE2
@@ -1465,10 +1352,6 @@ ops:
         name: "DESTINATION"
         type: PAR32
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   SUBF:
     desc: Subtract two floating point values DESTINATION = SOURCE1 - SOURCE2
@@ -1486,10 +1369,6 @@ ops:
         name: "DESTINATION"
         type: PARF
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   MUL8:
     desc: Multiply two 8 bit values DESTINATION = SOURCE1 * SOURCE2
@@ -1507,10 +1386,6 @@ ops:
         name: "DESTINATION"
         type: PAR8
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   MUL16:
     desc: Multiply two 16 bit values DESTINATION = SOURCE1 * SOURCE2
@@ -1528,10 +1403,6 @@ ops:
         name: "DESTINATION"
         type: PAR16
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   MUL32:
     desc: Multiply two 32 bit values DESTINATION = SOURCE1 * SOURCE2
@@ -1549,10 +1420,6 @@ ops:
         name: "DESTINATION"
         type: PAR32
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   MULF:
     desc: Multiply two floating point values DESTINATION = SOURCE1 * SOURCE2
@@ -1570,10 +1437,6 @@ ops:
         name: "DESTINATION"
         type: PARF
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   DIV8:
     desc: Divide two 8 bit values DESTINATION = SOURCE1 / SOURCE2
@@ -1591,10 +1454,6 @@ ops:
         name: "DESTINATION"
         type: PAR8
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   DIV16:
     desc: Divide two 16 bit values DESTINATION = SOURCE1 / SOURCE2
@@ -1612,10 +1471,6 @@ ops:
         name: "DESTINATION"
         type: PAR16
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   DIV32:
     desc: Divide two 32 bit values DESTINATION = SOURCE1 / SOURCE2
@@ -1633,10 +1488,6 @@ ops:
         name: "DESTINATION"
         type: PAR32
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   DIVF:
     desc: Divide two floating point values DESTINATION = SOURCE1 / SOURCE2
@@ -1654,10 +1505,6 @@ ops:
         name: "DESTINATION"
         type: PARF
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
 
   # Logic "LOGIC"
@@ -1678,10 +1525,6 @@ ops:
         name: "DESTINATION"
         type: PAR8
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   OR16:
     desc: Or two 16 bit values DESTINATION = SOURCE1 | SOURCE2
@@ -1699,10 +1542,6 @@ ops:
         name: "DESTINATION"
         type: PAR16
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   OR32:
     desc: Or two 32 bit values DESTINATION = SOURCE1 | SOURCE2
@@ -1720,10 +1559,6 @@ ops:
         name: "DESTINATION"
         type: PAR32
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   AND8:
     desc: And two 8 bit values DESTINATION = SOURCE1 & SOURCE2
@@ -1741,10 +1576,6 @@ ops:
         name: "DESTINATION"
         type: PAR8
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   AND16:
     desc: And two 16 bit values DESTINATION = SOURCE1 & SOURCE2
@@ -1762,10 +1593,6 @@ ops:
         name: "DESTINATION"
         type: PAR16
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   AND32:
     desc: And two 32 bit values DESTINATION = SOURCE1 & SOURCE2
@@ -1783,10 +1610,6 @@ ops:
         name: "DESTINATION"
         type: PAR32
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   XOR8:
     desc: Exclusive or two 8 bit values DESTINATION = SOURCE1 ^ SOURCE2
@@ -1804,10 +1627,6 @@ ops:
         name: "DESTINATION"
         type: PAR8
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   XOR16:
     desc: Exclusive or two 16 bit values DESTINATION = SOURCE1 ^ SOURCE2
@@ -1825,10 +1644,6 @@ ops:
         name: "DESTINATION"
         type: PAR16
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   XOR32:
     desc: Exclusive or two 32 bit values DESTINATION = SOURCE1 ^ SOURCE2
@@ -1846,10 +1661,6 @@ ops:
         name: "DESTINATION"
         type: PAR32
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   RL8:
     desc: Rotate left 8 bit value DESTINATION = SOURCE1 << SOURCE2
@@ -1867,10 +1678,6 @@ ops:
         name: "DESTINATION"
         type: PAR8
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   RL16:
     desc: Rotate left 16 bit value DESTINATION = SOURCE1 << SOURCE2
@@ -1888,10 +1695,6 @@ ops:
         name: "DESTINATION"
         type: PAR16
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   RL32:
     desc: Rotate left 32 bit value DESTINATION = SOURCE1 << SOURCE2
@@ -1909,10 +1712,6 @@ ops:
         name: "DESTINATION"
         type: PAR32
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   # cMove "MOVE"
 
@@ -1938,10 +1737,6 @@ ops:
       -
         name: "VALUES"
         type: PAR8
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   MOVE8_8:
     desc: Move 8 bit value from SOURCE to DESTINATION
@@ -1955,10 +1750,6 @@ ops:
         name: "DESTINATION"
         type: PAR8
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   MOVE8_16:
     desc: Move 8 bit value from SOURCE to DESTINATION
@@ -1972,10 +1763,6 @@ ops:
         name: "DESTINATION"
         type: PAR16
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   MOVE8_32:
     desc: Move 8 bit value from SOURCE to DESTINATION
@@ -1989,10 +1776,6 @@ ops:
         name: "DESTINATION"
         type: PAR32
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   MOVE8_F:
     desc: Move 8 bit value from SOURCE to DESTINATION
@@ -2006,10 +1789,6 @@ ops:
         name: "DESTINATION"
         type: PARF
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   MOVE16_8:
     desc: Move 16 bit value from SOURCE to DESTINATION
@@ -2023,10 +1802,6 @@ ops:
         name: "DESTINATION"
         type: PAR8
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   MOVE16_16:
     desc: Move 16 bit value from SOURCE to DESTINATION
@@ -2040,10 +1815,6 @@ ops:
         name: "DESTINATION"
         type: PAR16
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   MOVE16_32:
     desc: Move 16 bit value from SOURCE to DESTINATION
@@ -2057,10 +1828,6 @@ ops:
         name: "DESTINATION"
         type: PAR32
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   MOVE16_F:
     desc: Move 16 bit value from SOURCE to DESTINATION
@@ -2074,10 +1841,6 @@ ops:
         name: "DESTINATION"
         type: PARF
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   MOVE32_8:
     desc: Move 32 bit value from SOURCE to DESTINATION
@@ -2091,10 +1854,6 @@ ops:
         name: "DESTINATION"
         type: PAR8
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   MOVE32_16:
     desc: Move 32 bit value from SOURCE to DESTINATION
@@ -2108,10 +1867,6 @@ ops:
         name: "DESTINATION"
         type: PAR16
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   MOVE32_32:
     desc: Move 32 bit value from SOURCE to DESTINATION
@@ -2125,10 +1880,6 @@ ops:
         name: "DESTINATION"
         type: PAR32
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   MOVE32_F:
     desc: Move 32 bit value from SOURCE to DESTINATION
@@ -2142,10 +1893,6 @@ ops:
         name: "DESTINATION"
         type: PARF
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   MOVEF_8:
     desc: Move floating point value from SOURCE to DESTINATION
@@ -2159,10 +1906,6 @@ ops:
         name: "DESTINATION"
         type: PAR8
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   MOVEF_16:
     desc: Move floating point value from SOURCE to DESTINATION
@@ -2176,10 +1919,6 @@ ops:
         name: "DESTINATION"
         type: PAR16
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   MOVEF_32:
     desc: Move floating point value from SOURCE to DESTINATION
@@ -2193,10 +1932,6 @@ ops:
         name: "DESTINATION"
         type: PAR32
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   MOVEF_F:
     desc: Move floating point value from SOURCE to DESTINATION
@@ -2210,10 +1945,6 @@ ops:
         name: "DESTINATION"
         type: PARF
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   # cBranch "BRANCH"
 
@@ -2225,10 +1956,6 @@ ops:
         name: "OFFSET"
         type: PAR32
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   JR_FALSE:
     desc: Branch relative if FLAG is FALSE (zero)
@@ -2242,10 +1969,6 @@ ops:
         name: "OFFSET"
         type: PAR32
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   JR_TRUE:
     desc: Branch relative if FLAG is TRUE (non zero)
@@ -2259,10 +1982,6 @@ ops:
         name: "OFFSET"
         type: PAR32
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   JR_NAN:
     desc: Branch relative if VALUE is NAN (not a number)
@@ -2276,10 +1995,6 @@ ops:
         name: "OFFSET"
         type: PAR32
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   # cCompare "COMPARE"
 
@@ -2299,10 +2014,6 @@ ops:
         name: "FLAG"
         type: PAR8
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   CP_LT16:
     desc: If LEFT is less than RIGTH - set FLAG
@@ -2320,10 +2031,6 @@ ops:
         name: "FLAG"
         type: PAR8
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   CP_LT32:
     desc: If LEFT is less than RIGTH - set FLAG
@@ -2341,10 +2048,6 @@ ops:
         name: "FLAG"
         type: PAR8
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   CP_LTF:
     desc: If LEFT is less than RIGTH - set FLAG
@@ -2362,10 +2065,6 @@ ops:
         name: "FLAG"
         type: PAR8
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   CP_GT8:
     desc: If LEFT is greater than RIGTH - set FLAG
@@ -2383,10 +2082,6 @@ ops:
         name: "FLAG"
         type: PAR8
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   CP_GT16:
     desc: If LEFT is greater than RIGTH - set FLAG
@@ -2404,10 +2099,6 @@ ops:
         name: "FLAG"
         type: PAR8
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   CP_GT32:
     desc: If LEFT is greater than RIGTH - set FLAG
@@ -2425,10 +2116,6 @@ ops:
         name: "FLAG"
         type: PAR8
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   CP_GTF:
     desc: If LEFT is greater than RIGTH - set FLAG
@@ -2446,10 +2133,6 @@ ops:
         name: "FLAG"
         type: PAR8
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   CP_EQ8:
     desc: If LEFT is equal to RIGTH - set FLAG
@@ -2467,10 +2150,6 @@ ops:
         name: "FLAG"
         type: PAR8
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   CP_EQ16:
     desc: If LEFT is equal to RIGTH - set FLAG
@@ -2488,10 +2167,6 @@ ops:
         name: "FLAG"
         type: PAR8
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   CP_EQ32:
     desc: If LEFT is equal to RIGTH - set FLAG
@@ -2509,10 +2184,6 @@ ops:
         name: "FLAG"
         type: PAR8
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   CP_EQF:
     desc: If LEFT is equal to RIGTH - set FLAG
@@ -2530,10 +2201,6 @@ ops:
         name: "FLAG"
         type: PAR8
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   CP_NEQ8:
     desc: If LEFT is not equal to RIGTH - set FLAG
@@ -2551,10 +2218,6 @@ ops:
         name: "FLAG"
         type: PAR8
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   CP_NEQ16:
     desc: If LEFT is not equal to RIGTH - set FLAG
@@ -2572,10 +2235,6 @@ ops:
         name: "FLAG"
         type: PAR8
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   CP_NEQ32:
     desc: If LEFT is not equal to RIGTH - set FLAG
@@ -2593,10 +2252,6 @@ ops:
         name: "FLAG"
         type: PAR8
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   CP_NEQF:
     desc: If LEFT is not equal to RIGTH - set FLAG
@@ -2614,10 +2269,6 @@ ops:
         name: "FLAG"
         type: PAR8
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   CP_LTEQ8:
     desc: If LEFT is less than or equal to RIGTH - set FLAG
@@ -2635,10 +2286,6 @@ ops:
         name: "FLAG"
         type: PAR8
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   CP_LTEQ16:
     desc: If LEFT is less than or equal to RIGTH - set FLAG
@@ -2656,10 +2303,6 @@ ops:
         name: "FLAG"
         type: PAR8
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   CP_LTEQ32:
     desc: If LEFT is less than or equal to RIGTH - set FLAG
@@ -2677,10 +2320,6 @@ ops:
         name: "FLAG"
         type: PAR8
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   CP_LTEQF:
     desc: If LEFT is less than or equal to RIGTH - set FLAG
@@ -2698,10 +2337,6 @@ ops:
         name: "FLAG"
         type: PAR8
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   CP_GTEQ8:
     desc: If LEFT is greater than or equal to RIGTH - set FLAG
@@ -2719,10 +2354,6 @@ ops:
         name: "FLAG"
         type: PAR8
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   CP_GTEQ16:
     desc: If LEFT is greater than or equal to RIGTH - set FLAG
@@ -2740,10 +2371,6 @@ ops:
         name: "FLAG"
         type: PAR8
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   CP_GTEQ32:
     desc: If LEFT is greater than or equal to RIGTH - set FLAG
@@ -2761,10 +2388,6 @@ ops:
         name: "FLAG"
         type: PAR8
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   CP_GTEQF:
     desc: If LEFT is greater than or equal to RIGTH - set FLAG
@@ -2782,10 +2405,6 @@ ops:
         name: "FLAG"
         type: PAR8
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   # Select "SELECT"
 
@@ -2809,10 +2428,6 @@ ops:
         name: "RESULT"
         type: PAR8
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   SELECT16:
     desc: If FLAG is set move SOURCE1 to RESULT else move SOURCE2 to RESULT
@@ -2834,10 +2449,6 @@ ops:
         name: "RESULT"
         type: PAR16
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   SELECT32:
     desc: If FLAG is set move SOURCE1 to RESULT else move SOURCE2 to RESULT
@@ -2859,10 +2470,6 @@ ops:
         name: "RESULT"
         type: PAR32
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   SELECTF:
     desc: If FLAG is set move SOURCE1 to RESULT else move SOURCE2 to RESULT
@@ -2884,10 +2491,6 @@ ops:
         name: "RESULT"
         type: PARF
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   # VM
 
@@ -2905,10 +2508,6 @@ ops:
         desc: Return status of the command
         type: PAR32
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   PORT_CNV_OUTPUT:
     desc: Convert encoded port to Layer and Bitfield
@@ -2934,10 +2533,6 @@ ops:
         desc: yes if left/right motor are inverted (ie, C&A)
         type: PAR8
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   PORT_CNV_INPUT:
     desc: Convert encoded port to Layer and Port
@@ -2958,10 +2553,6 @@ ops:
         desc: 0-index port for use with VM commands
         type: PAR8
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   NOTE_TO_FREQ:
     desc: Convert note to tone
@@ -2977,10 +2568,6 @@ ops:
         desc: Frequency [Hz]
         type: PAR16
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   # cBranch "BRANCH"
 
@@ -3000,10 +2587,6 @@ ops:
         name: "OFFSET"
         type: PAR32
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   JR_LT16:
     desc: Branch relative OFFSET if LEFT is less than RIGHT
@@ -3021,10 +2604,6 @@ ops:
         name: "OFFSET"
         type: PAR32
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   JR_LT32:
     desc: Branch relative OFFSET if LEFT is less than RIGHT
@@ -3042,10 +2621,6 @@ ops:
         name: "OFFSET"
         type: PAR32
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   JR_LTF:
     desc: Branch relative OFFSET if LEFT is less than RIGHT
@@ -3063,10 +2638,6 @@ ops:
         name: "OFFSET"
         type: PAR32
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   JR_GT8:
     desc: Branch relative OFFSET if LEFT is greater than RIGHT
@@ -3084,10 +2655,6 @@ ops:
         name: "OFFSET"
         type: PAR32
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   JR_GT16:
     desc: Branch relative OFFSET if LEFT is greater than RIGHT
@@ -3105,10 +2672,6 @@ ops:
         name: "OFFSET"
         type: PAR32
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   JR_GT32:
     desc: Branch relative OFFSET if LEFT is greater than RIGHT
@@ -3126,10 +2689,6 @@ ops:
         name: "OFFSET"
         type: PAR32
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   JR_GTF:
     desc: Branch relative OFFSET if LEFT is greater than RIGHT
@@ -3147,10 +2706,6 @@ ops:
         name: "OFFSET"
         type: PAR32
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   JR_EQ8:
     desc: Branch relative OFFSET if LEFT is equal to RIGHT
@@ -3168,10 +2723,6 @@ ops:
         name: "OFFSET"
         type: PAR32
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   JR_EQ16:
     desc: Branch relative OFFSET if LEFT is equal to RIGHT
@@ -3189,10 +2740,6 @@ ops:
         name: "OFFSET"
         type: PAR32
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   JR_EQ32:
     desc: Branch relative OFFSET if LEFT is equal to RIGHT
@@ -3210,10 +2757,6 @@ ops:
         name: "OFFSET"
         type: PAR32
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   JR_EQF:
     desc: Branch relative OFFSET if LEFT is equal to RIGHT
@@ -3231,10 +2774,6 @@ ops:
         name: "OFFSET"
         type: PAR32
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   JR_NEQ8:
     desc: Branch relative OFFSET if LEFT is not equal to RIGHT
@@ -3252,10 +2791,6 @@ ops:
         name: "OFFSET"
         type: PAR32
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   JR_NEQ16:
     desc: Branch relative OFFSET if LEFT is not equal to RIGHT
@@ -3273,10 +2808,6 @@ ops:
         name: "OFFSET"
         type: PAR32
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   JR_NEQ32:
     desc: Branch relative OFFSET if LEFT is not equal to RIGHT
@@ -3294,10 +2825,6 @@ ops:
         name: "OFFSET"
         type: PAR32
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   JR_NEQF:
     desc: Branch relative OFFSET if LEFT is not equal to RIGHT
@@ -3315,10 +2842,6 @@ ops:
         name: "OFFSET"
         type: PAR32
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   JR_LTEQ8:
     desc: Branch relative OFFSET if LEFT is less than or equal to RIGHT
@@ -3336,10 +2859,6 @@ ops:
         name: "OFFSET"
         type: PAR32
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   JR_LTEQ16:
     desc: Branch relative OFFSET if LEFT is less than or equal to RIGHT
@@ -3357,10 +2876,6 @@ ops:
         name: "OFFSET"
         type: PAR32
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   JR_LTEQ32:
     desc: Branch relative OFFSET if LEFT is less than or equal to RIGHT
@@ -3378,10 +2893,6 @@ ops:
         name: "OFFSET"
         type: PAR32
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   JR_LTEQF:
     desc: Branch relative OFFSET if LEFT is less than or equal to RIGHT
@@ -3399,10 +2910,6 @@ ops:
         name: "OFFSET"
         type: PAR32
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   JR_GTEQ8:
     desc: Branch relative OFFSET if LEFT is greater than or equal to RIGHT
@@ -3420,10 +2927,6 @@ ops:
         name: "OFFSET"
         type: PAR32
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   JR_GTEQ16:
     desc: Branch relative OFFSET if LEFT is greater than or equal to RIGHT
@@ -3441,10 +2944,6 @@ ops:
         name: "OFFSET"
         type: PAR32
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   JR_GTEQ32:
     desc: Branch relative OFFSET if LEFT is greater than or equal to RIGHT
@@ -3462,10 +2961,6 @@ ops:
         name: "OFFSET"
         type: PAR32
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   JR_GTEQF:
     desc: Branch relative OFFSET if LEFT is greater than or equal to RIGHT
@@ -3483,10 +2978,6 @@ ops:
         name: "OFFSET"
         type: PAR32
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   # VM
 
@@ -3506,10 +2997,6 @@ ops:
                 desc: Error number
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
           GET_ERROR:
             value: 2
             params:
@@ -3518,10 +3005,6 @@ ops:
                 desc: Error number
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
           ERRORTEXT:
             desc: Convert error number to text string
             value: 3
@@ -3541,10 +3024,6 @@ ops:
                 desc: String variable or handle to string
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
           GET_VOLUME:
             value: 4
             params:
@@ -3553,10 +3032,6 @@ ops:
                 desc: Volume [0..100%]
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
           SET_VOLUME:
             value: 5
             params:
@@ -3565,10 +3040,6 @@ ops:
                 desc: Volume [0..100%]
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
           GET_MINUTES:
             value: 6
             params:
@@ -3577,10 +3048,6 @@ ops:
                 desc: Minutes to sleep [0..120min] (0 = never)
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
           SET_MINUTES:
             value: 7
             params:
@@ -3589,14 +3056,6 @@ ops:
                 desc: Minutes to sleep [0..120min] (0 = never)
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   STRINGS:
     desc: String function entry
@@ -3620,10 +3079,6 @@ ops:
                 desc: Size
                 type: PAR16
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
           ADD:
             desc: Add two strings (SOURCE1 + SOURCE2 -> DESTINATION)
             value: 2
@@ -3643,10 +3098,6 @@ ops:
                 desc: String variable or handle to string
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
           COMPARE:
             desc: Compare two strings
             value: 3
@@ -3666,10 +3117,6 @@ ops:
                 desc: Result (0 = not equal, 1 = equal)
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
           DUPLICATE:
             desc: Duplicate a string (SOURCE1 -> DESTINATION)
             value: 5
@@ -3684,10 +3131,6 @@ ops:
                 desc: String variable or handle to string
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
           VALUE_TO_STRING:
             desc: Convert floating point value to a string (strips trailing zeroes)
             value: 6
@@ -3714,10 +3157,6 @@ ops:
                 desc: String variable or handle to string
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
           STRING_TO_VALUE:
             value: 7
             params:
@@ -3731,10 +3170,6 @@ ops:
                 desc: Value
                 type: PARF
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
           STRIP:
             desc: Strip a string for spaces (SOURCE1 -> DESTINATION)
             value: 8
@@ -3749,10 +3184,6 @@ ops:
                 desc: String variable or handle to string
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
           NUMBER_TO_STRING:
             desc: Convert integer value to a string
             value: 9
@@ -3772,10 +3203,6 @@ ops:
                 desc: String variable or handle to string
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
           SUB:
             desc: >
               Return DESTINATION: a substring from SOURCE1 that starts were
@@ -3797,10 +3224,6 @@ ops:
                 desc: String variable or handle to string
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
           VALUE_FORMATTED:
             desc: Convert floating point value to a formatted string
             value: 11
@@ -3825,10 +3248,6 @@ ops:
                 desc: String variable or handle to string
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
           NUMBER_FORMATTED:
             desc: Convert integer number to a formatted string
             value: 12
@@ -3853,14 +3272,6 @@ ops:
                 desc: String variable or handle to string
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   MEMORY_WRITE:
     desc: Write VM memory
@@ -3892,10 +3303,6 @@ ops:
         desc: First element of DATA8 array to write
         type: PAR8
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   MEMORY_READ:
     desc: Read VM memory
@@ -3927,10 +3334,6 @@ ops:
         desc: First element of DATA8 array to receive data
         type: PAR8
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   # cUi "UI"
 
@@ -3938,10 +3341,6 @@ ops:
     desc: User Interface flush buffers
     value: 0x80
     params: []
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   UI_READ:
     desc: User Interface read
@@ -3959,10 +3358,6 @@ ops:
                 desc: Battery voltage [V]
                 type: PARF
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_IBATT:
             value: 2
@@ -3972,10 +3367,6 @@ ops:
                 desc: Battery current [A]
                 type: PARF
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_OS_VERS:
             desc: Get os version string
@@ -3991,10 +3382,6 @@ ops:
                 desc: String variable or handle to string
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_EVENT:
             value: 4
@@ -4002,10 +3389,6 @@ ops:
               -
                 name: "EVENT"
                 type: PAR8
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_TBATT:
             value: 5
@@ -4015,10 +3398,6 @@ ops:
                 desc: Battery temperature rise [C]
                 type: PARF
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
             remarks: >
               This returns 0 on all known hardware. The EV3 has code to estimate
               battery temperature, but it is disabled.
@@ -4031,10 +3410,6 @@ ops:
                 desc: Integrated battery current [A]
                 type: PARF
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_IMOTOR:
             value: 7
@@ -4044,10 +3419,6 @@ ops:
                 desc: Motor current [A]
                 type: PARF
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
             remarks: >
               Only pre-release EV3 hardware returns a real value. Returns 0 on
               all known devices (they lack the necessary hardware).
@@ -4066,10 +3437,6 @@ ops:
                 desc: String variable or handle to string
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_HW_VERS:
             desc: Get hardware version string
@@ -4085,10 +3452,6 @@ ops:
                 desc: String variable or handle to string
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_FW_VERS:
             desc: Get firmware version string
@@ -4104,10 +3467,6 @@ ops:
                 desc: String variable or handle to string
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_FW_BUILD:
             desc: Get firmware build string
@@ -4123,10 +3482,6 @@ ops:
                 desc: String variable or handle to string
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_OS_BUILD:
             desc: Get os build string
@@ -4142,10 +3497,6 @@ ops:
                 desc: String variable or handle to string
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_ADDRESS:
             value: 13
@@ -4155,10 +3506,6 @@ ops:
                 desc: Address from lms_cmdin
                 type: PAR32
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_CODE:
             value: 14
@@ -4183,10 +3530,6 @@ ops:
                 desc: Flag tells if image is ready
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           KEY:
             value: 15
@@ -4196,10 +3539,6 @@ ops:
                 desc: Key value from lms_cmdin (0 = no key)
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_SHUTDOWN:
             value: 16
@@ -4207,10 +3546,6 @@ ops:
               -
                 name: "FLAG"
                 type: PAR8
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_WARNING:
             value: 17
@@ -4219,10 +3554,6 @@ ops:
                 name: "WARNINGS"
                 type: PAR8
                 enum: *WARNING
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_LBATT:
             desc: Get battery level in %
@@ -4233,10 +3564,6 @@ ops:
                 desc: Battery level [0..100]
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           TEXTBOX_READ:
             value: 21
@@ -4259,10 +3586,6 @@ ops:
               -
                 name: "DESTINATION"
                 type: PAR8
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_VERSION:
             desc: Get version string
@@ -4278,10 +3601,6 @@ ops:
                 desc: String variable or handle to string
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_IP:
             desc: Get IP address string
@@ -4297,10 +3616,6 @@ ops:
                 desc: String variable or handle to string
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_POWER:
             value: 29
@@ -4325,10 +3640,6 @@ ops:
                 desc: Motor current [A]
                 type: PARF
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
             remarks: All known hardware returns 0 for IMOTOR.
 
           GET_SDCARD:
@@ -4349,10 +3660,6 @@ ops:
                 desc: Kbytes free
                 type: PAR32
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_USBSTICK:
             value: 31
@@ -4372,15 +3679,6 @@ ops:
                 desc: Kbytes free
                 type: PAR32
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
-
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   UI_WRITE:
     value: 0x82
@@ -4392,10 +3690,6 @@ ops:
           WRITE_FLUSH:
             value: 1
             params: []
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           FLOATVALUE:
             value: 2
@@ -4415,10 +3709,6 @@ ops:
                 desc: Number of decimals
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           STAMP:
             value: 3
@@ -4426,10 +3716,6 @@ ops:
               -
                 name: "VALUE"
                 type: PAR8
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           PUT_STRING:
             value: 8
@@ -4439,10 +3725,6 @@ ops:
                 desc: First character in string to write
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           VALUE8:
             value: 9
@@ -4452,10 +3734,6 @@ ops:
                 desc: Value to write
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           VALUE16:
             value: 10
@@ -4465,10 +3743,6 @@ ops:
                 desc: Value to write
                 type: PAR16
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           VALUE32:
             value: 11
@@ -4478,10 +3752,6 @@ ops:
                 desc: Value to write
                 type: PAR32
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           VALUEF:
             value: 12
@@ -4491,10 +3761,6 @@ ops:
                 desc: Value to write
                 type: PARF
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           ADDRESS:
             value: 13
@@ -4503,10 +3769,6 @@ ops:
                 name: "VALUE"
                 type: PAR32
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           CODE:
             value: 14
@@ -4521,10 +3783,6 @@ ops:
                 desc: Length of array
                 type: PAR32
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           DOWNLOAD_END:
             desc: >
@@ -4532,10 +3790,6 @@ ops:
               updates the UI browser)
             value: 15
             params: []
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           SCREEN_BLOCK:
             desc: >
@@ -4548,10 +3802,6 @@ ops:
                 desc: Value [0 = normal,1 = blocked]
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           ALLOW_PULSE:
             value: 17
@@ -4559,10 +3809,6 @@ ops:
               -
                 name: "VALUE"
                 type: PAR8
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           SET_PULSE:
             value: 18
@@ -4570,10 +3816,6 @@ ops:
               -
                 name: "VALUE"
                 type: PAR8
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           TEXTBOX_APPEND:
             desc: Append line of text at the bottom of a text box
@@ -4600,10 +3842,6 @@ ops:
                 desc: String variable or handle to string to append
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           SET_BUSY:
             value: 22
@@ -4613,10 +3851,6 @@ ops:
                 desc: Value [0,1]
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           SET_TESTPIN:
             value: 24
@@ -4626,10 +3860,6 @@ ops:
                 desc: Value [0 = low,1 = high]
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
             remarks: >
               This was only available on pre-release EV3 hardware.
 
@@ -4637,18 +3867,10 @@ ops:
             desc: Start the "Mindstorms" "run" screen
             value: 25
             params: []
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           UPDATE_RUN:
             value: 26
             params: []
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           LED:
             value: 27
@@ -4659,10 +3881,6 @@ ops:
                 type: PAR8
                 dir: in
                 enum: *LEDPATTERN
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           POWER:
             value: 29
@@ -4672,10 +3890,6 @@ ops:
                 desc: Value [0,1]
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GRAPH_SAMPLE:
             desc: >
@@ -4683,10 +3897,6 @@ ops:
               graph in "scope" mode
             value: 30
             params: []
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           TERMINAL:
             value: 31
@@ -4696,15 +3906,6 @@ ops:
                 desc: Value [0 = Off,1 = On]
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
-
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
     remarks: Dispatch status can change to BUSYBREAK and FAILBREAK
 
   UI_BUTTON:
@@ -4727,10 +3928,6 @@ ops:
                 desc: Button has been pressed (0 = no, 1 = yes)
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           LONGPRESS:
             value: 2
@@ -4745,26 +3942,14 @@ ops:
                 desc: Button has been pressed (0 = no, 1 = yes)
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           WAIT_FOR_PRESS:
             value: 3
             params: []
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           FLUSH:
             value: 4
             params: []
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           PRESS:
             value: 5
@@ -4774,10 +3959,6 @@ ops:
                 type: PAR8
                 dir: in
                 enum: *BUTTONTYPE
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           RELEASE:
             value: 6
@@ -4787,10 +3968,6 @@ ops:
                 type: PAR8
                 dir: in
                 enum: *BUTTONTYPE
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_HORZ:
             value: 7
@@ -4800,10 +3977,6 @@ ops:
                 desc: Horizontal arrows data (-1 = left, +1 = right, 0 = not pressed)
                 type: PAR16
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_VERT:
             value: 8
@@ -4813,10 +3986,6 @@ ops:
                 desc: Vertical arrows data (-1 = up, +1 = down, 0 = not pressed)
                 type: PAR16
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           PRESSED:
             value: 9
@@ -4831,10 +4000,6 @@ ops:
                 desc: Button is pressed (0 = no, 1 = yes)
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           SET_BACK_BLOCK:
             value: 10
@@ -4844,10 +4009,6 @@ ops:
                 desc: Set UI back button blocked flag (0 = not blocked, 1 = blocked)
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_BACK_BLOCK:
             value: 11
@@ -4857,10 +4018,6 @@ ops:
                 desc: Get UI back button blocked flag (0 = not blocked, 1 = blocked)
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           TESTSHORTPRESS:
             value: 12
@@ -4875,10 +4032,6 @@ ops:
                 desc: Button has been hold down(0 = no, 1 = yes)
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           TESTLONGPRESS:
             value: 13
@@ -4893,10 +4046,6 @@ ops:
                 desc: Button has been hold down(0 = no, 1 = yes)
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_BUMBED:
             value: 14
@@ -4944,14 +4093,6 @@ ops:
                 desc: Click sound request (0 = no, 1 = yes)
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   UI_DRAW:
     desc: UI draw
@@ -4964,18 +4105,10 @@ ops:
           UPDATE:
             value: 0
             params: []
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           CLEAN:
             value: 1
             params: []
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           PIXEL:
             value: 2
@@ -4995,10 +4128,6 @@ ops:
                 desc: Y start cord [0..LCD_HEIGHT]
                 type: PAR16
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           LINE:
             value: 3
@@ -5028,10 +4157,6 @@ ops:
                 desc: Y end [0..LCD_HEIGHT]
                 type: PAR16
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           CIRCLE:
             value: 4
@@ -5056,10 +4181,6 @@ ops:
                 desc: Radius
                 type: PAR16
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           TEXT:
             value: 5
@@ -5084,10 +4205,6 @@ ops:
                 desc: First character in string to draw
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           ICON:
             value: 6
@@ -5118,10 +4235,6 @@ ops:
                 desc: Icon number
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           PICTURE:
             value: 7
@@ -5146,10 +4259,6 @@ ops:
                 desc: Address of picture
                 type: PAR32
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           VALUE:
             value: 8
@@ -5184,10 +4293,6 @@ ops:
                 desc: Number of decimals
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           FILLRECT:
             value: 9
@@ -5217,10 +4322,6 @@ ops:
                 desc: Y size [0..LCD_HEIGHT - Y0]
                 type: PAR16
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           RECT:
             value: 10
@@ -5332,10 +4433,6 @@ ops:
                 desc: State 0 = INIT
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           QUESTION:
             value: 12
@@ -5380,10 +4477,6 @@ ops:
                 desc: Answer 0 = NO, 1 = OK, -1 = SKIP
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           KEYBOARD:
             value: 13
@@ -5429,10 +4522,6 @@ ops:
                 desc: First character in string receiving keyboard input
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           BROWSE:
             value: 14
@@ -5480,10 +4569,6 @@ ops:
                 desc: First character in string receiving selected item name
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           VERTBAR:
             value: 15
@@ -5528,10 +4613,6 @@ ops:
                 desc: Actual value
                 type: PAR16
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           INVERSERECT:
             value: 16
@@ -5556,10 +4637,6 @@ ops:
                 desc: Y size [0..LCD_HEIGHT]
                 type: PAR16
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           SELECT_FONT:
             value: 17
@@ -5570,10 +4647,6 @@ ops:
                 type: PAR8
                 enum: *FONTTYPE
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           TOPLINE:
             value: 18
@@ -5583,10 +4656,6 @@ ops:
                 desc: Enable top status line (0 = disabled, 1 = enabled)
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           FILLWINDOW:
             value: 19
@@ -5608,10 +4677,6 @@ ops:
                 desc: X size [0..LCD_HEIGHT]
                 type: PAR16
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           SCROLL:
             value: 20
@@ -5619,10 +4684,6 @@ ops:
               -
                 name: "Y"
                 type: PAR16
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           DOTLINE:
             value: 21
@@ -5662,10 +4723,6 @@ ops:
                 desc: Off pixels
                 type: PAR16
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           VIEW_VALUE:
             value: 22
@@ -5700,10 +4757,6 @@ ops:
                 desc: Number of decimals
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           VIEW_UNIT:
             value: 23
@@ -5748,10 +4801,6 @@ ops:
                 desc: First character in string to draw
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           FILLCIRCLE:
             value: 24
@@ -5776,10 +4825,6 @@ ops:
                 desc: Radius
                 type: PAR16
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           STORE:
             value: 25
@@ -5789,10 +4834,6 @@ ops:
                 desc: Level number
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           RESTORE:
             value: 26
@@ -5802,10 +4843,6 @@ ops:
                 desc: Level number (N=0 -> Saved screen just before run)
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           ICON_QUESTION:
             value: 27
@@ -5835,10 +4872,6 @@ ops:
                 desc: bitfield with icons
                 type: PAR32
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           BMPFILE:
             value: 28
@@ -5863,10 +4896,6 @@ ops:
                 desc: First character in filename (character string)
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           POPUP:
             value: 29
@@ -5874,10 +4903,6 @@ ops:
               -
                 name: "OPEN"
                 type: PAR8
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GRAPH_SETUP:
             value: 30
@@ -5924,10 +4949,6 @@ ops:
                 desc: DATAF array (handle) containing sample values
                 type: PAR16
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GRAPH_DRAW:
             value: 31
@@ -5953,10 +4974,6 @@ ops:
                 name: "AVERAGE"
                 type: PARF
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           TEXTBOX:
             value: 32
@@ -5985,15 +5002,6 @@ ops:
               -
                 name: "LINE"
                 type: PAR8
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
-
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
     remarks: Dispatch status can change to BUSYBREAK
 
 
@@ -6012,10 +5020,6 @@ ops:
         desc: Variable used for timing
         type: PAR32
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
     remarks: Dispatch status unchanged
 
   TIMER_READY:
@@ -6027,10 +5031,6 @@ ops:
         desc: Variable used for timing
         type: PAR32
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
     remarks: Dispatch status can change to BUSYBREAK
 
   TIMER_READ:
@@ -6042,10 +5042,6 @@ ops:
         desc: Value
         type: PAR32
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
     remarks: Dispatch status unchanged
 
   # VM
@@ -6054,40 +5050,24 @@ ops:
     desc: Display globals or object locals on terminal
     value: 0x88
     params: []
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
     remarks: Removes it self when done
 
   BP1:
     desc: Display globals or object locals on terminal
     value: 0x89
     params: []
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
     remarks: Removes it self when done
 
   BP2:
     desc: Display globals or object locals on terminal
     value: 0x8A
     params: []
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
     remarks: Removes it self when done
 
   BP3:
     desc: Display globals or object locals on terminal
     value: 0x8B
     params: []
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
     remarks: Removes it self when done
 
   BP_SET:
@@ -6110,10 +5090,6 @@ ops:
         desc: Address (Offset from start of image) (0 = remove breakpoint)
         type: PAR32
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
     remarks: TP4 is only present on pre-release EV3 hardware
 
   MATH:
@@ -6137,10 +5113,6 @@ ops:
                 name: "R"
                 type: PARF
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           MOD:
             desc: Modulo         r = fmod(x,y)
@@ -6158,10 +5130,6 @@ ops:
                 name: "R"
                 type: PARF
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           FLOOR:
             desc: Floor          r = floor(x)
@@ -6175,10 +5143,6 @@ ops:
                 name: "R"
                 type: PARF
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           CEIL:
             desc: Ceiling        r = ceil(x)
@@ -6192,10 +5156,6 @@ ops:
                 name: "R"
                 type: PARF
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           ROUND:
             desc: Round          r = round(x)
@@ -6209,10 +5169,6 @@ ops:
                 name: "R"
                 type: PARF
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           ABS:
             desc: Absolute       r = fabs(x)
@@ -6226,10 +5182,6 @@ ops:
                 name: "R"
                 type: PARF
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           NEGATE:
             desc: Negate         r = 0.0 - x
@@ -6243,10 +5195,6 @@ ops:
                 name: "R"
                 type: PARF
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           SQRT:
             desc: Squareroot     r = sqrt(x)
@@ -6260,10 +5208,6 @@ ops:
                 name: "R"
                 type: PARF
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           LOG:
             desc: Log            r = log10(x)
@@ -6277,10 +5221,6 @@ ops:
                 name: "R"
                 type: PARF
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           LN:
             desc: Ln             r = log(x)
@@ -6294,10 +5234,6 @@ ops:
                 name: "R"
                 type: PARF
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           SIN:
             desc: Sin (R = sinf(X))
@@ -6311,10 +5247,6 @@ ops:
                 name: "R"
                 type: PARF
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           COS:
             desc: Cos (R = cos(X))
@@ -6328,10 +5260,6 @@ ops:
                 name: "R"
                 type: PARF
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           TAN:
             desc: Tan (R = tanf(X))
@@ -6345,10 +5273,6 @@ ops:
                 name: "R"
                 type: PARF
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           ASIN:
             desc: ASin (R = asinf(X))
@@ -6362,10 +5286,6 @@ ops:
                 name: "R"
                 type: PARF
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           ACOS:
             desc: ACos (R = acos(X))
@@ -6379,10 +5299,6 @@ ops:
                 name: "R"
                 type: PARF
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           ATAN:
             desc: ATan (R = atanf(X))
@@ -6396,10 +5312,6 @@ ops:
                 name: "R"
                 type: PARF
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           MOD8:
             desc: Modulo DATA8   r = x % y
@@ -6417,10 +5329,6 @@ ops:
                 name: "R"
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           MOD16:
             desc: Modulo DATA16  r = x % y
@@ -6438,10 +5346,6 @@ ops:
                 name: "R"
                 type: PAR16
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           MOD32:
             desc: Modulo DATA32  r = x % y
@@ -6459,10 +5363,6 @@ ops:
                 name: "R"
                 type: PAR32
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           POW:
             desc: Exponent       r = powf(x,y)
@@ -6480,10 +5380,6 @@ ops:
                 name: "R"
                 type: PARF
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           TRUNC:
             desc: Truncate       r = (float)((int)(x * pow(y))) / pow(y)
@@ -6504,15 +5400,6 @@ ops:
                 desc: Result
                 type: PARF
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
-
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   RANDOM:
     desc: Get random value
@@ -6533,10 +5420,6 @@ ops:
         desc: value
         type: PAR16
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   # cTimer "TIMER"
 
@@ -6549,10 +5432,6 @@ ops:
         desc: Value
         type: PAR32
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   # cUi "UI"
 
@@ -6565,10 +5444,6 @@ ops:
         desc: Number of minutes before sleep
         type: PAR8
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   # cCom "COM"
 
@@ -6603,14 +5478,6 @@ ops:
                 desc: Flag that tells if image is ready
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
     remarks: Dispatch status unchanged
 
   COM_WRITE:
@@ -6641,14 +5508,6 @@ ops:
                 type: PAR8
                 dir: in
                 enum: *RESULT
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
     remarks: Dispatch status unchanged
 
   # cSound "SOUND"
@@ -6663,10 +5522,6 @@ ops:
           BREAK:
             value: 0
             params: []
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           TONE:
             value: 1
@@ -6686,10 +5541,6 @@ ops:
                 desc: Duration [mS]
                 type: PAR16
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           PLAY:
             value: 2
@@ -6704,10 +5555,6 @@ ops:
                 desc: First character in filename (character string)
                 type: PARS
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           REPEAT:
             value: 3
@@ -6722,23 +5569,10 @@ ops:
                 desc: First character in filename (character string)
                 type: PARS
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           SERVICE:
             value: 4
             params: []
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
-
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
     remarks: Dispatch status unchanged
 
   SOUND_TEST:
@@ -6750,20 +5584,12 @@ ops:
         desc: Sound busy flag (0 = ready, 1 = busy)
         type: PAR8
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
     remarks: Dispatch status unchanged
 
   SOUND_READY:
     desc: Wait for sound ready (wait until sound finished)
     value: 0x96
     params: []
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
     remarks: Dispatch status can change to BUSYBREAK
 
   # cInput "INPUT"
@@ -6814,10 +5640,6 @@ ops:
         desc: DATAF array (handle) with values
         type: PARF
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   INPUT_DEVICE_LIST:
     desc: Read all available devices on input and output(chain)
@@ -6839,10 +5661,6 @@ ops:
           desc: Changed status
           type: PAR8
           dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   INPUT_DEVICE:
     desc: Read information about device
@@ -6872,10 +5690,6 @@ ops:
                 desc: Error if not Third Party type (0 = no error, 1 = error or known)
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_FORMAT:
             value: 2
@@ -6910,10 +5724,6 @@ ops:
                 desc: Number of views [1..8]
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           CAL_MINMAX:
             desc: >
@@ -6942,10 +5752,6 @@ ops:
                 desc: 32 bit raw maximum value (Full scale)
                 type: PAR32
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           CAL_DEFAULT:
             desc: >
@@ -6964,10 +5770,6 @@ ops:
                 desc: Device mode [0..7]
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_TYPEMODE:
             desc: Get device type and mode
@@ -6994,10 +5796,6 @@ ops:
                 desc: Device mode [0..7]
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_SYMBOL:
             value: 6
@@ -7022,10 +5820,6 @@ ops:
                 desc: String variable or handle to string
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           CAL_MIN:
             desc: >
@@ -7049,10 +5843,6 @@ ops:
                 desc: 32 bit raw minimum value (Zero)
                 type: PAR32
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           CAL_MAX:
             desc: >
@@ -7076,10 +5866,6 @@ ops:
                 desc: 32 bit SI maximum value (Full scale)
                 type: PAR32
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           SETUP:
             desc: Generic setup/read IIC sensors
@@ -7125,10 +5911,6 @@ ops:
                 desc: DATA8 array (handle) to read into
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           CLR_ALL:
             desc: Clear all devices (e.c. counters, angle, ...)
@@ -7139,10 +5921,6 @@ ops:
                 desc: Daisy chain layer number [0..3]
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_RAW:
             value: 11
@@ -7162,10 +5940,6 @@ ops:
                 desc: 32 bit raw value
                 type: PAR32
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_CONNECTION:
             desc: Get device connection type (for test)
@@ -7228,10 +6002,6 @@ ops:
                   CONN_ERROR:
                     desc: Port not empty and type is invalid
                     value: 127
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           STOP_ALL:
             desc: Stop all devices (e.c. motors, ...)
@@ -7242,10 +6012,6 @@ ops:
                 desc: Daisy chain layer number [0..3]
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           SET_TYPEMODE:
             desc: Set new type and mode on existing devices
@@ -7280,10 +6046,6 @@ ops:
                   found)
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
             remarks: >
               if TYPE==NEWTYPE and MODE==NEWMODE -> ERROR will be 0 if exists
               and nothing is changed
@@ -7328,10 +6090,6 @@ ops:
                 type: PAR8
                 enum: *RESULT
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_NAME:
             value: 21
@@ -7356,10 +6114,6 @@ ops:
                 desc: String variable or handle to string
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_MODENAME:
             value: 22
@@ -7389,10 +6143,6 @@ ops:
                 desc: String variable or handle to string
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           SET_RAW:
             value: 23
@@ -7417,10 +6167,6 @@ ops:
                 name: "VALUE"
                 type: PAR32
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_FIGURES:
             value: 24
@@ -7445,10 +6191,6 @@ ops:
                 desc: Number of decimals
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_CHANGES:
             value: 25
@@ -7468,10 +6210,6 @@ ops:
                 desc: Positive changes since last clear
                 type: PARF
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           CLR_CHANGES:
             desc: Clear changes and bumps
@@ -7487,10 +6225,6 @@ ops:
                 desc: Port number
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           READY_PCT:
             value: 27
@@ -7521,10 +6255,6 @@ ops:
                 desc: Number of return values
                 type: PARNO
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           READY_RAW:
             value: 28
@@ -7555,10 +6285,6 @@ ops:
                 desc: Number of return values
                 type: PARNO
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           READY_SI:
             value: 29
@@ -7589,10 +6315,6 @@ ops:
                 desc: Number of return values
                 type: PARNO
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_MINMAX:
             value: 30
@@ -7617,10 +6339,6 @@ ops:
                 desc: Max SI value
                 type: PARF
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_BUMPS:
             value: 31
@@ -7640,15 +6358,6 @@ ops:
                 desc: Negative changes since last clear
                 type: PARF
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
-
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   INPUT_READ:
     desc: Read device value in Percent
@@ -7680,10 +6389,6 @@ ops:
         desc: Percent value from device
         type: PAR8
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   INPUT_TEST:
     desc: Test if device busy (changing type or mode)
@@ -7704,10 +6409,6 @@ ops:
         desc: Device busy flag (0 = ready, 1 = busy)
         type: PAR8
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   INPUT_READY:
     desc: Wait for device ready (wait for valid data)
@@ -7723,10 +6424,6 @@ ops:
         desc: Port number
         type: PAR8
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
     remarks: Dispatch status can change to BUSYBREAK
 
   INPUT_READSI:
@@ -7759,10 +6456,6 @@ ops:
         desc: SI unit value from device
         type: PARF
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   INPUT_READEXT:
     desc: Read device value
@@ -7800,10 +6493,6 @@ ops:
         desc: Number of return values
         type: PARNO
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   INPUT_WRITE:
     desc: Write data to device (only UART devices)
@@ -7829,10 +6518,6 @@ ops:
         desc: First byte in DATA8 array to write
         type: PAR8
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
     remarks: Dispatch status can change to BUSYBREAK
 
   # cOutput "OUTPUT"
@@ -7881,10 +6566,6 @@ ops:
         type: PAR8
         enum: *TYPE
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   OUTPUT_RESET:
     desc: Resets the Tacho counts
@@ -7900,10 +6581,6 @@ ops:
         desc: Output bit field [0x00..0x0F]
         type: PAR8
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   OUTPUT_STOP:
     desc: Stops the outputs
@@ -7924,10 +6601,6 @@ ops:
         desc: 0 = Coast, 1 = BRAKE
         type: PAR8
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   OUTPUT_POWER:
     desc: Set power of the outputs
@@ -7948,10 +6621,6 @@ ops:
         desc: Power [-100..100%]
         type: PAR8
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   OUTPUT_SPEED:
     desc: Set speed of the outputs
@@ -7972,10 +6641,6 @@ ops:
         desc: Speed [-100..100%]
         type: PAR8
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   OUTPUT_START:
     desc: Starts the outputs
@@ -7991,10 +6656,6 @@ ops:
         desc: Output bit field [0x00..0x0F]
         type: PAR8
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   OUTPUT_POLARITY:
     desc: Set polarity of the outputs
@@ -8015,10 +6676,6 @@ ops:
         desc: Polarity [-1,0,1]
         type: PAR8
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
     remarks: >
       Polarity:
         * -1 makes the motor run backward
@@ -8048,10 +6705,6 @@ ops:
         desc: Tacho pulses [-MAX .. +MAX]
         type: PAR32
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   OUTPUT_TEST:
     desc: Testing if output is not used
@@ -8072,10 +6725,6 @@ ops:
         desc: Output busy flag (0 = ready, 1 = Busy)
         type: PAR8
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   OUTPUT_READY:
     desc: Wait for output ready (wait for completion)
@@ -8091,10 +6740,6 @@ ops:
         desc: Output bit field [0x00..0x0F]
         type: PAR8
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
     remarks: >
       cOUTPUT_START command has no effect on this command.
       Dispatch status can change to BUSYBREAK.
@@ -8161,10 +6806,6 @@ ops:
         desc: 0 = Coast, 1 = BRAKE
         type: PAR8
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   OUTPUT_TIME_POWER:
     desc: Set Ramp up, constant and rampdown steps and power of the outputs
@@ -8205,10 +6846,6 @@ ops:
         desc: 0 = Coast, 1 = BRAKE
         type: PAR8
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   OUTPUT_STEP_SPEED:
     desc: Set Ramp up, constant and rampdown steps and power of the outputs
@@ -8249,10 +6886,6 @@ ops:
         desc: 0 = Coast, 1 = BRAKE
         type: PAR8
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   OUTPUT_TIME_SPEED:
     desc: Set Ramp up, constant and rampdown steps and power of the outputs
@@ -8293,10 +6926,6 @@ ops:
         desc: 0 = Coast, 1 = BRAKE
         type: PAR8
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   OUTPUT_STEP_SYNC:
     value: 0xB0
@@ -8331,10 +6960,6 @@ ops:
         desc: 0 = Coast, 1 = BRAKE
         type: PAR8
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   OUTPUT_TIME_SYNC:
     value: 0xB1
@@ -8369,10 +6994,6 @@ ops:
         desc: 0 = Coast, 1 = BRAKE
         type: PAR8
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   OUTPUT_CLR_COUNT:
     desc: Clearing tacho count when used as sensor
@@ -8388,10 +7009,6 @@ ops:
         desc: Output bit field [0x00..0x0F]
         type: PAR8
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   OUTPUT_GET_COUNT:
     desc: Getting tacho count when used as sensor - values are in shared memory
@@ -8412,19 +7029,11 @@ ops:
         desc: Tacho pulses [-MAX .. +MAX]
         type: PAR32
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   OUTPUT_PRG_STOP:
     desc: Program stop
     value: 0xB4
     params: []
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   # cMemory "MEMORY"
 
@@ -8451,10 +7060,6 @@ ops:
                 desc: Handle to file
                 type: PAR16
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
             remarks: if name starts with '~','/' or '.' it is not from current folder
 
           OPEN_READ:
@@ -8476,10 +7081,6 @@ ops:
                 desc: File size (0 = not found)
                 type: PAR32
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
             remarks: if name starts with '~','/' or '.' it is not from current folder
 
           OPEN_WRITE:
@@ -8496,10 +7097,6 @@ ops:
                 desc: Handle to file
                 type: PAR16
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
             remarks: if name starts with '~','/' or '.' it is not from current folder
 
           READ_VALUE:
@@ -8522,10 +7119,6 @@ ops:
                 desc: Value read
                 type: PARF
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           WRITE_VALUE:
             desc: Write floating point value to file
@@ -8557,10 +7150,6 @@ ops:
                 desc: Number of decimals
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           READ_TEXT:
             desc: Read text from file
@@ -8587,10 +7176,6 @@ ops:
                 desc: First character in text to read (character string)
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           WRITE_TEXT:
             desc: Write text to file
@@ -8612,10 +7197,6 @@ ops:
                 desc: First character in text to write (character string)
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           CLOSE:
             desc: Close file
@@ -8626,10 +7207,6 @@ ops:
                 desc: Handle to file
                 type: PAR16
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           LOAD_IMAGE:
             value: 8
@@ -8655,10 +7232,6 @@ ops:
                 desc: Address of image
                 type: PAR32
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_HANDLE:
             desc: Get handle from filename
@@ -8679,10 +7252,6 @@ ops:
                 desc: Open for write / append (0 = no, 1 = yes)
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
             remarks: if name starts with '~','/' or '.' it is not from current folder
 
           MAKE_FOLDER:
@@ -8699,10 +7268,6 @@ ops:
                 desc: Success (0 = no, 1 = yes)
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_POOL:
             value: 11
@@ -8722,10 +7287,6 @@ ops:
                 desc: Address of image
                 type: PAR32
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           SET_LOG_SYNC_TIME:
             value: 12
@@ -8740,10 +7301,6 @@ ops:
                 desc: Sync tick used in data log files
                 type: PAR32
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_FOLDERS:
             value: 13
@@ -8758,10 +7315,6 @@ ops:
                 desc: No of sub folders
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_LOG_SYNC_TIME:
             value: 14
@@ -8776,10 +7329,6 @@ ops:
                 desc: Sync tick used in data log files
                 type: PAR32
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_SUBFOLDER_NAME:
             value: 15
@@ -8804,10 +7353,6 @@ ops:
                 desc: First character in character string
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           WRITE_LOG:
             desc: Write time slot samples to file
@@ -8833,10 +7378,6 @@ ops:
                 desc: DATAF array (handle) containing values
                 type: PARF
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           CLOSE_LOG:
             desc: Close data log file
@@ -8852,10 +7393,6 @@ ops:
                 desc: First character in file name (character string)
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_IMAGE:
             value: 18
@@ -8881,10 +7418,6 @@ ops:
                 desc: Address of image
                 type: PAR32
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_ITEM:
             value: 19
@@ -8904,10 +7437,6 @@ ops:
                 desc: Sub folder index [1..ITEMS]
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_CACHE_FILES:
             value: 20
@@ -8917,10 +7446,6 @@ ops:
                 desc: Number of files in cache
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           PUT_CACHE_FILE:
             value: 21
@@ -8930,10 +7455,6 @@ ops:
                 desc: First character in character string
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_CACHE_FILE:
             value: 22
@@ -8953,10 +7474,6 @@ ops:
                 desc: First character in character string
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           DEL_CACHE_FILE:
             value: 23
@@ -8966,10 +7483,6 @@ ops:
                 desc: First character in character string
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           DEL_SUBFOLDER:
             value: 24
@@ -8984,10 +7497,6 @@ ops:
                 desc: Sub folder index [1..ITEMS]
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_LOG_NAME:
             desc: Get the current open log filename
@@ -9003,10 +7512,6 @@ ops:
                 desc: First First character in file name (character string or HND)
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           OPEN_LOG:
             desc: Create file for data logging
@@ -9047,10 +7552,6 @@ ops:
                 desc: Handle to file
                 type: PAR16
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
             remarks: if name starts with '~','/' or '.' it is not from current folder
 
           READ_BYTES:
@@ -9072,10 +7573,6 @@ ops:
                 desc: First byte in byte stream
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           WRITE_BYTES:
             desc: Write a number of bytes to file
@@ -9096,10 +7593,6 @@ ops:
                 desc: First byte in byte stream to write
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           REMOVE:
             desc: Delete file
@@ -9110,10 +7603,6 @@ ops:
                 desc: First character in file name (character string)
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
             remarks: if name starts with '~','/' or '.' it is not from current folder
 
           MOVE:
@@ -9130,16 +7619,7 @@ ops:
                 desc: First character in destination file name (character string)
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
             remarks: if name starts with '~','/' or '.' it is not from current folder
-
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   ARRAY:
     desc: Array entry
@@ -9158,10 +7638,6 @@ ops:
                 desc: Array handle
                 type: PAR16
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           CREATE8:
             value: 1
@@ -9176,10 +7652,6 @@ ops:
                 desc: Array handle
                 type: PAR16
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           CREATE16:
             value: 2
@@ -9194,10 +7666,6 @@ ops:
                 desc: Array handle
                 type: PAR16
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           CREATE32:
             value: 3
@@ -9212,10 +7680,6 @@ ops:
                 desc: Array handle
                 type: PAR16
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           CREATEF:
             value: 4
@@ -9230,10 +7694,6 @@ ops:
                 desc: Array handle
                 type: PAR16
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           RESIZE:
             value: 5
@@ -9248,10 +7708,6 @@ ops:
                 desc: Total number of elements
                 type: PAR32
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           FILL:
             value: 6
@@ -9266,10 +7722,6 @@ ops:
                 desc: Value to write - type depends on type of array
                 type: PARV
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           COPY:
             value: 7
@@ -9284,10 +7736,6 @@ ops:
                 desc: Destination array handle
                 type: PAR16
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           INIT8:
             value: 8
@@ -9316,10 +7764,6 @@ ops:
                 desc: First value to write - type must be equal to the array type
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           INIT16:
             value: 9
@@ -9348,10 +7792,6 @@ ops:
                 desc: First value to write - type must be equal to the array type
                 type: PAR16
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           INIT32:
             value: 10
@@ -9380,10 +7820,6 @@ ops:
                 desc: First value to write - type must be equal to the array type
                 type: PAR32
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           INITF:
             value: 11
@@ -9412,10 +7848,6 @@ ops:
                 desc: First value to write - type must be equal to the array type
                 type: PARF
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           SIZE:
             value: 12
@@ -9430,10 +7862,6 @@ ops:
                 desc: Total number of elements in array
                 type: PAR32
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           READ_CONTENT:
             value: 13
@@ -9464,10 +7892,6 @@ ops:
                 desc: First byte of array to receive data
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           WRITE_CONTENT:
             value: 14
@@ -9498,10 +7922,6 @@ ops:
                 desc: First byte of array to deliver data
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           READ_SIZE:
             value: 15
@@ -9522,15 +7942,6 @@ ops:
                 desc: Number of bytes in array
                 type: PAR32
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
-
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
     remarks: Dispatch status can change to BUSYBREAK or FAILBREAK
 
   ARRAY_WRITE:
@@ -9552,10 +7963,6 @@ ops:
         desc: Value to write - type depends on type of array
         type: PARV
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
     remarks: Dispatch status can change to FAILBREAK
 
   ARRAY_READ:
@@ -9577,10 +7984,6 @@ ops:
         desc: Value to read - type depends on type of array
         type: PARV
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
     remarks: Dispatch status can change to FAILBREAK
 
   ARRAY_APPEND:
@@ -9597,10 +8000,6 @@ ops:
         desc: Value (new element) to append - type depends on type of array
         type: PARV
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
     remarks: Dispatch status can change to FAILBREAK
 
   MEMORY_USAGE:
@@ -9617,10 +8016,6 @@ ops:
         desc: Free memory [KB]
         type: PAR32
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   FILENAME:
     desc: Memory filename entry
@@ -9645,10 +8040,6 @@ ops:
                 desc: Exist (0 = no, 1 = yes)
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
             remarks: if name starts with '~','/' or '.' it is not from current folder
 
           TOTALSIZE:
@@ -9670,10 +8061,6 @@ ops:
                 desc: Total folder size [KB]
                 type: PAR32
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
             remarks: if name starts with '~','/' or '.' it is not from current folder
 
           SPLIT:
@@ -9705,10 +8092,6 @@ ops:
                 desc: First character in extension (character string)
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
             remarks: >
               Example: passing "../folder/subfolder/name.ext" in FILENAME will
               return "../folder/subfolder" in FOLDER, "name" in NAME and ".ext"
@@ -9743,10 +8126,6 @@ ops:
                 desc: First character in file name (character string)
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
             remarks: >
               Example: passing "../folder/subfolder" in FOLDER, "name" in NAME
               and ".ext" in EXT will return "../folder/subfolder/name.ext" in
@@ -9766,10 +8145,6 @@ ops:
                 desc: Filename ok (0 = FAIL, 1 = OK)
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           PACK:
             desc: Pack file or folder into "raf" container
@@ -9780,10 +8155,6 @@ ops:
                 desc: First character in file name (character string)
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
             remarks: .raf is the same as .tar.gz
 
           UNPACK:
@@ -9795,10 +8166,6 @@ ops:
                 desc: First character in file name (character string)
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
             remarks: .raf is the same as .tar.gz
 
           GET_FOLDERNAME:
@@ -9815,15 +8182,6 @@ ops:
                 desc: First character in folder name (character string)
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
-
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   # cMove "READ"
 
@@ -9846,10 +8204,6 @@ ops:
         desc: Variable to receive read value
         type: PAR8
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   READ16:
     desc: Read 16 bit value from SOURCE[INDEX] to DESTINATION
@@ -9870,10 +8224,6 @@ ops:
         desc: Variable to receive read value
         type: PAR16
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   READ32:
     desc: Read 32 bit value from SOURCE[INDEX] to DESTINATION
@@ -9894,10 +8244,6 @@ ops:
         desc: Variable to receive read value
         type: PAR32
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   READF:
     desc: Read floating point value from SOURCE[INDEX] to DESTINATION
@@ -9918,10 +8264,6 @@ ops:
         desc: Variable to receive read value
         type: PARF
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   # cMove "WRITE"
 
@@ -9944,10 +8286,6 @@ ops:
         desc: Array to receive write value
         type: PAR8
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   WRITE16:
     desc: Write 16 bit value from SOURCE to DESTINATION[INDEX]
@@ -9968,10 +8306,6 @@ ops:
         desc: Array to receive write value
         type: PAR16
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   WRITE32:
     desc: Write 32 bit value from SOURCE to DESTINATION[INDEX]
@@ -9992,10 +8326,6 @@ ops:
         desc: Array to receive write value
         type: PAR32
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   WRITEF:
     desc: Write floating point value from SOURCE to DESTINATION[INDEX]
@@ -10016,10 +8346,6 @@ ops:
         desc: Array to receive write value
         type: PARF
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
 
   # cCom "COM"
 
@@ -10038,10 +8364,6 @@ ops:
         desc: Name of the remote/own device
         type: PAR8
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
     remarks: >
       Dispatch status may be set to BUSYBREAK.
       If name is 0 then own adapter status is evaluated.
@@ -10111,10 +8433,6 @@ ops:
                 desc: Active [0,1]
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_VISIBLE:
             desc: Get visibility state
@@ -10131,10 +8449,6 @@ ops:
                 desc: Visible [0,1]
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_RESULT:
             desc: Get status.
@@ -10157,10 +8471,6 @@ ops:
                 type: PAR8
                 dir: out
                 enum: *RESULT
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
             remarks: >
               This command gets the result of the command that is being executed.
               This could be a search or a connection request.
@@ -10190,10 +8500,6 @@ ops:
                 desc: First character in character string
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
             remarks: For now "1234" is returned
 
           SEARCH_ITEMS:
@@ -10211,10 +8517,6 @@ ops:
                 desc: No of items in seach list
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
             remarks: >
               After a search has been completed, SEARCH ITEMS will return the
               number of remote devices found.
@@ -10265,10 +8567,6 @@ ops:
                 desc: Visible [0,1]
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
             remarks: Used to retrieve the item information in the search list
 
           FAVOUR_ITEMS:
@@ -10286,10 +8584,6 @@ ops:
                 desc: No of items in seach list
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
             remarks: >
               The number of paired devices, not necessarily visible or present
               devices
@@ -10335,10 +8629,6 @@ ops:
                 type: PAR8
                 enum: *BTTYPE
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
             remarks: >
               Used to retrieve the item information in the favourite list. All
               items in the favourite list are paired devices.
@@ -10363,10 +8653,6 @@ ops:
                 desc: First character in BT adr string
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_BRICKNAME:
             desc: Gets the name of the brick
@@ -10382,10 +8668,6 @@ ops:
                 desc: First character in brick name
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_NETWORK:
             desc: Gets the network information. WIFI only
@@ -10417,10 +8699,6 @@ ops:
                 desc: First character in IP address string
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_PRESENT:
             desc: Return if hardare is present. WIFI only
@@ -10437,10 +8715,6 @@ ops:
                 desc: Present [0,1]
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_ENCRYPT:
             desc: Returns the encryption mode of the hardware. WIFI only
@@ -10463,10 +8737,6 @@ ops:
                 type: PAR8
                 dir: out
                 enum: *LMS_ENCRYPT
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           CONNEC_ITEMS:
             value: 17
@@ -10477,10 +8747,6 @@ ops:
               -
                 name: "ITEMS"
                 type: PAR8
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           CONNEC_ITEM:
             value: 18
@@ -10500,10 +8766,6 @@ ops:
               -
                 name: "TYPE"
                 type: PAR8
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_INCOMING:
             desc: Returns the encryption mode of the hardware. WIFI only
@@ -10531,10 +8793,6 @@ ops:
                 type: PAR8
                 enum: *LMS_ENCRYPT
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           GET_MODE2:
             value: 20
@@ -10550,14 +8808,6 @@ ops:
                 desc: Active [0,1], 1 = on, 0 = off
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
     remarks: Dispatch status can return FAILBREAK
 
   COM_SET:
@@ -10583,10 +8833,6 @@ ops:
                 desc: Active [0,1], 1 = on, 0 = off
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           SET_VISIBLE:
             desc: Set visibility state - Only available for bluetooth
@@ -10603,10 +8849,6 @@ ops:
                 desc: Visible [0,1], 1 = visible, 0 = invisible
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           SET_SEARCH:
             desc: Starts or or stops the search for remote devices
@@ -10623,10 +8865,6 @@ ops:
                 desc: Search [0,1] 0 = stop search, 1 = start search
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           SET_PIN:
             desc: Set pin code.
@@ -10648,10 +8886,6 @@ ops:
                 desc: First character in character string
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
             remarks: >
               Set the pincode for a remote device. Used when requested by
               bluetooth. Not at this point possible by user program.
@@ -10671,10 +8905,6 @@ ops:
                 desc: Acceptance [0,1] 0 = reject 1 = accept
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
             remarks: >
               Set the pincode for a remote device. Used when requested by
               bluetooth. Not at this point possible by user program.
@@ -10701,10 +8931,6 @@ ops:
                 desc: Connect [0,1], 1 = Connect, 0 = Disconnect
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           SET_BRICKNAME:
             desc: Sets the name of the brick
@@ -10715,10 +8941,6 @@ ops:
                 desc: First character in character string
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           SET_MOVEUP:
             desc: Moves the index in list one step up.
@@ -10735,10 +8957,6 @@ ops:
                 desc: Index in table
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
             remarks: Used to re-arrange WIFI list. Only used for WIFI.
 
           SET_MOVEDOWN:
@@ -10756,10 +8974,6 @@ ops:
                 desc: Index in table
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
             remarks: Used to re-arrange WIFI list. Only used for WIFI.
 
           SET_ENCRYPT:
@@ -10782,10 +8996,6 @@ ops:
                 desc: Encryption type
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
             remarks: Only used for WIFI.
 
           SET_SSID:
@@ -10803,10 +9013,6 @@ ops:
                 desc: First character in character string
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           SET_MODE2:
             desc: Set active mode state, either active or not
@@ -10823,15 +9029,6 @@ ops:
                 desc: Active [0,1], 1 = on, 0 = off
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
-
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
     remarks: Dispatch status can return FAILBREAK
 
   COM_TEST:
@@ -10854,10 +9051,6 @@ ops:
         desc: Busy flag
         type: PAR8
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
     remarks: >
       Dispatch status is set to NOBREAK.
       If name is 0 then own adapter busy status is returned.
@@ -10928,10 +9121,6 @@ ops:
         desc: Number of values of the type (specified by TYPE).
         type: PAR8
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
     remarks: >
       If data type DATA_S is selected then it requires that a zero terminated
       string is sent. Maximum mailbox size is 250 bytes. I.e. if type is string
@@ -10972,10 +9161,6 @@ ops:
         desc: Number of values of the specified type to send
         type: PARNO
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
     remarks: >
       If Brick name is left empty (0) then all connected devices will receive
       the mailbox message. If string type (DATA_S) data is to be transmitted
@@ -11004,10 +9189,6 @@ ops:
         desc: Number of value to read
         type: PARNO
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
     remarks: >
       Returns (Type specified in open) VALUE - Data from the message box
       The type of Value is specified by mailbox open byte code.
@@ -11028,10 +9209,6 @@ ops:
         desc: If Busy = TRUE then no new messages are received
         type: PAR8
         dir: out
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
     remarks: Dispatch status can return FAILBREAK
 
   MAILBOX_READY:
@@ -11043,10 +9220,6 @@ ops:
         desc: Reference ID mailbox number
         type: PAR8
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
     remarks: Dispatch status can return FAILBREAK
 
   MAILBOX_CLOSE:
@@ -11058,10 +9231,6 @@ ops:
         desc: Reference ID mailbox number
         type: PAR8
         dir: in
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
     remarks: Dispatch status can return FAILBREAK
 
   # TST
@@ -11079,19 +9248,11 @@ ops:
             desc: Enables test byte codes for 10 seconds
             value: 10
             params: []
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           TST_CLOSE:
             desc: Disables test byte codes
             value: 11
             params: []
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           TST_READ_PINS:
             desc: Read connector pin status
@@ -11112,10 +9273,6 @@ ops:
                 desc: String variable start index ('0' = low, '1' = high)
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
             remarks: >
               Input
               -----—
@@ -11154,10 +9311,6 @@ ops:
                   'X' = tristate, '-' = don't touch)
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
             remarks: >
               Input
               -----—
@@ -11189,10 +9342,6 @@ ops:
                 desc: Raw count [0..4095]
                 type: PAR16
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
             remarks: >
               INDEX 0..3 Input connector pin 1 (0=conn1, 1=conn2, 2=conn3, 3=conn4)
               INDEX 4..7 Input connector pin 6 (4=conn1, 5=conn2, 6=conn3, 7=conn4)
@@ -11222,10 +9371,6 @@ ops:
                 desc: String of data
                 type: PAR8
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           TST_READ_UART:
             desc: Read data from port through UART
@@ -11246,10 +9391,6 @@ ops:
                 desc: String of data
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           TST_ENABLE_UART:
             desc: Enable all UARTs
@@ -11260,19 +9401,11 @@ ops:
                 desc: Bit rate [2400..115200 b/S]
                 type: PAR32
                 dir: in
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           TST_DISABLE_UART:
             desc: Disable all UARTs
             value: 18
             params: []
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           TST_ACCU_SWITCH:
             desc: Read accu switch state
@@ -11283,19 +9416,11 @@ ops:
                 desc: State [0..1]
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
 
           TST_BOOT_MODE2:
             desc: Turn on mode2
             value: 20
             params: []
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
             remarks: This only works on pre-release EV3 hardware.
 
           TST_POLL_MODE2:
@@ -11307,20 +9432,12 @@ ops:
                 desc: State [0..2]
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
             remarks: This only works on pre-release EV3 hardware.
 
           TST_CLOSE_MODE2:
             desc: Closes mode2
             value: 22
             params: []
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
             remarks: This only works on pre-release EV3 hardware.
 
           TST_RAM_CHECK:
@@ -11332,15 +9449,6 @@ ops:
                 desc: State [0,1] 0 = FAIL, 1 = SUCCESS
                 type: PAR8
                 dir: out
-            support:
-              official: yes
-              xtended: yes
-              compat: yes
-
-    support:
-      official: yes
-      xtended: yes
-      compat: yes
     remarks: >
       This set of commands are for test only as they change behaviour in some
       driver modules. When test is open every command keeps the test byte codes
