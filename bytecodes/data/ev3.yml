@@ -86,36 +86,36 @@ defines:
   # FOLDERS
 
   MEMORY_FOLDER:
-    value: "'/mnt/ramdisk'"
+    value: "/mnt/ramdisk"
     desc: Folder for non volatile user programs/data
   PROGRAM_FOLDER:
-    value: "'../prjs/BrkProg_SAVE'"
+    value: "../prjs/BrkProg_SAVE"
     desc: Folder for On Brick Programming programs
   DATALOG_FOLDER:
-    value: "'../prjs/BrkDL_SAVE'"
+    value: "../prjs/BrkDL_SAVE"
     desc: Folder for On Brick Data log files
   SDCARD_FOLDER:
-    value: "'../prjs/SD_Card'"
+    value: "../prjs/SD_Card"
     desc: Folder for SD card mount
   USBSTICK_FOLDER:
-    value: "'../prjs/USB_Stick'"
+    value: "../prjs/USB_Stick"
     desc: Folder for USB stick mount
 
   PRJS_DIR:
-    value: "'../prjs'"
+    value: "../prjs"
     desc: Project folder
   APPS_DIR:
-    value: "'../apps'"
+    value: "../apps"
     desc: Apps folder
   TOOLS_DIR:
-    value: "'../tools'"
+    value: "../tools"
     desc: Tools folder
   TMP_DIR:
-    value: "'../tmp'"
+    value: "../tmp"
     desc: Temporary folder
 
   SETTINGS_DIR:
-    value: "'../sys/settings'"
+    value: "../sys/settings"
     desc: Folder for non volatile settings
 
   DIR_DEEPT:
@@ -125,52 +125,52 @@ defines:
   # FILES USED IN APPLICATION
 
   LASTRUN_FILE_NAME:
-    value: "'lastrun'"
+    value: "lastrun"
     desc: Last run filename
   CALDATA_FILE_NAME:
-    value: "'caldata'"
+    value: "caldata"
     desc: Calibration data filename
 
   # FILES USED IN APPS
 
   SLEEP_FILE_NAME:
-    value: "'Sleep'"
+    value: "Sleep"
     desc: File used in "Sleep" app to save status
   VOLUME_FILE_NAME:
-    value: "'Volume'"
+    value: "Volume"
     desc: File used in "Volume" app to save status
   WIFI_FILE_NAME:
-    value: "'WiFi'"
+    value: "WiFi"
     desc: File used in "WiFi" app to save status
   BLUETOOTH_FILE_NAME:
-    value: "'Bluetooth'"
+    value: "Bluetooth"
     desc: File used in "Bluetooth" app to save status
 
   # EXTENSIONS
 
   EXT_SOUND:
-    value: "'.rsf'"
+    value: ".rsf"
     desc: Robot Sound File
   EXT_GRAPHICS:
-    value: "'.rgf'"
+    value: ".rgf"
     desc: Robot Graphics File
   EXT_BYTECODE:
-    value: "'.rbf'"
+    value: ".rbf"
     desc: Robot Byte code File
   EXT_TEXT:
-    value: "'.rtf'"
+    value: ".rtf"
     desc: Robot Text File
   EXT_DATALOG:
-    value: "'.rdf'"
+    value: ".rdf"
     desc: Robot Datalog File
   EXT_PROGRAM:
-    value: "'.rpf'"
+    value: ".rpf"
     desc: Robot Program File
   EXT_CONFIG:
-    value: "'.rcf'"
+    value: ".rcf"
     desc: Robot Configuration File
   EXT_ARCHIVE:
-    value: "'.raf'"
+    value: ".raf"
     desc: Robot Archive File
 
   # NAME LENGTHs
