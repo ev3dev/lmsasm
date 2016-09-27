@@ -36,6 +36,8 @@ const (
 	MUL // *
 	QUO // /
 
+	AT // @
+
 	LPAREN // (
 	LBRACE // {
 	COMMA  // ,
@@ -74,6 +76,8 @@ var tokens = [...]string{
 	SUB: "-",
 	MUL: "*",
 	QUO: "/",
+
+	AT: "@",
 
 	LPAREN: "(",
 	LBRACE: "{",

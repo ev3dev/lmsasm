@@ -465,7 +465,7 @@ func (p *parser) parseExpr() ast.Expr {
 		p.next()
 		return x
 
-	case token.ADD, token.SUB:
+	case token.ADD, token.SUB, token.AT:
 		x := p.parseUnaryExpr()
 		return x
 
@@ -547,6 +547,11 @@ func (p *parser) parseUnaryExpr() ast.Expr {
 		pos, op := p.pos, p.tok
 		p.next()
 		x := p.parseUnaryExpr()
+		return &ast.UnaryExpr{OpPos: pos, Op: op, X: p.checkExpr(x)}
+	case token.AT:
+		pos, op := p.pos, p.tok
+		p.next()
+		x := p.parseIdent()
 		return &ast.UnaryExpr{OpPos: pos, Op: op, X: p.checkExpr(x)}
 	}
 

@@ -494,6 +494,9 @@ redo:
 			} else {
 				tok = token.QUO
 			}
+		case '@':
+			tok = token.AT
+			ch = s.next()
 		case '(':
 			tok = token.LPAREN
 			ch = s.next()
