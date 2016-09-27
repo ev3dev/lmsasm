@@ -466,6 +466,205 @@ enums:
         desc: Maximum icon types supported by the VM
         value: 5
 
+  S_ICON_NO: &S_ICON_NO
+    members:
+      SICON_CHARGING:
+        value: 0
+      SICON_BATT_4:
+        value: 1
+      SICON_BATT_3:
+        value: 2
+      SICON_BATT_2:
+        value: 3
+      SICON_BATT_1:
+        value: 4
+      SICON_BATT_0:
+        value: 5
+      SICON_WAIT1:
+        value: 6
+      SICON_WAIT2:
+        value: 7
+      SICON_BT_ON:
+        value: 8
+      SICON_BT_VISIBLE:
+        value: 9
+      SICON_BT_CONNECTED:
+        value: 10
+      SICON_BT_CONNVISIB:
+        value: 11
+      SICON_WIFI_3:
+        value: 12
+      SICON_WIFI_2:
+        value: 13
+      SICON_WIFI_1:
+        value: 14
+      SICON_WIFI_CONNECTED:
+        value: 15
+      SICON_USB:
+        value: 21
+
+  N_ICON_NO: &N_ICON_NO
+    members:
+      ICON_NONE:
+        value: -1
+      ICON_RUN:
+        value: 0
+      ICON_FOLDER:
+        value: 1
+      ICON_FOLDER2:
+        value: 2
+      ICON_USB:
+        value: 3
+      ICON_SD:
+        value: 4
+      ICON_SOUND:
+        value: 5
+      ICON_IMAGE:
+        value: 6
+      ICON_SETTINGS:
+        value: 7
+      ICON_ONOFF:
+        value: 8
+      ICON_SEARCH:
+        value: 9
+      ICON_WIFI:
+        value: 10
+      ICON_CONNECTIONS:
+        value: 11
+      ICON_ADD_HIDDEN:
+        value: 12
+      ICON_TRASHBIN:
+        value: 13
+      ICON_VISIBILITY:
+        value: 14
+      ICON_KEY:
+        value: 15
+      ICON_CONNECT:
+        value: 16
+      ICON_DISCONNECT:
+        value: 17
+      ICON_UP:
+        value: 18
+      ICON_DOWN:
+        value: 19
+      ICON_WAIT1:
+        value: 20
+      ICON_WAIT2:
+        value: 21
+      ICON_BLUETOOTH:
+        value: 22
+      ICON_INFO:
+        value: 23
+      ICON_TEXT:
+        value: 24
+      ICON_QUESTIONMARK:
+        value: 27
+      ICON_INFO_FILE:
+        value: 28
+      ICON_DISC:
+        value: 29
+      ICON_CONNECTED:
+        value: 30
+      ICON_OBP:
+        value: 31
+      ICON_OBD:
+        value: 32
+      ICON_OPENFOLDER:
+        value: 33
+      ICON_BRICK1:
+        value: 34
+
+  L_ICON_NO: &L_ICON_NO
+    members:
+      YES_NOTSEL:
+        value: 0
+      YES_SEL:
+        value: 1
+      NO_NOTSEL:
+        value: 2
+      NO_SEL:
+        value: 3
+      OFF:
+        value: 4
+      WAIT_VERT:
+        value: 5
+      WAIT_HORZ:
+        value: 6
+      TO_MANUAL:
+        value: 7
+      WARNSIGN:
+        value: 8
+      WARN_BATT:
+        value: 9
+      WARN_POWER:
+        value: 10
+      WARN_TEMP:
+        value: 11
+      NO_USBSTICK:
+        value: 12
+      TO_EXECUTE:
+        value: 13
+      TO_BRICK:
+        value: 14
+      TO_SDCARD:
+        value: 15
+      TO_USBSTICK:
+        value: 16
+      TO_BLUETOOTH:
+        value: 17
+      TO_WIFI:
+        value: 18
+      TO_TRASH:
+        value: 19
+      TO_COPY:
+        value: 20
+      TO_FILE:
+        value: 21
+      CHAR_ERROR:
+        value: 22
+      COPY_ERROR:
+        value: 23
+      PROGRAM_ERROR:
+        value: 24
+      WARN_MEMORY:
+        value: 27
+
+  M_ICON_NO: &M_ICON_NO
+    members:
+      ICON_STAR:
+        value: 0
+      ICON_LOCKSTAR:
+        value: 1
+      ICON_LOCK:
+        value: 2
+      ICON_PC:
+        value: 3
+        desc: Bluetooth type PC
+      ICON_PHONE:
+        value: 4
+        desc: Bluetooth type PHONE
+      ICON_BRICK:
+        value: 5
+        desc: Bluetooth type BRICK
+      ICON_UNKNOWN:
+        value: 6
+        desc: Bluetooth type UNKNOWN
+      ICON_FROM_FOLDER:
+        value: 7
+      ICON_CHECKBOX:
+        value: 8
+      ICON_CHECKED:
+        value: 9
+      ICON_XED:
+        value: 10
+
+  A_ICON_NO: &A_ICON_NO
+    members:
+      ICON_LEFT:
+        value: 1
+      ICON_RIGHT:
+        value: 2
+
   BTTYPE: &BTTYPE
     desc: Bluetooth Device Types
     members:
