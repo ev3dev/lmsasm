@@ -425,19 +425,29 @@ func (p *parser) parseIdent() *ast.Ident {
 // ----------------------------------------------------------------------------
 // Blocks
 
-func (p *parser) parseStmtList() (list []ast.Stmt) {
+func (p *parser) parseStmtList() (paramCount uint8, list []ast.Stmt) {
 	if p.trace {
 		defer un(trace(p, "StatementList"))
 	}
 
 	for p.tok != token.RBRACE && p.tok != token.EOF {
-		list = append(list, p.parseStmt())
+		s := p.parseStmt()
+		list = append(list, s)
+
+		// counting parameters...
+		if d, ok := s.(*ast.DeclStmt); ok {
+			if g, ok := d.Decl.(*ast.GenDecl); ok {
+				if _, ok := g.Spec.(*ast.ParamSpec); ok {
+					paramCount++
+				}
+			}
+		}
 	}
 
 	return
 }
 
-func (p *parser) parseBody() []ast.Stmt {
+func (p *parser) parseBody() (scope *ast.Scope, paramCount uint8, list []ast.Stmt) {
 	if p.trace {
 		defer un(trace(p, "Body"))
 	}
@@ -445,12 +455,13 @@ func (p *parser) parseBody() []ast.Stmt {
 	_ = p.expect(token.LBRACE)
 	p.openScope()
 	p.openLabelScope()
-	list := p.parseStmtList()
+	scope = p.topScope
+	paramCount, list = p.parseStmtList()
 	p.closeLabelScope()
 	p.closeScope()
 	_ = p.expect(token.RBRACE)
 
-	return list
+	return
 }
 
 // ----------------------------------------------------------------------------
@@ -697,11 +708,11 @@ func (p *parser) parseValueSpec(lit string) ast.Spec {
 		defer un(trace(p, "ValueSpec"))
 	}
 
-	typ := lit
+	typ := token.ValueType(lit)
 	ident := p.parseIdent()
 	var length ast.Expr = nil
 	switch typ {
-	case "DATAS", "ARRAY8", "ARRAY16", "ARRAY32", "ARRAYF":
+	case token.DATAS, token.ARRAY8, token.ARRAY16, token.ARRAY32, token.ARRAYF:
 		length = p.parseExpr()
 	}
 
@@ -720,11 +731,11 @@ func (p *parser) parseParamSpec(lit string) ast.Spec {
 		defer un(trace(p, "ParamSpec"))
 	}
 
-	typ := lit
+	typ := token.ParamType(lit)
 	ident := p.parseIdent()
 	var length ast.Expr = nil
 	switch typ {
-	case "IN_S", "OUT_S", "IO_S":
+	case token.IN_S, token.OUT_S, token.IO_S:
 		length = p.parseExpr()
 	}
 
@@ -733,7 +744,7 @@ func (p *parser) parseParamSpec(lit string) ast.Spec {
 		Name:   ident,
 		Length: length,
 	}
-	p.declare(spec, nil, p.topScope, ast.Var, ident)
+	p.declare(spec, nil, p.topScope, ast.Par, ident)
 
 	return spec
 }
@@ -761,13 +772,23 @@ func (p *parser) parseObjDecl(tok token.Token) ast.Decl {
 	pos := p.pos
 	_ = p.expect(token.IDENT)
 	name := p.parseIdent()
-	body := p.parseBody()
+	scope, paramCount, body := p.parseBody()
+
+	var index int32
+	for _, o := range p.topScope.Objects {
+		if o.Kind == ast.Obj {
+			index++
+		}
+	}
 
 	obj := &ast.ObjDecl{
-		TokPos: pos,
-		Tok:    tok,
-		Name:   name,
-		Body:   body,
+		Scope:      scope,
+		TokPos:     pos,
+		Tok:        tok,
+		Name:       name,
+		Index:      index,
+		ParamCount: paramCount,
+		Body:       body,
 	}
 	p.declare(obj, nil, p.topScope, ast.Obj, name)
 

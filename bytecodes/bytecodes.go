@@ -67,14 +67,14 @@ type Enum struct {
 
 type EnumMember struct {
 	Desc    string ",omitempty"
-	Value   int
+	Value   int32
 	Support *Support ",omitempty"
 	Remarks string   ",omitempty"
 }
 
 type Define struct {
 	Desc    string ",omitempty"
-	Value   string
+	Value   interface{}
 	Support *Support ",omitempty"
 	Remarks string   ",omitempty"
 }

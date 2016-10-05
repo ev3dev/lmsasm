@@ -34,7 +34,7 @@ var literals = []literalInfo{
 	{&ast.BasicLit{Kind: token.INT, Value: "2147483647"}, []byte{0x83, 0xff, 0xff, 0xff, 0x7f}},
 	{&ast.BasicLit{Kind: token.INT, Value: "0x01"}, []byte{0x01}},
 	{&ast.BasicLit{Kind: token.INT, Value: "-2147483647"}, []byte{0x83, 0x01, 0x00, 0x00, 0x80}},
-	{&ast.BasicLit{Kind: token.FLOAT, Value: "0.0F"}, []byte{0x83, 0x00, 0x00, 0x00, 0x00}},
+	{&ast.BasicLit{Kind: token.FLOAT, Value: "0.0F"}, []byte{0x00}},
 	{&ast.BasicLit{Kind: token.FLOAT, Value: "1.0F"}, []byte{0x83, 0x00, 0x00, 0x80, 0x3f}},
 	{&ast.BasicLit{Kind: token.FLOAT, Value: "-1.0F"}, []byte{0x83, 0x00, 0x00, 0x80, 0xbf}},
 	{&ast.BasicLit{Kind: token.STRING, Value: ""}, []byte{0x80, 0x00}},
@@ -48,16 +48,24 @@ var literals = []literalInfo{
 
 func TestBasicLit(t *testing.T) {
 	for _, r := range literals {
-		b := getBytes(r.Lit)
+		var inst *Instruction
 		l := r.Lit.(*ast.BasicLit)
-		if len(b) == len(r.Bytes) {
-			for i, x := range b {
+		switch l.Kind {
+		case token.INT:
+			inst = emitIntConst(l.Value, "")
+		case token.FLOAT:
+			inst = emitFloatConst(l.Value, "")
+		case token.STRING:
+			inst = emitStringConst(l.Value, "")
+		}
+		if len(inst.Bytes) == len(r.Bytes) {
+			for i, x := range inst.Bytes {
 				if x != r.Bytes[i] {
 					t.Errorf("bad bytes for '%v' at index %v:\nexpecting 0x%02x but got 0x%02x", l.Value, i, r.Bytes[i], x)
 				}
 			}
 		} else {
-			t.Errorf("bad byte length for '%v': expecting %v but got %v", l.Value, len(r.Bytes), len(b))
+			t.Errorf("bad byte length for '%v': expecting %v but got %v", l.Value, len(r.Bytes), len(inst.Bytes))
 		}
 	}
 }

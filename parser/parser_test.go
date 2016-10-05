@@ -133,7 +133,7 @@ func TestVariable(t *testing.T) {
 			if s == nil {
 				t.Errorf("parseSnippit(%q): expecting ast.ValueSpec but got %T", src, d.Spec)
 			} else {
-				if s.Type != "DATA8" {
+				if s.Type != token.DATA8 {
 					t.Errorf("parseSnippit(%q): expecting DATA8 but got %v", src, s.Type)
 				}
 				if s.Name.Name != "x" {
@@ -209,7 +209,7 @@ func TestParam(t *testing.T) {
 			if s == nil {
 				t.Errorf("parseSnippit(%q): expecting ast.ParamSpec but got %T", src, d.Spec)
 			} else {
-				if s.Type != "IN_8" {
+				if s.Type != token.IN_8 {
 					t.Errorf("parseSnippit(%q): expecting IN_8 but got %v", src, s.Type)
 				}
 				if s.Name.Name != "x" {

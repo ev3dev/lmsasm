@@ -96,6 +96,38 @@ var tokens = [...]string{
 	PARAMTYPE: "PARAMTYPE",
 }
 
+type ValueType string
+type ParamType string
+
+const (
+	DATA8   ValueType = "DATA8"
+	DATA16            = "DATA16"
+	DATA32            = "DATA32"
+	DATAF             = "DATAF"
+	DATAS             = "DATAS"
+	ARRAY8            = "ARRAY8"
+	ARRAY16           = "ARRAY16"
+	ARRAY32           = "ARRAY32"
+	ARRAYF            = "ARRAYF"
+	HANDLE            = "HANDLE"
+
+	IN_8   ParamType = "IN_8"
+	IN_16            = "IN_16"
+	IN_32            = "IN_32"
+	IN_F             = "IN_F"
+	IN_S             = "IN_S"
+	OUT_8            = "OUT_8"
+	OUT_16           = "OUT_16"
+	OUT_32           = "OUT_32"
+	OUT_F            = "OUT_F"
+	OUT_S            = "OUT_S"
+	IO_8             = "IO_8"
+	IO_16            = "IO_16"
+	IO_32            = "IO_32"
+	IO_F             = "IO_F"
+	IO_S             = "IO_S"
+)
+
 // String returns the string corresponding to the token tok.
 // For operators, delimiters, and keywords the string is the actual
 // token character sequence (e.g., for the token ADD, the string is

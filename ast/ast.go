@@ -241,16 +241,16 @@ type (
 
 	// A ValueSpec node represents a variable declaration.
 	ValueSpec struct {
-		Type   string // value type
-		Name   *Ident // value name
-		Length Expr   // length or nil
+		Type   token.ValueType // value type
+		Name   *Ident          // value name
+		Length Expr            // length or nil
 	}
 
 	// A ParamSpec node represents a parameter declaration.
 	ParamSpec struct {
-		Type   string // (IN|OUT|IO)_(8|16|32|F|S)
-		Name   *Ident // type name
-		Length Expr   // length or nil
+		Type   token.ParamType // (IN|OUT|IO)_(8|16|32|F|S)
+		Name   *Ident          // type name
+		Length Expr            // length or nil
 	}
 )
 
@@ -309,10 +309,13 @@ type (
 
 	// A ObjDecl node represents a function declaration.
 	ObjDecl struct {
-		TokPos token.Pos   // position of Tok
-		Tok    token.Token // VMTHREAD, SUBCALL
-		Name   *Ident
-		Body   []Stmt // function body
+		Scope      *Scope      // local scope
+		TokPos     token.Pos   // position of Tok
+		Tok        token.Token // VMTHREAD, SUBCALL
+		Name       *Ident
+		Index      int32
+		ParamCount uint8
+		Body       []Stmt // function body
 	}
 )
 

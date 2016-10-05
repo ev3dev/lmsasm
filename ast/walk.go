@@ -83,26 +83,21 @@ func Walk(v Visitor, node Node) {
 		// nothing to do
 
 	case *LabeledStmt:
-		Walk(v, n.Label)
 		Walk(v, n.Stmt)
 
 	case *CallStmt:
-		Walk(v, n.Op)
 		walkExprList(v, n.Args)
 
 	// Declarations
 	case *DefineSpec:
-		Walk(v, n.Name)
 		Walk(v, n.Value)
 
 	case *ValueSpec:
-		Walk(v, n.Name)
 		if n.Length != nil {
 			Walk(v, n.Length)
 		}
 
 	case *ParamSpec:
-		Walk(v, n.Name)
 		if n.Length != nil {
 			Walk(v, n.Length)
 		}
@@ -114,7 +109,6 @@ func Walk(v Visitor, node Node) {
 		Walk(v, n.Spec)
 
 	case *ObjDecl:
-		Walk(v, n.Name)
 		walkStmtList(v, n.Body)
 
 	// Files
