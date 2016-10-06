@@ -527,7 +527,7 @@ func (a *Assembler) Assemble() (Program, error) {
 						case *ast.ValueSpec:
 							size, err := getValueSpecSize(s)
 							if err != nil {
-								a.errors.Add(a.fs.Position(s.Length.Pos()), err.Error())
+								a.errors.Add(a.fs.Position(s.Pos()), err.Error())
 								continue
 							}
 							if size == 2 || size == 4 {
@@ -541,7 +541,7 @@ func (a *Assembler) Assemble() (Program, error) {
 							// first ValueSpce too)
 							size, err := getParamSpecSize(s)
 							if err != nil {
-								a.errors.Add(a.fs.Position(s.Length.Pos()), err.Error())
+								a.errors.Add(a.fs.Position(s.Pos()), err.Error())
 								continue
 							}
 							if size == 2 || size == 4 {
