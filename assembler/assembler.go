@@ -29,7 +29,7 @@ func NewAssembler(fs *token.FileSet, file *ast.File) *Assembler {
 	return &Assembler{fs: fs, file: file}
 }
 
-func resolveConstUInt8(expr ast.Expr) (err error, value uint8) {
+func resolveConstUInt8(expr ast.Expr) (value uint8, err error) {
 	switch e := expr.(type) {
 	case *ast.BadExpr:
 		err = errors.New("Bad expression")
@@ -57,7 +57,7 @@ func resolveConstUInt8(expr ast.Expr) (err error, value uint8) {
 				value = uint8(c.Value)
 			case nil:
 				d := e.Obj.Decl.(*ast.DefineSpec)
-				err, value = resolveConstUInt8(d.Value)
+				value, err = resolveConstUInt8(d.Value)
 			default:
 				err = errors.New("Unknown constant")
 			}
@@ -71,7 +71,7 @@ func resolveConstUInt8(expr ast.Expr) (err error, value uint8) {
 	return
 }
 
-func getValueSpecSize(spec *ast.ValueSpec) (err error, size uint8) {
+func getValueSpecSize(spec *ast.ValueSpec) (size uint8, err error) {
 	switch spec.Type {
 	case token.DATA8:
 		size = 1
@@ -80,14 +80,14 @@ func getValueSpecSize(spec *ast.ValueSpec) (err error, size uint8) {
 	case token.DATA32, token.DATAF:
 		size = 4
 	case token.ARRAY8, token.DATAS:
-		err, size = resolveConstUInt8(spec.Length)
+		size, err = resolveConstUInt8(spec.Length)
 	case token.ARRAY16:
-		err, size = resolveConstUInt8(spec.Length)
+		size, err = resolveConstUInt8(spec.Length)
 		if err != nil {
 			size *= 2
 		}
 	case token.ARRAY32, token.ARRAYF:
-		err, size = resolveConstUInt8(spec.Length)
+		size, err = resolveConstUInt8(spec.Length)
 		if err != nil {
 			size *= 4
 		}
@@ -98,7 +98,7 @@ func getValueSpecSize(spec *ast.ValueSpec) (err error, size uint8) {
 	return
 }
 
-func getParamSpecSize(spec *ast.ParamSpec) (err error, size uint8) {
+func getParamSpecSize(spec *ast.ParamSpec) (size uint8, err error) {
 	switch spec.Type {
 	case token.IN_8, token.OUT_8, token.IO_8:
 		size = 1
@@ -107,7 +107,7 @@ func getParamSpecSize(spec *ast.ParamSpec) (err error, size uint8) {
 	case token.IN_32, token.OUT_32, token.IO_32:
 		size = 4
 	case token.IN_S, token.OUT_S, token.IO_S:
-		err, size = resolveConstUInt8(spec.Length)
+		size, err = resolveConstUInt8(spec.Length)
 	default:
 		err = errors.New(fmt.Sprintf("Unknown parameter data type '%v'", spec.Type))
 	}
@@ -327,7 +327,7 @@ func emitObjCall(obj *ast.ObjDecl) *Instruction {
 	}
 }
 
-func emitExpr(expr ast.Expr, globals, locals map[string]int32) (err error, inst *Instruction) {
+func emitExpr(expr ast.Expr, globals, locals map[string]int32) (inst *Instruction, err error) {
 	switch e := expr.(type) {
 	case *ast.BadExpr:
 		err = errors.New("Bad expression")
@@ -353,7 +353,7 @@ func emitExpr(expr ast.Expr, globals, locals map[string]int32) (err error, inst 
 				inst = emitEnum(c.Value)
 			case nil:
 				d := e.Obj.Decl.(*ast.DefineSpec)
-				err, inst = emitExpr(d.Value, globals, locals)
+				inst, err = emitExpr(d.Value, globals, locals)
 			default:
 				err = errors.New("Unknown constant")
 			}
@@ -419,7 +419,7 @@ func emitExpr(expr ast.Expr, globals, locals map[string]int32) (err error, inst 
 				err = errors.New("Expecting identifier")
 			}
 		case token.ADD:
-			err, inst = emitExpr(e.X, globals, locals)
+			inst, err = emitExpr(e.X, globals, locals)
 		case token.SUB:
 			if lit, ok := e.X.(*ast.BasicLit); ok {
 				switch lit.Kind {
@@ -464,7 +464,7 @@ type Instruction struct {
 	label *ast.Ident
 }
 
-func (a *Assembler) Assemble() (error, Program) {
+func (a *Assembler) Assemble() (Program, error) {
 	var nextGlobal int32
 	var objects []*Object
 	globals := make(map[string]int32)
@@ -485,7 +485,7 @@ func (a *Assembler) Assemble() (error, Program) {
 		case *ast.GenDecl:
 			switch s := d.Spec.(type) {
 			case *ast.ValueSpec:
-				err, size := getValueSpecSize(s)
+				size, err := getValueSpecSize(s)
 				if err != nil {
 					a.errors.Add(a.fs.Position(s.Length.Pos()), err.Error())
 					continue
@@ -525,7 +525,7 @@ func (a *Assembler) Assemble() (error, Program) {
 					case *ast.GenDecl:
 						switch s := d2.Spec.(type) {
 						case *ast.ValueSpec:
-							err, size := getValueSpecSize(s)
+							size, err := getValueSpecSize(s)
 							if err != nil {
 								a.errors.Add(a.fs.Position(s.Length.Pos()), err.Error())
 								continue
@@ -539,7 +539,7 @@ func (a *Assembler) Assemble() (error, Program) {
 							// TODO: should check that parameters are not declared
 							// after the first ObjDecl (and probably before the
 							// first ValueSpce too)
-							err, size := getParamSpecSize(s)
+							size, err := getParamSpecSize(s)
 							if err != nil {
 								a.errors.Add(a.fs.Position(s.Length.Pos()), err.Error())
 								continue
@@ -554,7 +554,7 @@ func (a *Assembler) Assemble() (error, Program) {
 							instructions = append(instructions, i)
 							switch s.Type {
 							case token.IN_S, token.OUT_S, token.IO_S:
-								if err, size := resolveConstUInt8(s.Length); err == nil {
+								if size, err := resolveConstUInt8(s.Length); err == nil {
 									i := emitUint8(size, "param size")
 									pc += i.size
 									instructions = append(instructions, i)
@@ -580,7 +580,7 @@ func (a *Assembler) Assemble() (error, Program) {
 						for _, arg := range s.Args {
 							// TODO: check that the arg type matches the opcode template
 							// from yaml and the the number of args is correct
-							err, i := emitExpr(arg, globals, locals)
+							i, err := emitExpr(arg, globals, locals)
 							if err == nil {
 								pc += i.size
 								instructions = append(instructions, i)
@@ -658,7 +658,7 @@ func (a *Assembler) Assemble() (error, Program) {
 		Objects:    objects,
 	}
 
-	return a.errors.Err(), p
+	return p, a.errors.Err()
 }
 
 func (p *Program) Write(w io.Writer) error {
