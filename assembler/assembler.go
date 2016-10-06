@@ -333,6 +333,10 @@ func emitExpr(expr ast.Expr, globals, locals map[string]int32) (inst *Instructio
 		err = errors.New("Bad expression")
 		return
 	case *ast.Ident:
+		if e.Obj == nil {
+			err = errors.New("Unknown identifier in expression")
+			return
+		}
 		switch e.Obj.Kind {
 		case ast.Bad:
 			err = errors.New("Bad identifier")
