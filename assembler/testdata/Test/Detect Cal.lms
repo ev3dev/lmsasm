@@ -1,0 +1,195 @@
+/*
+ * LEGO® MINDSTORMS EV3
+ *
+ * Copyright (C) 2010-2013 The LEGO Group
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
+
+//  TCP 07.07.2014
+//! \page testdetectcalappcode Detect Calibrate Application
+//!
+//! <hr size="1"/>
+//!
+//! \verbatim
+//**********************************************************************
+define appv 'Detect Cal V1.01'                                        //
+//**********************************************************************
+                                                                      //
+                                                                      //
+vmthread  MAIN                                                        //  void    MAIN(void)
+{                                                                     //  {
+  DATA8   ShowVersion                                                 //
+                                                                      //
+  UI_BUTTON(PRESSED,RIGHT_BUTTON,ShowVersion)                         //    UI_BUTTON(PRESSED,RIGHT_BUTTON,ShowVersion)
+  JR_FALSE(ShowVersion,DontShowVersion)                               //    if (ShowVersion)
+                                                                      //    {
+  UI_DRAW(FILLRECT,BG_COLOR,4,50,170,28)                              //      UI_DRAW(FILLRECT,BG_COLOR,4,50,170,28)
+  UI_DRAW(RECT,FG_COLOR,6,52,166,24)                                  //      UI_DRAW(RECT,FG_COLOR,6,52,166,24)
+  UI_DRAW(TEXT,FG_COLOR,13,60,appv)                                   //      UI_DRAW(TEXT,FG_COLOR,13,60,appv)
+  UI_DRAW(UPDATE)                                                     //      UI_DRAW(UPDATE)
+                                                                      //
+ShowVersionWait:                                                      //      do
+                                                                      //      {  
+  UI_BUTTON(PRESSED,RIGHT_BUTTON,ShowVersion)                         //        UI_BUTTON(PRESSED,RIGHT_BUTTON,ShowVersion)
+                                                                      //      }
+  JR_TRUE(ShowVersion,ShowVersionWait)                                //      while (ShowVersion)
+                                                                      //
+  UI_BUTTON(FLUSH)                                                    //      UI_BUTTON(FLUSH)
+DontShowVersion:                                                      //    }  
+                                                                      //
+  UI_DRAW(RESTORE,0)                                                  //    UI_DRAW(RESTORE,0)
+  UI_DRAW(TOPLINE,0)                                                  //    UI_DRAW(TOPLINE,0)
+  UI_BUTTON(SET_BACK_BLOCK,1)                                         //    UI_BUTTON(SET_BACK_BLOCK,1)
+  UI_WRITE(LED,LED_GREEN)                                             //    UI_WRITE(LED,LED_GREEN)
+                                                                      //
+  CALL(DetectCal)                                                     //    DetectCal()
+                                                                      //
+  UI_BUTTON(FLUSH)                                                    //    UI_BUTTON(FLUSH)
+  UI_BUTTON(SET_BACK_BLOCK,0)                                         //    UI_BUTTON(SET_BACK_BLOCK,0)
+  UI_DRAW(TOPLINE,1)                                                  //    UI_DRAW(TOPLINE,1)
+}                                                                     //  }
+                                                                      //
+                                                                      //
+define    DETECT_TYPE         35                                      //
+define    DETECT_NORMAL       0                                       //
+define    DETECT_CALIB        2                                       //
+define    DETECT_PORT         0                                       //
+                                                                      //
+define    MESSAGE_POS         116                                     //
+                                                                      //
+                                                                      //
+subcall   DetectCal                                                   //  void DetectCal(void)
+{                                                                     //  {
+  DATA32  Timer                                                       //
+  DATAF   Value1                                                      //
+  DATAF   Value2                                                      //
+  DATAF   Value3                                                      //
+  DATAF   Raw                                                         //
+  DATAF   Detect                                                      //
+  DATAF   Offset                                                      //
+  DATAF   Gain                                                        //
+  DATAF   Voltage                                                     //
+  DATA8   Run                                                         //
+  DATA8   Tmp                                                         //
+  DATA8   Type                                                        //
+  DATA8   Mode                                                        //
+  DATAS   String 32                                                   //
+                                                                      //
+                                                                      //
+  UI_DRAW(FILLWINDOW,0x00,0,0)                                        //    UI_DRAW(FILLWINDOW,0x00,0,0)
+  UI_DRAW(SELECT_FONT,SMALL_FONT)                                     //    UI_DRAW(SELECT_FONT,SMALL_FONT)
+  UI_DRAW(TEXT,FG_COLOR,0,1,'LPF2 Detect Calibrate')                  //    UI_DRAW(TEXT,FG_COLOR,0,1,'LPF2 Detect Calibrate')
+  UI_DRAW(LINE,FG_COLOR,0,TOPLINE_HEIGHT,LCD_WIDTH,TOPLINE_HEIGHT)    //    UI_DRAW(LINE,FG_COLOR,0,TOPLINE_HEIGHT,LCD_WIDTH,TOPLINE_HEIGHT)
+  UI_DRAW(SELECT_FONT,NORMAL_FONT)                                    //    UI_DRAW(SELECT_FONT,NORMAL_FONT)
+                                                                      //
+  UI_DRAW(TEXT,FG_COLOR,24,20, 'LEFT  - Max (9)')                     //                                              
+  UI_DRAW(TEXT,FG_COLOR,24,32, 'RIGHT - Min (1)')                     //                                                
+  UI_DRAW(UPDATE)                                                     //
+                                                                      //
+CheckType:                                                            //
+  UI_DRAW(TEXT,FG_COLOR,0,MESSAGE_POS,' - DEVICE IN PORT 1 -')        //
+  UI_DRAW(UPDATE)                                                     //
+  INPUT_DEVICE(GET_TYPEMODE,0,DETECT_PORT,Type,Mode)                  //
+  JR_EQ8(Type,DETECT_TYPE,TypeOk)                                     //
+  UI_BUTTON(SHORTPRESS,BACK_BUTTON,Tmp)                               //
+  JR_TRUE(Tmp,Stop)                                                   //
+  JR(CheckType)                                                       //
+TypeOk:                                                               //
+                                                                      //
+  UI_DRAW(TEXT,FG_COLOR,0,MESSAGE_POS,' -  CALIBRATE MODE  -')        //
+  UI_DRAW(UPDATE)                                                     //
+  TIMER_WAIT(1000,Timer)                                              //
+  TIMER_READY(Timer)                                                  //
+  INPUT_DEVICE(READY_SI,0,DETECT_PORT,0,DETECT_CALIB,3,Value1,Value2,Value3) //
+CheckBusy:                                                            //
+  INPUT_TEST(0,DETECT_PORT,Tmp)                                       //
+  JR_FALSE(Tmp,Ready)                                                 //
+  UI_BUTTON(SHORTPRESS,BACK_BUTTON,Tmp)                               //
+  JR_TRUE(Tmp,Stop)                                                   //
+  JR(CheckBusy)                                                       //
+Ready:                                                                //
+                                                                      //
+  UI_DRAW(TEXT,FG_COLOR,0,MESSAGE_POS,'                     ')        //
+  UI_DRAW(UPDATE)                                                     //
+                                                                      //
+  UI_BUTTON(FLUSH)                                                    //    UI_BUTTON(FLUSH)
+                                                                      //
+  MOVE8_8(1,Run)                                                      //    Run     =  1
+                                                                      //
+                                                                      //    do
+Loop:                                                                 //    {
+                                                                      //
+  TIMER_WAIT(100,Timer)                                               //
+  TIMER_READY(Timer)                                                  //
+  INPUT_DEVICE(READY_SI,0,DETECT_PORT,0,DETECT_CALIB,3,Value1,Value2,Value3) //
+                                                                      //
+  MOVEF_F(Value1,Raw)                                                 //
+  MOVEF_F(Value2,Detect)                                              //                                                                      
+  MULF(Value3,3.3F,Voltage)                                           //
+  DIVF(Voltage,1023.0F,Voltage)                                       //
+                                                                      //
+  STRINGS(VALUE_FORMATTED,Detect, 'Distance  %-3.0f',32,String)       //
+  UI_DRAW(TEXT,FG_COLOR,16,60,String)                                 //                                              
+                                                                      //
+  STRINGS(VALUE_FORMATTED,Raw,    'Signal    %-4.0f',32,String)       //
+  UI_DRAW(TEXT,FG_COLOR,16,75,String)                                 //                                              
+                                                                      //
+  STRINGS(VALUE_FORMATTED,Voltage,'Voltage   %-4.2f',32,String)       //
+  UI_DRAW(TEXT,FG_COLOR,16,90,String)                                 //                                              
+                                                                      //
+  UI_DRAW(UPDATE)                                                     //
+                                                                      //
+  UI_BUTTON(SHORTPRESS,LEFT_BUTTON,Tmp)                               //      UI_BUTTON(SHORTPRESS,LEFT_BUTTON,Tmp)
+  JR_FALSE(Tmp,NotLeftButton)                                         //      if (Tmp != FALSE)
+                                                                      //      {
+  MOVEF_F(Raw,Offset)                                                 //                                                                      
+  INPUT_WRITE(0,DETECT_PORT,14,'LEGO-FAC-CAL-1')                      //
+NotLeftButton:                                                        //      }
+                                                                      //
+                                                                      //
+  UI_BUTTON(SHORTPRESS,RIGHT_BUTTON,Tmp)                              //      UI_BUTTON(SHORTPRESS,RIGHT_BUTTON,Tmp)
+  JR_FALSE(Tmp,NotRightButton)                                        //      if (Tmp != FALSE)
+                                                                      //      {
+  MOVEF_F(Raw,Gain)                                                   //                                                                      
+  INPUT_WRITE(0,DETECT_PORT,14,'LEGO-FAC-CAL-2')                      //
+NotRightButton:                                                       //      }
+                                                                      //
+                                                                      //
+  UI_BUTTON(SHORTPRESS,BACK_BUTTON,Tmp)                               //      UI_BUTTON(SHORTPRESS,BACK_BUTTON,Tmp)
+  JR_FALSE(Tmp,NotBackButton)                                         //      if (Tmp != FALSE)
+                                                                      //      {
+  MOVE8_8(0,Run)                                                      //        Run  =  0
+NotBackButton:                                                        //      }
+                                                                      //
+  INPUT_DEVICE(GET_TYPEMODE,0,DETECT_PORT,Type,Mode)                  //
+  JR_NEQ8(Type,DETECT_TYPE,CheckType)                                 //
+                                                                      //    }
+  JR_TRUE(Run,Loop)                                                   //    while (Run)
+                                                                      //
+Stop:                                                                 //
+  INPUT_DEVICE(GET_TYPEMODE,0,DETECT_PORT,Type,Mode)                  //
+  JR_NEQ8(Type,DETECT_TYPE,Skip)                                      //
+  UI_DRAW(TEXT,FG_COLOR,0,MESSAGE_POS,'  -  NORMAL MODE   - ')        //
+  UI_DRAW(UPDATE)                                                     //
+  INPUT_DEVICE(READY_RAW,0,DETECT_PORT,0,DETECT_NORMAL,1,Value1)      //
+  TIMER_WAIT(1000,Timer)                                              //
+  TIMER_READY(Timer)                                                  //
+Skip:                                                                 //
+  UI_BUTTON(FLUSH)                                                    //    UI_BUTTON(FLUSH)
+}                                                                     //  }
+//! \endverbatim
+
