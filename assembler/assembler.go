@@ -29,16 +29,16 @@ func NewAssembler(fs *token.FileSet, file *ast.File) *Assembler {
 	return &Assembler{fs: fs, file: file}
 }
 
-func resolveConstUInt8(expr ast.Expr) (value uint8, err error) {
+func resolveConstInt(expr ast.Expr) (value int32, err error) {
 	switch e := expr.(type) {
 	case *ast.BadExpr:
 		err = errors.New("Bad expression")
 	case *ast.BasicLit:
 		switch e.Kind {
 		case token.INT:
-			var i uint64
-			i, err = strconv.ParseUint(e.Value, 0, 8)
-			value = uint8(i)
+			var i int64
+			i, err = strconv.ParseInt(e.Value, 0, 32)
+			value = int32(i)
 		default:
 			err = errors.New("Expecting integer literal")
 		}
@@ -49,15 +49,15 @@ func resolveConstUInt8(expr ast.Expr) (value uint8, err error) {
 			case bytecodes.Define:
 				switch v := c.Value.(type) {
 				case int:
-					value = uint8(v)
+					value = int32(v)
 				default:
 					err = errors.New("Expecting integer identifier")
 				}
 			case bytecodes.EnumMember:
-				value = uint8(c.Value)
+				value = c.Value
 			case nil:
 				d := e.Obj.Decl.(*ast.DefineSpec)
-				value, err = resolveConstUInt8(d.Value)
+				value, err = resolveConstInt(d.Value)
 			default:
 				err = errors.New("Unknown constant")
 			}
@@ -71,7 +71,7 @@ func resolveConstUInt8(expr ast.Expr) (value uint8, err error) {
 	return
 }
 
-func getValueSpecSize(spec *ast.ValueSpec) (size uint8, err error) {
+func getValueSpecSize(spec *ast.ValueSpec) (size int32, err error) {
 	switch spec.Type {
 	case token.DATA8:
 		size = 1
@@ -80,14 +80,14 @@ func getValueSpecSize(spec *ast.ValueSpec) (size uint8, err error) {
 	case token.DATA32, token.DATAF:
 		size = 4
 	case token.ARRAY8, token.DATAS:
-		size, err = resolveConstUInt8(spec.Length)
+		size, err = resolveConstInt(spec.Length)
 	case token.ARRAY16:
-		size, err = resolveConstUInt8(spec.Length)
+		size, err = resolveConstInt(spec.Length)
 		if err != nil {
 			size *= 2
 		}
 	case token.ARRAY32, token.ARRAYF:
-		size, err = resolveConstUInt8(spec.Length)
+		size, err = resolveConstInt(spec.Length)
 		if err != nil {
 			size *= 4
 		}
@@ -98,7 +98,7 @@ func getValueSpecSize(spec *ast.ValueSpec) (size uint8, err error) {
 	return
 }
 
-func getParamSpecSize(spec *ast.ParamSpec) (size uint8, err error) {
+func getParamSpecSize(spec *ast.ParamSpec) (size int32, err error) {
 	switch spec.Type {
 	case token.IN_8, token.OUT_8, token.IO_8:
 		size = 1
@@ -107,7 +107,7 @@ func getParamSpecSize(spec *ast.ParamSpec) (size uint8, err error) {
 	case token.IN_32, token.OUT_32, token.IO_32, token.IN_F, token.OUT_F, token.IO_F:
 		size = 4
 	case token.IN_S, token.OUT_S, token.IO_S:
-		size, err = resolveConstUInt8(spec.Length)
+		size, err = resolveConstInt(spec.Length)
 	default:
 		err = errors.New(fmt.Sprintf("Unknown parameter data type '%v'", spec.Type))
 	}
@@ -115,7 +115,7 @@ func getParamSpecSize(spec *ast.ParamSpec) (size uint8, err error) {
 	return
 }
 
-func align(val int32, size uint8) int32 {
+func align(val int32, size int32) int32 {
 	a := int32(size)
 	val += a - 1
 	return a * (val / a)
@@ -558,8 +558,10 @@ func (a *Assembler) Assemble() (Program, error) {
 							instructions = append(instructions, i)
 							switch s.Type {
 							case token.IN_S, token.OUT_S, token.IO_S:
-								if size, err := resolveConstUInt8(s.Length); err == nil {
-									i := emitUint8(size, "param size")
+								if size, err := resolveConstInt(s.Length); err == nil {
+									// TODO: should probably check size here to make sure
+									// we are not overflowing uint8
+									i := emitUint8(uint8(size), "param size")
 									pc += i.size
 									instructions = append(instructions, i)
 								} else {
