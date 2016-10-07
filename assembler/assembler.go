@@ -410,7 +410,7 @@ func emitExpr(expr ast.Expr, globals, locals map[string]int32) (inst *Instructio
 			err = errors.New("Opcode not allowed as argument")
 		case ast.Cmd:
 			cmd := e.Obj.Data.(bytecodes.Command)
-			inst = emitUint8(cmd.Value, "subcommand")
+			inst = emitIntConst(strconv.Itoa(int(cmd.Value)), "subcommand")
 		case ast.Lbl:
 			// label bytes will be filled in later
 			inst = &Instruction{size: 3, Desc: "label", label: e}
