@@ -64,6 +64,30 @@ func resolveConstInt(expr ast.Expr) (value int32, err error) {
 		default:
 			err = errors.New("Expecting constant identifier")
 		}
+	case *ast.ParenExpr:
+		value, err = resolveConstInt(e.X)
+	case *ast.BinaryExpr:
+		var x, y int32
+		x, err = resolveConstInt(e.X)
+		if err != nil {
+			return
+		}
+		y, err = resolveConstInt(e.Y)
+		if err != nil {
+			return
+		}
+		switch e.Op {
+		case token.ADD:
+			value = int32(x + y)
+		case token.SUB:
+			value = int32(x - y)
+		case token.MUL:
+			value = int32(x * y)
+		case token.QUO:
+			value = int32(x / y)
+		default:
+			err = errors.New("Unknown binary operator")
+		}
 	default:
 		err = errors.New("Expecting constant expression")
 	}
@@ -402,8 +426,7 @@ func emitExpr(expr ast.Expr, globals, locals map[string]int32) (inst *Instructio
 			inst = emitStringConst(e.Value[1:len(e.Value)-1], "literal")
 		}
 	case *ast.ParenExpr:
-		// TODO
-		inst = &Instruction{desc: "paren"}
+		inst, err = emitExpr(e.X, globals, locals)
 	case *ast.UnaryExpr:
 		switch e.Op {
 		case token.AT:
@@ -439,6 +462,12 @@ func emitExpr(expr ast.Expr, globals, locals map[string]int32) (inst *Instructio
 			}
 		default:
 			err = errors.New("Unknown unary operator")
+		}
+	case *ast.BinaryExpr:
+		// TODO: should handle types other than int
+		var i int32
+		if i, err = resolveConstInt(e); err == nil {
+			inst = emitIntConst(strconv.Itoa(int(i)), "sum")
 		}
 	}
 
