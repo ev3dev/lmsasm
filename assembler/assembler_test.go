@@ -117,9 +117,10 @@ func TestOfficial(t *testing.T) {
 		for i, b := range b1.Bytes() {
 			if b != b2[i] {
 				t.Errorf("Bad byte at 0x%04x - expecting 0x%02x, but was 0x%02x", i, b2[i], b)
-				break
+				goto noGood
 			}
 		}
 		t.Log("GOOD!")
+	noGood:
 	}
 }
