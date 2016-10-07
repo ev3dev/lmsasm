@@ -211,7 +211,7 @@ func emitUint8(value uint8, desc string) *Instruction {
 	return &Instruction{
 		Bytes: []byte{value},
 		size:  1,
-		desc:  desc,
+		Desc:  desc,
 	}
 }
 
@@ -242,7 +242,7 @@ func emitIntConst(value, qualifier string) *Instruction {
 	return &Instruction{
 		Bytes: b,
 		size:  int32(len(b)),
-		desc:  qualifier + " int",
+		Desc:  qualifier + " int",
 	}
 }
 
@@ -255,7 +255,7 @@ func emitFloatConst(value, qualifier string) *Instruction {
 	return &Instruction{
 		Bytes: b,
 		size:  int32(len(b)),
-		desc:  qualifier + " float",
+		Desc:  qualifier + " float",
 	}
 }
 
@@ -275,7 +275,7 @@ func emitStringConst(value, qualifier string) *Instruction {
 	return &Instruction{
 		Bytes: buf.Bytes(),
 		size:  int32(buf.Len()),
-		desc:  qualifier + " string",
+		Desc:  qualifier + " string",
 	}
 }
 
@@ -285,7 +285,7 @@ func emitEnum(value int32) *Instruction {
 	return &Instruction{
 		Bytes: b,
 		size:  int32(len(b)),
-		desc:  "enum",
+		Desc:  "enum",
 	}
 }
 
@@ -304,7 +304,7 @@ func emitVar(offset int32, global bool) *Instruction {
 	return &Instruction{
 		Bytes: b,
 		size:  int32(len(b)),
-		desc:  desc,
+		Desc:  desc,
 	}
 }
 
@@ -331,7 +331,7 @@ func emitHandle(offset int16, global bool) *Instruction {
 	return &Instruction{
 		Bytes: buf.Bytes(),
 		size:  int32(buf.Len()),
-		desc:  desc + " handle",
+		Desc:  desc + " handle",
 	}
 }
 
@@ -347,7 +347,7 @@ func emitObjCall(obj *ast.ObjDecl) *Instruction {
 	return &Instruction{
 		Bytes: buf.Bytes(),
 		size:  int32(buf.Len()),
-		desc:  "object call",
+		Desc:  "object call",
 	}
 }
 
@@ -413,7 +413,7 @@ func emitExpr(expr ast.Expr, globals, locals map[string]int32) (inst *Instructio
 			inst = emitUint8(cmd.Value, "subcommand")
 		case ast.Lbl:
 			// label bytes will be filled in later
-			inst = &Instruction{size: 3, desc: "label", label: e}
+			inst = &Instruction{size: 3, Desc: "label", label: e}
 		}
 	case *ast.BasicLit:
 		switch e.Kind {
@@ -493,7 +493,7 @@ type Object struct {
 type Instruction struct {
 	Bytes []byte
 	size  int32
-	desc  string // for debug
+	Desc  string // for debug
 	label *ast.Ident
 }
 
