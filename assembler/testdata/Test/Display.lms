@@ -65,7 +65,7 @@ subcall   TestDisplay                                                 //  void T
   DATA8   Run                                                         //
   DATA8   Tmp                                                         //
                                                                       //
-  UI_DRAW(FILLWINDOW,0x55,0,0                                         //    UI_DRAW(FILLWINDOW,0x55,0,0
+  UI_DRAW(FILLWINDOW,0x55,0,0)                                        //    UI_DRAW(FILLWINDOW,0x55,0,0
   UI_DRAW(UPDATE)                                                     //    UI_DRAW(UPDATE)
                                                                       //
   MOVE8_8(1,Run)                                                      //    Run     =  1
@@ -74,14 +74,14 @@ Loop1:                                                                //    {
   UI_BUTTON(SHORTPRESS,LEFT_BUTTON,Tmp)                               //      UI_BUTTON(SHORTPRESS,LEFT_BUTTON,Tmp)
   JR_FALSE(Tmp,NotLeftButton)                                         //      if (Tmp != FALSE)
                                                                       //      {
-  UI_DRAW(FILLWINDOW,0x55,0,0                                         //        UI_DRAW(FILLWINDOW,0x55,0,0
+  UI_DRAW(FILLWINDOW,0x55,0,0)                                        //        UI_DRAW(FILLWINDOW,0x55,0,0
   UI_DRAW(UPDATE)                                                     //        I_DRAW(UPDATE)
 NotLeftButton:                                                        //      }
                                                                       //
   UI_BUTTON(SHORTPRESS,RIGHT_BUTTON,Tmp)                              //      UI_BUTTON(SHORTPRESS,RIGHT_BUTTON,Tmp)
   JR_FALSE(Tmp,NotRightButton)                                        //      if (Tmp != FALSE)
                                                                       //      {
-  UI_DRAW(FILLWINDOW,0xAA,0,0                                         //        UI_DRAW(FILLWINDOW,0xAA,0,0
+  UI_DRAW(FILLWINDOW,0xAA,0,0)                                        //        UI_DRAW(FILLWINDOW,0xAA,0,0
   UI_DRAW(UPDATE)                                                     //        UI_DRAW(UPDATE)
 NotRightButton:                                                       //      }
                                                                       //

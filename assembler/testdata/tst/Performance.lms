@@ -524,7 +524,7 @@ subcall   Test_NOP
   TIMER_READ_US(Start)
 Loop40:
 // TEST ***********************************************
-  NOP
+  NOP()
 // ****************************************************
   ADD32(1,Counter,Counter)
   JR_LT32(Counter,TIMES,Loop40)
@@ -749,7 +749,7 @@ subcall   ShowResult
   UI_FLUSH()
 
   UI_DRAW(SELECT_FONT,TINY_FONT)
-  UI_DRAW(VALUE,FG_COLOR,145,120,Tmp1,6,0);
+  UI_DRAW(VALUE,FG_COLOR,145,120,Tmp1,6,0)
   UI_DRAW(UPDATE)
 }
 

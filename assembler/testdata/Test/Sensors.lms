@@ -184,7 +184,7 @@ NotTooHighY:                                                          //      }
                                                                       //
   JR_FALSE(Update,NoUpdate)                                           //      if (Update)
                                                                       //      {
-  UI_DRAW(FILLWINDOW,0x00,0,0                                         //        UI_DRAW(FILLWINDOW,0x00,0,0
+  UI_DRAW(FILLWINDOW,0x00,0,0)                                        //        UI_DRAW(FILLWINDOW,0x00,0,0
   UI_DRAW(SELECT_FONT,SMALL_FONT)                                     //        UI_DRAW(SELECT_FONT,SMALL_FONT)
   UI_DRAW(TEXT,FG_COLOR,0,1,'Sensors')                                //        UI_DRAW(TEXT,FG_COLOR,0,1,'Sensors')
   UI_DRAW(LINE,FG_COLOR,0,TOPLINE_HEIGHT,LCD_WIDTH,TOPLINE_HEIGHT)    //        UI_DRAW(LINE,FG_COLOR,0,TOPLINE_HEIGHT,LCD_WIDTH,TOPLINE_HEIGHT)
@@ -347,7 +347,7 @@ subcall   SensorShow                                                  //  void S
                                                                       //    do
 Loop:                                                                 //    {
                                                                       //
-  UI_DRAW(FILLWINDOW,0x00,0,0                                         //      UI_DRAW(FILLWINDOW,0x00,0,0
+  UI_DRAW(FILLWINDOW,0x00,0,0)                                        //      UI_DRAW(FILLWINDOW,0x00,0,0
   UI_DRAW(SELECT_FONT,SMALL_FONT)                                     //      UI_DRAW(SELECT_FONT,SMALL_FONT)
   UI_DRAW(TEXT,FG_COLOR,0,1,'Sensors')                                //      UI_DRAW(TEXT,FG_COLOR,0,1,'Sensors')
   UI_DRAW(LINE,FG_COLOR,0,TOPLINE_HEIGHT,LCD_WIDTH,TOPLINE_HEIGHT)    //      UI_DRAW(LINE,FG_COLOR,0,TOPLINE_HEIGHT,LCD_WIDTH,TOPLINE_HEIGHT)

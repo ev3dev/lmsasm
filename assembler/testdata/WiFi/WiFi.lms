@@ -1422,7 +1422,7 @@ subcall   ShowError                                                   //  ShowEr
   SOUND(PLAY,Volume,'GeneralAlarm')                                   //    SOUND(PLAY,Volume,'GeneralAlarm')
                                                                       //
   MOVE8_8(0,State)                                                    //    State   =  0
-  UI_DRAW(NOTIFICATION,FG_COLOR,ERROR_STARTX,ERROR_STARTY,WARNSIGN,=  //
+  UI_DRAW(NOTIFICATION,FG_COLOR,ERROR_STARTX,ERROR_STARTY,WARNSIGN,   //
           ICON_NONE,ICON_NONE,'Error!',State)                         //
 }                                                                     //  }
                                                                       //

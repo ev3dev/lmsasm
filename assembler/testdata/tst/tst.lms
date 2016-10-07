@@ -23,13 +23,13 @@ Loop:
 
   UI_DRAW(UPDATE)
 
-  JR_GT32(Data32,2036,NotLow
+  JR_GT32(Data32,2036,NotLow)
 
   ADDF(Cnt1,1.0F,Cnt1)
 
 NotLow:
 
-  JR_LT32(Data32,2056,NotHigh
+  JR_LT32(Data32,2056,NotHigh)
 
   ADDF(Cnt2,1.0F,Cnt2)
 

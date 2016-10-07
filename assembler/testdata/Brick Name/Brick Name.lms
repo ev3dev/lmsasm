@@ -72,7 +72,7 @@ subcall   ChangeName                                                  //  void C
                                                                       //
   COM_GET(GET_BRICKNAME,BRICKNAMECHARS,String)                        //    COM_GET(GET_BRICKNAME,BRICKNAMECHARS,String)
   MOVE8_8(CHARSET_NAME,State)                                         //    State  =  CHARSET_NAME
-  UI_DRAW(KEYBOARD,FG_COLOR,16,19,ICON_BRICK1,BRICKNAMECHARS,=        //    UI_DRAW(KEYBOARD,FG_COLOR,KEYBOARD_STARTX,KEYBOARD_STARTY,ICON_BRICK1,BRICKNAMECHARS,
+  UI_DRAW(KEYBOARD,FG_COLOR,16,19,ICON_BRICK1,BRICKNAMECHARS,         //    UI_DRAW(KEYBOARD,FG_COLOR,KEYBOARD_STARTX,KEYBOARD_STARTY,ICON_BRICK1,BRICKNAMECHARS,
           'Brick Name',State,String)                                  //            'Brick Name',State,String)
                                                                       //
   JR_FALSE(String,NoString)                                           //    if (String[0])

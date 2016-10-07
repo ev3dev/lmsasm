@@ -86,7 +86,7 @@ Loop:                                                                 //    {
   UI_DRAW(LINE,FG_COLOR,TEST_SEPAR_STARTX,TmpY,TEST_SEPAR_ENDX,TmpY)  //      UI_DRAW(LINE,FG_COLOR,TEST_SEPAR_STARTX,TmpY,TEST_SEPAR_ENDX,TmpY)
                                                                       //
   MOVE16_16(-1,Line)                                                  //      Line  = -1
-  UI_DRAW(TEXTBOX,TEST_TEXT_STARTX,TEST_TEXT_STARTY,TEST_TEXT_SIZEX,= //      UI_DRAW(TEXTBOX,TEST_TEXT_STARTX,TEST_TEXT_STARTY,TEST_TEXT_SIZEX,TEST_TEXT_SIZEY,Textbox,SIZE,DEL_CRLF,Line)
+  UI_DRAW(TEXTBOX,TEST_TEXT_STARTX,TEST_TEXT_STARTY,TEST_TEXT_SIZEX,  //      UI_DRAW(TEXTBOX,TEST_TEXT_STARTX,TEST_TEXT_STARTY,TEST_TEXT_SIZEX,TEST_TEXT_SIZEY,Textbox,SIZE,DEL_CRLF,Line)
          TEST_TEXT_SIZEY,Textbox,SIZE,DEL_CRLF,Line)                  //
                                                                       //
   JR_NEQ16(Line,1,Not1)                                               //      if (Line == 1)
@@ -1589,16 +1589,16 @@ Loop1:                                                                //    {
   UI_BUTTON(SHORTPRESS,LEFT_BUTTON,Tmp)                               //      UI_BUTTON(SHORTPRESS,LEFT_BUTTON,Tmp)
   JR_FALSE(Tmp,NotLeftButton)                                         //      if (Tmp != FALSE)
                                                                       //      {
-  UI_DRAW(FILLWINDOW,0x00,0,0
-  UI_DRAW(FILLWINDOW,0x55,0,0
+  UI_DRAW(FILLWINDOW,0x00,0,0)
+  UI_DRAW(FILLWINDOW,0x55,0,0)
   UI_DRAW(UPDATE)
 NotLeftButton:                                                        //      }
 
   UI_BUTTON(SHORTPRESS,RIGHT_BUTTON,Tmp)                              //      UI_BUTTON(SHORTPRESS,RIGHT_BUTTON,Tmp)
   JR_FALSE(Tmp,NotRightButton)                                        //      if (Tmp != FALSE)
                                                                       //      {
-  UI_DRAW(FILLWINDOW,0x00,0,0
-  UI_DRAW(FILLWINDOW,0xAA,0,0
+  UI_DRAW(FILLWINDOW,0x00,0,0)
+  UI_DRAW(FILLWINDOW,0xAA,0,0)
   UI_DRAW(UPDATE)
 NotRightButton:                                                       //      }
 

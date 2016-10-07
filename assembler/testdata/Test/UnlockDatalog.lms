@@ -67,7 +67,7 @@ subcall   TestLeds                                                    //  void T
   DATA8   Tmp                                                         //
                                                                       //
                                                                       //
-  UI_DRAW(FILLWINDOW,0x00,0,0                                         //    UI_DRAW(FILLWINDOW,0x00,0,0
+  UI_DRAW(FILLWINDOW,0x00,0,0)                                        //    UI_DRAW(FILLWINDOW,0x00,0,0
   UI_DRAW(SELECT_FONT,SMALL_FONT)                                     //    UI_DRAW(SELECT_FONT,SMALL_FONT)
   UI_DRAW(TEXT,FG_COLOR,0,1,'UnlockDatalog')                          //    UI_DRAW(TEXT,FG_COLOR,0,1,'UnlockDatalog')
   UI_DRAW(LINE,FG_COLOR,0,TOPLINE_HEIGHT,LCD_WIDTH,TOPLINE_HEIGHT)    //    UI_DRAW(LINE,FG_COLOR,0,TOPLINE_HEIGHT,LCD_WIDTH,TOPLINE_HEIGHT)
@@ -75,7 +75,7 @@ subcall   TestLeds                                                    //  void T
                                                                       //
   UI_DRAW(UPDATE)                                                     //    UI_DRAW(UPDATE)
                                                                       //
-  FILENAME(UNPACK,'../apps/Brick\ Datalog')                           //    FILENAME(UNPACK,'../apps/Brick\ Datalog')
+  FILENAME(UNPACK,'../apps/Brick Datalog')                            //    FILENAME(UNPACK,'../apps/Brick\ Datalog')
                                                                       //
   UI_BUTTON(FLUSH)                                                    //    UI_BUTTON(FLUSH)
 }                                                                     //  }

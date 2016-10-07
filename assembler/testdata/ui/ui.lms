@@ -487,9 +487,9 @@ subcall   StartupScreen                                               //  void S
   UI_WRITE(LED,LED_GREEN)                                             //    UI_WRITE(LED,LED_GREEN)
                                                                       //
   INFO(GET_VOLUME,Volume)                                             //    INFO(GET_VOLUME,Volume)
-  SOUND_READY                                                         //    SOUND_READY
+  SOUND_READY()                                                       //    SOUND_READY()
   SOUND(PLAY,Volume,'Startup')                                        //    SOUND(PLAY,Volume,'Startup')
-  SOUND_READY                                                         //    SOUND_READY
+  SOUND_READY()                                                       //    SOUND_READY()
                                                                       //
 }                                                                     //  }
                                                                       //

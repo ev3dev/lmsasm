@@ -208,7 +208,7 @@ Logging:                                                              //        
   UI_BUTTON(SHORTPRESS,DOWN_BUTTON,State)                             //          UI_BUTTON(SHORTPRESS,DOWN_BUTTON,State)
   UI_BUTTON(SHORTPRESS,UP_BUTTON,State)                               //          UI_BUTTON(SHORTPRESS,UP_BUTTON,State)
   JR_FALSE(State,NotUpLogging2)                                       //          if (State && !HighSpeedLogging)
-  JR_TRUE(HighSpeedLogging,NotUpLogging2                              //          {
+  JR_TRUE(HighSpeedLogging,NotUpLogging2)                             //          {
   MOVE8_8(IDLE,WantedMode)                                            //            WantedMode  =  IDLE
   MOVE8_8(1,Update)                                                   //            Update      =  1
 NotUpLogging2:                                                        //          }
