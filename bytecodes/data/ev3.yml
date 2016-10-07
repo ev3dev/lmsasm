@@ -842,13 +842,36 @@ enums:
       HW_WIFI:
         value: 3
 
-  LMS_ENCRYPT: &LMS_ENCRYPT
+  # TODO: this enum is renamed to LMS_ENCRYPT, but having a separate entry would break the reference
+  ENCRYPT: &ENCRYPT
     desc: Encryption Types
     members:
+      ENCRYPT_NONE:
+        value: 0
+        support:
+          official: yes
+          xtended: no
+          compat: no
+      ENCRYPT_WPA2:
+        value: 1
+        support:
+          official: yes
+          xtended: no
+          compat: no
       LMS_ENCRYPT_NONE:
         value: 0
+        support:
+          official: no
+          xtended: yes
+          compat: yes
+        remarks: renamed from ENCRYPT_NONE
       LMS_ENCRYPT_WPA2:
         value: 1
+        support:
+          official: no
+          xtended: yes
+          compat: yes
+        remarks: renamed from ENCRYPT_WPA2
 
   COLOR: &COLOR
     members:
@@ -896,6 +919,8 @@ enums:
         value: 0x40
       WARNING_BUSY:
         value: 0x80
+      WARNINGS:
+        value: 0x3F
 
   OBJSTAT: &OBJSTAT
     desc: Values used to describe an object's status
@@ -8730,7 +8755,7 @@ ops:
                 desc: Encryption type
                 type: PAR8
                 dir: out
-                enum: *LMS_ENCRYPT
+                enum: *ENCRYPT
 
           CONNEC_ITEMS:
             value: 17
@@ -8785,7 +8810,7 @@ ops:
                 name: "TYPE"
                 desc: Encryption type
                 type: PAR8
-                enum: *LMS_ENCRYPT
+                enum: *ENCRYPT
                 dir: out
 
           GET_MODE2:
