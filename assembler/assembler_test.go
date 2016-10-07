@@ -5,8 +5,14 @@
 package assembler
 
 import (
+	"bytes"
 	"github.com/ev3dev/lmsasm/ast"
+	"github.com/ev3dev/lmsasm/bytecodes"
+	"github.com/ev3dev/lmsasm/parser"
 	"github.com/ev3dev/lmsasm/token"
+	"io/ioutil"
+	"path/filepath"
+	"strings"
 	"testing"
 )
 
@@ -67,5 +73,53 @@ func TestBasicLit(t *testing.T) {
 		} else {
 			t.Errorf("bad byte length for '%v': expecting %v but got %v", l.Value, len(r.Bytes), len(inst.Bytes))
 		}
+	}
+}
+
+func TestOfficial(t *testing.T) {
+	lmsFiles, err := filepath.Glob("testdata/*/*.lms")
+	if err != nil {
+		t.Fatal("Failed to glob files:", err)
+	}
+	s, err := bytecodes.Scope("ev3", "Official")
+	if err != nil {
+		t.Fatal("Failed to read bytecodes:", err)
+	}
+	for _, n := range lmsFiles {
+		t.Log("Parsing", n)
+		fs := token.NewFileSet()
+		f, err := parser.ParseFile(fs, n, nil, s, 0)
+		if err != nil {
+			t.Error("Failed to parse file:", err)
+			continue
+		}
+		t.Log("Assembling", n)
+		a := NewAssembler(fs, f)
+		p, err := a.Assemble()
+		if err != nil {
+			t.Error("Failed to assemble file:", err)
+			continue
+		}
+		b1 := new(bytes.Buffer)
+		if err = p.Write(b1); err != nil {
+			t.Error("Failed to write bytes:", err)
+			continue
+		}
+		b2, err := ioutil.ReadFile(strings.Replace(n, ".lms", ".rbf", 1))
+		if err != nil {
+			t.Error("Failed to read .rbf file:", err)
+			continue
+		}
+		if b1.Len() != len(b2) {
+			t.Error("Bad size")
+			continue
+		}
+		for i, b := range b1.Bytes() {
+			if b != b2[i] {
+				t.Errorf("Bad byte at 0x%04x - expecting 0x%02x, but was 0x%02x", i, b2[i], b)
+				break
+			}
+		}
+		t.Log("GOOD!")
 	}
 }
