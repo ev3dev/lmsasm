@@ -338,7 +338,7 @@ func emitHandle(offset int16, global bool) *Instruction {
 func emitObjCall(obj *ast.ObjDecl) *Instruction {
 	buf := new(bytes.Buffer)
 	if obj.Tok != token.SUBCALL {
-		buf.WriteByte(byte(obj.Index))
+		buf.WriteByte(byte(obj.Index + 1))
 	} else {
 		buf.Write(lcBytes(0, obj.Index+1))
 		buf.WriteByte(obj.ParamCount)
