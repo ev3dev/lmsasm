@@ -104,7 +104,7 @@ func getParamSpecSize(spec *ast.ParamSpec) (size uint8, err error) {
 		size = 1
 	case token.IN_16, token.OUT_16, token.IO_16:
 		size = 2
-	case token.IN_32, token.OUT_32, token.IO_32:
+	case token.IN_32, token.OUT_32, token.IO_32, token.IN_F, token.OUT_F, token.IO_F:
 		size = 4
 	case token.IN_S, token.OUT_S, token.IO_S:
 		size, err = resolveConstUInt8(spec.Length)
