@@ -75,7 +75,7 @@ subcall   TestLeds                                                    //  void T
                                                                       //
   UI_DRAW(UPDATE)                                                     //    UI_DRAW(UPDATE)
                                                                       //
-  FILENAME(UNPACK,'../apps/Brick Datalog')                            //    FILENAME(UNPACK,'../apps/Brick\ Datalog')
+  FILENAME(UNPACK,'../apps/Brick\\ Datalog')                          //    FILENAME(UNPACK,'../apps/Brick\ Datalog')
                                                                       //
   UI_BUTTON(FLUSH)                                                    //    UI_BUTTON(FLUSH)
 }                                                                     //  }

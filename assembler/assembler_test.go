@@ -49,6 +49,7 @@ var literals = []literalInfo{
 	{&ast.BasicLit{Kind: token.STRING, Value: "\\q"}, []byte{0x80, 0x27, 0x00}},
 	{&ast.BasicLit{Kind: token.STRING, Value: "\\r"}, []byte{0x80, 0x0d, 0x00}},
 	{&ast.BasicLit{Kind: token.STRING, Value: "\\t"}, []byte{0x80, 0x09, 0x00}},
+	{&ast.BasicLit{Kind: token.STRING, Value: "\\\\"}, []byte{0x80, 0x5c, 0x00}},
 	{&ast.BasicLit{Kind: token.STRING, Value: "\\t\\t\\t\\t"}, []byte{0x80, 0x09, 0x09, 0x09, 0x09, 0x00}},
 }
 

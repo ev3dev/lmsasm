@@ -269,6 +269,7 @@ func emitStringConst(value, qualifier string) *Instruction {
 	s = strings.Replace(s, "\\q", "'", -1)
 	s = strings.Replace(s, "\\r", "\r", -1)
 	s = strings.Replace(s, "\\t", "\t", -1)
+	s = strings.Replace(s, "\\\\", "\\", -1)
 	buf.WriteString(s)
 	buf.WriteByte(0) // null terminator
 
