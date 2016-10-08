@@ -235,9 +235,16 @@ func lcBytes(flag byte, i int32) []byte {
 }
 
 func emitIntConst(value, qualifier string) *Instruction {
-	i, _ := strconv.ParseInt(value, 0, 32)
-	// TODO: check for error
+	i, err := strconv.ParseInt(value, 0, 32)
 	b := lcBytes(PRIMPAR_CONST, int32(i))
+	if err != nil {
+		// TODO: uint32 should not be allowed in lms source code. However,
+		// SelfTest/Test2020.lms from the official source code uses 0xFFFFFFFF,
+		// so allowing it for now.
+		u, _ := strconv.ParseUint(value, 0, 32)
+		// TODO: should check and return error here
+		binary.LittleEndian.PutUint32(b[1:], uint32(u))
+	}
 
 	return &Instruction{
 		Bytes: b,
