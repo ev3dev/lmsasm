@@ -90,11 +90,11 @@ func (s *Support) Check(v string) bool {
 		return true // default value when "support:" is not specified in yaml
 	}
 	switch v {
-	case "Official":
+	case "official":
 		return s.Official
-	case "Xtended":
+	case "xtended":
 		return s.Xtended
-	case "Compat":
+	case "compat":
 		return s.Compat
 	default:
 		panic(fmt.Sprintf("Bad support version name %v", v))

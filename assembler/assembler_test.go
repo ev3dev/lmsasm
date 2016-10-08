@@ -82,7 +82,7 @@ func TestOfficial(t *testing.T) {
 	if err != nil {
 		t.Fatal("Failed to glob files:", err)
 	}
-	s, err := bytecodes.Scope("ev3", "Official")
+	s, err := bytecodes.Scope("ev3", "official")
 	if err != nil {
 		t.Fatal("Failed to read bytecodes:", err)
 	}
