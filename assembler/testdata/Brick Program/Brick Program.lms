@@ -366,7 +366,7 @@ subcall   InsertBlockInStream                                         //  Insert
   OUT_8   Status                                                      //
                                                                       //
   DATA8   Align                                                       //
-  DATA16  Pointer                                                     //
+  DATA16  Pointer2                                                    //
   DATA32  Index1                                                      //
   DATA32  Index2                                                      //
   DATA16  Pointer                                                     //
@@ -1113,11 +1113,6 @@ NoName:                                                               //    }
                                                                       //
 // FileBlock *******************************************************************************************
                                                                       //
-define    FILEBLOCK_WIDTH           62                                //
-define    FILEBLOCK_PAR1_MIN        1                                 //  Save
-define    FILEBLOCK_PAR1_DEFAULT    2                                 //
-define    FILEBLOCK_PAR1_MAX        2                                 //  Load
-                                                                      //
 subcall   FileBlock                                                   //  FileBlock
 {                                                                     //  {
   IN_16   Function                                                    //    Function
@@ -1597,8 +1592,6 @@ EndInsert:                                                            //
                                                                       //
                                                                       //
 // StartBlock ******************************************************************************************
-                                                                      //
-define    STARTBLOCK_WIDTH      24                                    //                                                                      
                                                                       //
 subcall   StartBlock                                                  //  StartBlock
 {                                                                     //  {
