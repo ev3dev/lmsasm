@@ -189,7 +189,7 @@ func emitParamType(typ token.ParamType) *Instruction {
 	case "OUT_F":
 		v = 0x43
 	case "OUT_S":
-		v = 0x82
+		v = 0x44
 	case "IO_8":
 		v = 0xc0
 	case "IO_16":
