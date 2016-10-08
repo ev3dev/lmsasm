@@ -89,7 +89,7 @@ func TestOfficial(t *testing.T) {
 	for _, n := range lmsFiles {
 		t.Log("Parsing", n)
 		fs := token.NewFileSet()
-		f, err := parser.ParseFile(fs, n, nil, s, 0)
+		f, err := parser.ParseFile(fs, n, nil, s, parser.DeclarationErrors)
 		if err != nil {
 			t.Error("Failed to parse file:", err)
 			continue
