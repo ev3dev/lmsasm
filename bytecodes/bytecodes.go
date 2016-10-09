@@ -152,6 +152,9 @@ func Scope(name, support string) (*ast.Scope, error) {
 		s.Insert(o)
 		for _, p := range v.Params {
 			for k, v := range p.Commands {
+				if !v.Support.Check(support) {
+					continue
+				}
 				o := ast.NewObj(ast.Cmd, k)
 				o.Decl = s
 				o.Data = v
