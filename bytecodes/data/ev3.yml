@@ -7905,6 +7905,29 @@ ops:
                 desc: Total number of elements in array
                 type: PAR32
                 dir: out
+            support:
+              official: yes
+              xtended: no
+              compat: no
+
+          SET_SIZE:
+            value: 12
+            params:
+              -
+                name: "HANDLE"
+                desc: Array handle
+                type: PAR16
+                dir: in
+              -
+                name: "ELEMENTS"
+                desc: Total number of elements in array
+                type: PAR32
+                dir: out
+            support:
+              official: no
+              xtended: yes
+              compat: yes
+            remarks: Renamed from SIZE
 
           READ_CONTENT:
             value: 13
