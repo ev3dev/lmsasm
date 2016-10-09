@@ -8562,6 +8562,29 @@ ops:
                 dir: out
             remarks: For now "1234" is returned
 
+          LIST_STATE:
+            desc: >
+              Gets a list state value. This can be compared to previous values
+              to determine if items are added or removed from a list since the
+              last call.
+            value: 7
+            params:
+              -
+                name: "HARDWARE"
+                desc: Hardware Transport Layer
+                type: PAR8
+                dir: in
+                enum: *HWTYPE
+              -
+                name: "STATE"
+                desc: Value that represents the current state
+                type: PAR16
+                dir: out
+            support:
+              official: no
+              xtended: no
+              compat: yes
+
           SEARCH_ITEMS:
             desc: Get number of item from search.
             value: 8
