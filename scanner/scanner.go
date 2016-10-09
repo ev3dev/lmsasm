@@ -424,7 +424,7 @@ func (s *Scanner) Scan() token.Token {
 
 redo:
 	// skip white space
-	for whitespace&(1<<uint(ch)) != 0 {
+	for whitespace&(uint64(1)<<uint(ch)) != 0 {
 		ch = s.next()
 	}
 
