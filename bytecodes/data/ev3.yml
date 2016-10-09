@@ -7663,6 +7663,24 @@ ops:
                 desc: Array handle
                 type: PAR16
                 dir: in
+            support:
+              official: yes
+              xtended: no
+              compat: no
+
+          DESTROY:
+            value: 0
+            params:
+              -
+                name: "HANDLE"
+                desc: Array handle
+                type: PAR16
+                dir: in
+            support:
+              official: no
+              xtended: yes
+              compat: yes
+            remarks: renamed from DELETE
 
           CREATE8:
             value: 1
