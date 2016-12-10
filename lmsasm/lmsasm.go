@@ -15,7 +15,7 @@ import (
 )
 
 func main() {
-	support := flag.String("support", "official",
+	support := flag.String("support", string(bytecodes.SupportTypeOfficial),
 		"Supported bytecode definitions to use. 'official', 'xtended' or 'compat'")
 	output := flag.String("output", "out.rbf", "Output file name.")
 	flag.Parse()
@@ -26,7 +26,7 @@ func main() {
 	filename := flag.Arg(0)
 
 	fs := new(token.FileSet)
-	s, err := bytecodes.Scope("ev3", *support)
+	s, err := bytecodes.Scope("ev3", bytecodes.SupportType(*support))
 	if err != nil {
 		log.Fatal("Error reading bytecodes:", err)
 	}
