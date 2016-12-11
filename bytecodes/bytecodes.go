@@ -70,6 +70,7 @@ type Command struct {
 type Enum struct {
 	Desc    string ",omitempty"
 	Members map[string]EnumMember
+	Support *Support ",omitempty"
 	Remarks string ",omitempty"
 }
 
