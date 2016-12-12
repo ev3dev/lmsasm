@@ -502,6 +502,8 @@ enums:
         value: 15
       SICON_USB:
         value: 21
+      S_ICON_NOS:
+        value: 22
 
   N_ICON_NO: &N_ICON_NO
     members:
@@ -573,6 +575,8 @@ enums:
         value: 33
       ICON_BRICK1:
         value: 34
+      N_ICON_NOS:
+        value: 35
 
   L_ICON_NO: &L_ICON_NO
     members:
@@ -628,6 +632,8 @@ enums:
         value: 24
       WARN_MEMORY:
         value: 27
+      L_ICON_NOS:
+        value: 28
 
   M_ICON_NO: &M_ICON_NO
     members:
@@ -657,6 +663,8 @@ enums:
         value: 9
       ICON_XED:
         value: 10
+      M_ICON_NOS:
+        value: 11
 
   A_ICON_NO: &A_ICON_NO
     members:
@@ -664,6 +672,8 @@ enums:
         value: 1
       ICON_RIGHT:
         value: 2
+      A_ICON_NOS:
+        value: 3
 
   BTTYPE: &BTTYPE
     desc: Bluetooth Device Types
@@ -680,6 +690,8 @@ enums:
       BTTYPE_UNKNOWN:
         desc: Bluetooth type UNKNOWN
         value: 6
+      BTTYPES:
+        value: 7
 
   LEDPATTERN: &LEDPATTERN
     desc: LED Pattern
@@ -704,6 +716,8 @@ enums:
         value: 8
       LED_ORANGE_PULSE:
         value: 9
+      LEDPATTERNS:
+        value: 10
 
   LEDTYPE: &LEDTYPE
     members:
@@ -746,6 +760,8 @@ enums:
         value: 0x10
       TYPE_USBSTICK:
         value: 0x20
+      FILETYPES:
+        value: 0x21
       TYPE_RESTART_BROWSER:
         value: -1
       TYPE_REFRESH_BROWSER:
@@ -803,6 +819,8 @@ enums:
       DATA_SI:
         desc: SI unit
         value: 0x13
+      DATA_FORMATS:
+        value: 0x14
 
   DEL: &DEL
     desc: Delimiter codes used to define how data is separated in files
@@ -831,6 +849,8 @@ enums:
       DEL_CRLF:
         desc: Use return+line feed as delimiter
         value: 7
+      DELS:
+        value: 8
 
   HWTYPE: &HWTYPE
     desc: Hardware Transport Layer
@@ -841,6 +861,8 @@ enums:
         value: 2
       HW_WIFI:
         value: 3
+      HWTYPES:
+        value: 4
 
   ENCRYPT: &ENCRYPT
     desc: Encryption Types
@@ -849,6 +871,8 @@ enums:
         value: 0
       ENCRYPT_WPA2:
         value: 1
+      ENCRYPTS:
+        value: 2
     support:
       official: yes
       xtended: no
@@ -863,6 +887,8 @@ enums:
       LMS_ENCRYPT_WPA2:
         value: 1
         remarks: renamed from ENCRYPT_WPA2
+      LMS_ENCRYPTS:
+        value: 2
     support:
       official: no
       xtended: yes
@@ -879,6 +905,8 @@ enums:
         value: 2
       BLANK:
         value: 3
+      COLORS:
+        value: 4
 
   NXTCOLOR: &NXTCOLOR
     desc: Constants related to color sensor value using Color sensor as color detector
@@ -946,6 +974,8 @@ enums:
       DEVCMD_CHANNEL:
         value: 0x12
         desc: UART device channel (IR seeker)
+      DEVCMDS:
+        value: 0x13
 
 ops:
   # VM
