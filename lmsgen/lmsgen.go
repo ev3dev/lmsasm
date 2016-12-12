@@ -61,9 +61,9 @@ func main() {
 		outFile = os.Stdout
 	} else {
 		var err error
-		outFile, err = os.Open(*out)
+		outFile, err = os.Create(*out)
 		if err != nil {
-			log.Fatalln("Could not open output file:", err)
+			log.Fatalln("Could not create output file:", err)
 		}
 		defer outFile.Close()
 	}
