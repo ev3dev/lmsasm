@@ -79,7 +79,7 @@ func main() {
 	if err != nil {
 		log.Fatalln("Error reading bytecodes:", err)
 	}
-	tmpl := template.Must(template.New("test").Funcs(funcs).Parse(string(text)))
+	tmpl := template.Must(template.New(*in).Funcs(funcs).Parse(string(text)))
 	err = tmpl.Execute(outFile, defs)
 	if err != nil {
 		log.Fatalln("Error parsing template:", err)
