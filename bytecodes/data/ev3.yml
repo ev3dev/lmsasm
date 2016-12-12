@@ -450,17 +450,17 @@ enums:
     desc: Icon Types Avaliable
     members:
       NORMAL_ICON:
-        desc: "24x12_Files_Folders_Settings.bmp"
+        desc: 24x12_Files_Folders_Settings.bmp
         value: 0
       SMALL_ICON:
         value: 1
       LARGE_ICON:
-        desc: "24x22_Yes_No_OFF_FILEOps.bmp"
+        desc: 24x22_Yes_No_OFF_FILEOps.bmp
         value: 2
       MENU_ICON:
         value: 3
       ARROW_ICON:
-        desc: "8x12_miniArrows.bmp"
+        desc: 8x12_miniArrows.bmp
         value: 4
       ICONTYPES:
         desc: Maximum icon types supported by the VM
