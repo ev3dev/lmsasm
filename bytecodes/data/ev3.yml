@@ -9316,6 +9316,537 @@ ops:
         dir: in
     remarks: Dispatch status can return FAILBREAK
 
+  # Extended opcodes
+
+  INPUT_SET_CONN:
+    desc: Set the connection type for a specific port
+    value: 0xE0
+    params:
+      -
+        name: "LAYER"
+        desc: Chain layer number [0..3]
+        type: PAR8
+        dir: in
+      -
+        name: "NO"
+        desc: Port number
+        type: PAR8
+        dir: in
+      -
+        name: "CONN"
+        desc: Connection type (CONN_NXT_IIC, CONN_NXT_DUMB or CONN_INPUT_DUMB)
+        type: PAR8
+        dir: in
+        enum: *CONN
+    support:
+      official: no
+      xtended: yes
+      compat: yes
+    remarks: Note that this won't do much if the auto-id has not been disabled
+
+  INPUT_IIC_READ:
+    desc: Read I2C data from specified port
+    value: 0xE1
+    params:
+      -
+        name: "LAYER"
+        desc: Chain layer number [0..3]
+        type: PAR8
+        dir: in
+      -
+        name: "NO"
+        desc: Port number
+        type: PAR8
+        dir: in
+      -
+        name: "RDLNG"
+        desc: No of bytes to read
+        type: PAR8
+        dir: in
+      -
+        name: "RDDATA"
+        desc: DATA8 array (handle) to read into
+        type: PAR8
+        dir: out
+      -
+        name: "RESULT"
+        desc: Write/read result (OK, FAIL, BUSY, STOP)
+        type: PAR8
+        dir: out
+        enum: *RESULT
+    support:
+      official: no
+      xtended: yes
+      compat: yes
+
+  INPUT_IIC_STATUS:
+    desc: Read I2C status of specified port
+    value: 0xE2
+    params:
+      -
+        name: "LAYER"
+        desc: Chain layer number [0..3]
+        type: PAR8
+        dir: in
+      -
+        name: "NO"
+        desc: Port number
+        type: PAR8
+        dir: in
+      -
+        name: "RESULT"
+        desc: Current I2C bus status (OK, FAIL, BUSY, STOP)
+        type: PAR8
+        dir: out
+        enum: *RESULT
+    support:
+      official: no
+      xtended: yes
+      compat: yes
+
+  INPUT_IIC_WRITE:
+    desc: Write I2C data to specified port
+    value: 0xE3
+    params:
+      -
+        name: "LAYER"
+        desc: Chain layer number [0..3]
+        type: PAR8
+        dir: in
+      -
+        name: "NO"
+        desc: Port number
+        type: PAR8
+        dir: in
+      -
+        name: "WRLNG"
+        desc: No of bytes to write
+        type: PAR8
+        dir: in
+      -
+        name: "WRDATA"
+        desc: DATA8 array (handle) of data to write
+        type: PAR8
+        dir: in
+      -
+        name: "RDLNG"
+        desc: No of bytes to read
+        type: PAR8
+        dir: in
+      -
+        name: "RESULT"
+        desc: Write/read result (OK, FAIL, BUSY, STOP)
+        type: PAR8
+        dir: out
+        enum: *RESULT
+    support:
+      official: no
+      xtended: yes
+      compat: yes
+
+  INPUT_SET_AUTOID:
+    desc: Enabled or disable auto-id for a specific sensor port
+    value: 0xE4
+    params:
+      -
+        name: "LAYER"
+        desc: Chain layer number [0..3]
+        type: PAR8
+        dir: in
+      -
+        name: "NO"
+        desc: Port number
+        type: PAR8
+        dir: in
+      -
+        name: "ENABLE"
+        desc: Boolean (0 disabled, 1 enable)
+        type: PAR8
+        dir: in
+    support:
+      official: no
+      xtended: yes
+      compat: yes
+
+  MAILBOX_SIZE:
+    desc: Returns the size of the mailbox.
+    value: 0xE5
+    params:
+      -
+        name: "NO"
+        desc: Reference ID mailbox number
+        type: PAR8
+        dir: in
+      -
+        name: "SIZE"
+        desc: Size in bytes of the contents of mailbox NO
+        type: PAR8
+        dir: out
+    support:
+      official: no
+      xtended: yes
+      compat: yes
+
+  FILE_MD5SUM:
+    desc: Get md5 sum of a file
+    value: 0xE6
+    params:
+      -
+        name: "NAME"
+        desc: First character in file name (character string)
+        type: PAR8
+        dir: in
+      -
+        name: "MD5SUM"
+        desc: First byte in md5 sum (byte array)
+        type: PAR8
+        dir: out
+      -
+        name: "SUCCESS"
+        desc: Success flag (0 = no, 1 = yes)
+        type: PAR8
+        dir: out
+    support:
+      official: no
+      xtended: yes
+      compat: yes
+    remarks: Dispatch status unchanged
+
+  # For the 3rd party VMs
+
+  DYNLOAD_VMLOAD:
+    desc: Load the selected VM
+    value: 0xF0
+    params:
+      -
+        name: "VMINDEX"
+        desc: VM Index, Robotc = 0, Labview = 1
+        type: PAR8
+        dir: in
+      -
+        name: "RESULT"
+        desc: OK if VM loaded ok FAIL if it did not.
+        type: PAR8
+        dir: out
+    support:
+      official: no
+      xtended: yes
+      compat: yes
+
+  DYNLOAD_VMEXIT:
+    desc: Clean up the dynamic VM loading system
+    value: 0xF1
+    params: []
+    remarks: Calls the VM's exit_vm() function to tidy up
+    support:
+      official: no
+      xtended: yes
+      compat: yes
+
+  DYNLOAD_ENTRY_0:
+    desc: Execute Entry Point function 0 in Third Party VM
+    value: 0xF2
+    params:
+      -
+        name: "CMD"
+        desc: Sub command to be executed
+        type: PAR8
+        dir: in
+      -
+        name: "LENGTH"
+        desc: Amount of data passed to this opcode
+        type: PAR8
+        dir: in
+      -
+        name: "LENGTH"
+        desc: Amount of data returned
+        type: PAR16
+        dir: out
+      -
+        name: "VALUE"
+        desc: Data from opcode
+        type: PARV
+        dir: out
+    support:
+      official: no
+      xtended: yes
+      compat: yes
+
+  DYNLOAD_ENTRY_1:
+    desc: Execute Entry Point function 1 in Third Party VM
+    value: 0xF3
+    params:
+      -
+        name: "CMD"
+        desc: Sub command to be executed
+        type: PAR8
+        dir: in
+      -
+        name: "LENGTH"
+        desc: Amount of data passed to this opcode
+        type: PAR8
+        dir: in
+      -
+        name: "LENGTH"
+        desc: Amount of data returned
+        type: PAR16
+        dir: out
+      -
+        name: "VALUE"
+        desc: Data from opcode
+        type: PARV
+        dir: out
+    support:
+      official: no
+      xtended: yes
+      compat: yes
+
+  DYNLOAD_ENTRY_2:
+    desc: Execute Entry Point function 2 in Third Party VM
+    value: 0xF4
+    params:
+      -
+        name: "CMD"
+        desc: Sub command to be executed
+        type: PAR8
+        dir: in
+      -
+        name: "LENGTH"
+        desc: Amount of data passed to this opcode
+        type: PAR8
+        dir: in
+      -
+        name: "LENGTH"
+        desc: Amount of data returned
+        type: PAR16
+        dir: out
+      -
+        name: "VALUE"
+        desc: Data from opcode
+        type: PARV
+        dir: out
+    support:
+      official: no
+      xtended: yes
+      compat: yes
+
+  DYNLOAD_ENTRY_3:
+    desc: Execute Entry Point function 3 in Third Party VM
+    value: 0xF5
+    params:
+      -
+        name: "CMD"
+        desc: Sub command to be executed
+        type: PAR8
+        dir: in
+      -
+        name: "LENGTH"
+        desc: Amount of data passed to this opcode
+        type: PAR8
+        dir: in
+      -
+        name: "LENGTH"
+        desc: Amount of data returned
+        type: PAR16
+        dir: out
+      -
+        name: "VALUE"
+        desc: Data from opcode
+        type: PARV
+        dir: out
+    support:
+      official: no
+      xtended: yes
+      compat: yes
+
+  DYNLOAD_ENTRY_4:
+    desc: Execute Entry Point function 4 in Third Party VM
+    value: 0xF6
+    params:
+      -
+        name: "CMD"
+        desc: Sub command to be executed
+        type: PAR8
+        dir: in
+      -
+        name: "LENGTH"
+        desc: Amount of data passed to this opcode
+        type: PAR8
+        dir: in
+      -
+        name: "LENGTH"
+        desc: Amount of data returned
+        type: PAR16
+        dir: out
+      -
+        name: "VALUE"
+        desc: Data from opcode
+        type: PARV
+        dir: out
+    support:
+      official: no
+      xtended: yes
+      compat: yes
+
+  DYNLOAD_ENTRY_5:
+    desc: Execute Entry Point function 5 in Third Party VM
+    value: 0xF7
+    params:
+      -
+        name: "CMD"
+        desc: Sub command to be executed
+        type: PAR8
+        dir: in
+      -
+        name: "LENGTH"
+        desc: Amount of data passed to this opcode
+        type: PAR8
+        dir: in
+      -
+        name: "LENGTH"
+        desc: Amount of data returned
+        type: PAR16
+        dir: out
+      -
+        name: "VALUE"
+        desc: Data from opcode
+        type: PARV
+        dir: out
+    support:
+      official: no
+      xtended: yes
+      compat: yes
+
+  DYNLOAD_ENTRY_6:
+    desc: Execute Entry Point function 6 in Third Party VM
+    value: 0xF8
+    params:
+      -
+        name: "CMD"
+        desc: Sub command to be executed
+        type: PAR8
+        dir: in
+      -
+        name: "LENGTH"
+        desc: Amount of data passed to this opcode
+        type: PAR8
+        dir: in
+      -
+        name: "LENGTH"
+        desc: Amount of data returned
+        type: PAR16
+        dir: out
+      -
+        name: "VALUE"
+        desc: Data from opcode
+        type: PARV
+        dir: out
+    support:
+      official: no
+      xtended: yes
+      compat: yes
+
+  DYNLOAD_ENTRY_7:
+    desc: Execute Entry Point function 7 in Third Party VM
+    value: 0xF9
+    params:
+      -
+        name: "CMD"
+        desc: Sub command to be executed
+        type: PAR8
+        dir: in
+      -
+        name: "LENGTH"
+        desc: Amount of data passed to this opcode
+        type: PAR8
+        dir: in
+      -
+        name: "LENGTH"
+        desc: Amount of data returned
+        type: PAR16
+        dir: out
+      -
+        name: "VALUE"
+        desc: Data from opcode
+        type: PARV
+        dir: out
+    support:
+      official: no
+      xtended: yes
+      compat: yes
+
+  DYNLOAD_ENTRY_8:
+    desc: Execute Entry Point function 8 in Third Party VM
+    value: 0xFA
+    params:
+      -
+        name: "CMD"
+        desc: Sub command to be executed
+        type: PAR8
+        dir: in
+      -
+        name: "LENGTH"
+        desc: Amount of data passed to this opcode
+        type: PAR8
+        dir: in
+      -
+        name: "LENGTH"
+        desc: Amount of data returned
+        type: PAR16
+        dir: out
+      -
+        name: "VALUE"
+        desc: Data from opcode
+        type: PARV
+        dir: out
+    support:
+      official: no
+      xtended: yes
+      compat: yes
+
+  DYNLOAD_ENTRY_9:
+    desc: Execute Entry Point function 9 in Third Party VM
+    value: 0xFB
+    params:
+      -
+        name: "CMD"
+        desc: Sub command to be executed
+        type: PAR8
+        dir: in
+      -
+        name: "LENGTH"
+        desc: Amount of data passed to this opcode
+        type: PAR8
+        dir: in
+      -
+        name: "LENGTH"
+        desc: Amount of data returned
+        type: PAR16
+        dir: out
+      -
+        name: "VALUE"
+        desc: Data from opcode
+        type: PARV
+        dir: out
+    support:
+      official: no
+      xtended: yes
+      compat: yes
+
+  DYNLOAD_GET_VM:
+    desc: Get the index of the currently loaded VM
+    value: 0xFC
+    params:
+      -
+        name: "RESULT"
+        desc: VM Index, Robotc = 0, Labview = 1, -1 for no loaded VM
+        type: PAR8
+        dir: out
+    support:
+      official: no
+      xtended: yes
+      compat: yes
+
   # TST
 
   TST:
