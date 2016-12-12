@@ -842,36 +842,32 @@ enums:
       HW_WIFI:
         value: 3
 
-  # TODO: this enum is renamed to LMS_ENCRYPT, but having a separate entry would break the reference
   ENCRYPT: &ENCRYPT
     desc: Encryption Types
     members:
       ENCRYPT_NONE:
         value: 0
-        support:
-          official: yes
-          xtended: no
-          compat: no
       ENCRYPT_WPA2:
         value: 1
-        support:
-          official: yes
-          xtended: no
-          compat: no
+    support:
+      official: yes
+      xtended: no
+      compat: yes
+
+  LMS_ENCRYPT: &LMS_ENCRYPT
+    desc: Encryption Types
+    members:
       LMS_ENCRYPT_NONE:
         value: 0
-        support:
-          official: no
-          xtended: yes
-          compat: yes
         remarks: renamed from ENCRYPT_NONE
       LMS_ENCRYPT_WPA2:
         value: 1
-        support:
-          official: no
-          xtended: yes
-          compat: yes
         remarks: renamed from ENCRYPT_WPA2
+    support:
+      official: no
+      xtended: yes
+      compat: no
+    remarks: renamed from ENCRYPT
 
   COLOR: &COLOR
     members:
