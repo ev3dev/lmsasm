@@ -971,6 +971,11 @@ enums:
       DEVCMD_FIRE:
         value: 0x11
         desc: UART device fire   (ultrasonic)
+        support:
+          official: yes
+          xtended: yes
+          compat: no
+        remarks: Value is duplicate of DEVCMD_RESET.
       DEVCMD_CHANNEL:
         value: 0x12
         desc: UART device channel (IR seeker)
