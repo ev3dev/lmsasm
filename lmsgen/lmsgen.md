@@ -31,25 +31,37 @@ format. The data passed to the template is the bytecode definitions from ev3.yml
 
 There are also some helper functions provided in addition to the built-in functions:
 
+* **opLookup** Gets a map of opcodes values to opcode names. This can be used
+  to iterate opcodes ordered by value.
+
+* **cmdLookup** Gets a map of command (subcode) values to command names. This
+  can be used to iterate commands ordered by value.
+
+* **enumLookup** Gets a map of enum values to member names. This can be used
+  to iterate enums ordered by value.
+
 * **isString** Can be used to test if a member of `.Defines` is a string.
+
 * **official** Can be passed to `$x.Support.Check` to test if an item is
   supported in the official LEGO firmware.
+
 * **xtended** Can be passed to `$x.Support.Check` to test if an item is
   supported in the RobotC/LabView firmware.
+
 * **compat** Can be passed to `$x.Support.Check` to test if an item is
   supported in the ev3dev lms2012-compat VM.
 
-Here is an example that prints C/C++ `#define`s from the data.
+Here is an example that prints C/C++ `enums`s from the data.
 
-    {{range $k, $v := .Defines}}
-    {{- if $v.Support.Check official}}
-    #define vm{{$k}} {{if isString $v.Value -}}
-        "{{$v.Value}}"
-    {{- else -}}
-        ({{$v.Value}})
-    {{- end -}}
-    {{with $v.Desc}} // {{.}}{{end}}
+    {{range $n, $e := .Enums}}
+    {{- if $e.Support.Check official}}
+    typedef enum {
+        {{- range $v, $mn := enumLookup $e official}}
+        {{- $m := index $e.Members $mn}}
+        {{$mn}} = {{$m.Value}},{{with $m.Desc}}  // {{.}}{{end}}
+        {{- end}}
+    } {{$n}};
     {{- end}}
-    {{- end}}
+    {{end}}
 
 For more info, see <https://golang.org/pkg/text/template>.

@@ -94,6 +94,39 @@ type Support struct {
 	Compat   bool
 }
 
+func (s SupportType) OpcodeLookup(ops map[string]Opcode) map[uint8]string {
+	m := make(map[uint8]string)
+	for k, v := range ops {
+		if !v.Support.Check(s) {
+			continue
+		}
+		m[v.Value] = k
+	}
+	return m
+}
+
+func (s SupportType) CommandLookup(cmds map[string]Command) map[uint8]string {
+	m := make(map[uint8]string)
+	for k, v := range cmds {
+		if !v.Support.Check(s) {
+			continue
+		}
+		m[v.Value] = k
+	}
+	return m
+}
+
+func (s SupportType) EnumLookup(ems map[string]EnumMember) map[int32]string {
+	m := make(map[int32]string)
+	for k, v := range ems {
+		if !v.Support.Check(s) {
+			continue
+		}
+		m[v.Value] = k
+	}
+	return m
+}
+
 func (s *Support) Check(v SupportType) bool {
 	if s == nil {
 		return true // default value when "support:" is not specified in yaml

@@ -13,6 +13,18 @@ import (
 	"text/template"
 )
 
+func opLookup(d bytecodes.Defs, s bytecodes.SupportType) map[uint8]string {
+	return s.OpcodeLookup(d.Ops)
+}
+
+func cmdLookup(p bytecodes.Param, s bytecodes.SupportType) map[uint8]string {
+	return s.CommandLookup(p.Commands)
+}
+
+func enumLookup(e bytecodes.Enum, s bytecodes.SupportType) map[int32]string {
+	return s.EnumLookup(e.Members)
+}
+
 func isString(value interface{}) bool {
 	switch value.(type) {
 	case string:
@@ -69,10 +81,13 @@ func main() {
 	}
 
 	funcs := template.FuncMap{
-		"isString": isString,
-		"official": official,
-		"xtended":  xtended,
-		"compat":   compat,
+		"opLookup":   opLookup,
+		"cmdLookup":  cmdLookup,
+		"enumLookup": enumLookup,
+		"isString":   isString,
+		"official":   official,
+		"xtended":    xtended,
+		"compat":     compat,
 	}
 
 	defs, err := bytecodes.GetDefs("ev3")
