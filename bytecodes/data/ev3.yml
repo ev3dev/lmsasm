@@ -1024,7 +1024,7 @@ ops:
         type: PAR32
         dir: in
       -
-        name: "*IP"
+        name: "IP"
         desc: Address of image (value from opFILE(LOAD_IMAGE,..) )
         type: PAR32
         dir: in
@@ -1277,12 +1277,12 @@ ops:
         dir: in
         enum: *SLOT
       -
-        name: "*IMAGE"
+        name: "IMAGE"
         desc: Address of image
         type: PAR32
         dir: in
       -
-        name: "*GLOBAL"
+        name: "GLOBAL"
         desc: Address of global variables
         type: PAR32
         dir: in
@@ -3572,12 +3572,12 @@ ops:
                 type: PAR32
                 dir: in
               -
-                name: "*IMAGE"
+                name: "IMAGE"
                 desc: Address of image
                 type: PAR32
                 dir: out
               -
-                name: "*GLOBAL"
+                name: "GLOBAL"
                 desc: Address of global variables
                 type: PAR32
                 dir: out
@@ -4311,7 +4311,7 @@ ops:
                 type: PAR16
                 dir: in
               -
-                name: "*IP"
+                name: "IP"
                 desc: Address of picture
                 type: PAR32
                 dir: in
@@ -4485,7 +4485,7 @@ ops:
                 type: PAR8
                 dir: in
               -
-                name: "*STATE"
+                name: "STATE"
                 desc: State 0 = INIT
                 type: PAR8
                 dir: in
@@ -4524,7 +4524,7 @@ ops:
                 type: PAR8
                 dir: in
               -
-                name: "*STATE"
+                name: "STATE"
                 desc: State 0 = NO, 1 = OK
                 type: PAR8
                 dir: in
@@ -4567,7 +4567,7 @@ ops:
                 type: PAR8
                 dir: in
               -
-                name: "*CHARSET"
+                name: "CHARSET"
                 desc: >
                   Internal use (must be a variable initialised by a "valid
                   character set")
@@ -4919,7 +4919,7 @@ ops:
                 type: PAR16
                 dir: in
               -
-                name: "*STATE"
+                name: "STATE"
                 desc: State 0 = INIT
                 type: PAR8
                 dir: in
@@ -5520,12 +5520,12 @@ ops:
                 type: PAR32
                 dir: in
               -
-                name: "*IMAGE"
+                name: "IMAGE"
                 desc: Address of image
                 type: PAR32
                 dir: out
               -
-                name: "*GLOBAL"
+                name: "GLOBAL"
                 desc: Address of global variables
                 type: PAR32
                 dir: out
@@ -5549,12 +5549,12 @@ ops:
             value: 14
             params:
               -
-                name: "*IMAGE"
+                name: "IMAGE"
                 desc: Address of image
                 type: PAR32
                 dir: in
               -
-                name: "*GLOBAL"
+                name: "GLOBAL"
                 desc: Address of global variables
                 type: PAR32
                 dir: in
@@ -6752,12 +6752,12 @@ ops:
         type: PAR8
         dir: in
       -
-        name: "*SPEED"
+        name: "SPEED"
         desc: Speed [-100..100%]
         type: PAR8
         dir: out
       -
-        name: "*TACHO"
+        name: "TACHO"
         desc: Tacho pulses [-MAX .. +MAX]
         type: PAR32
         dir: out
@@ -7081,7 +7081,7 @@ ops:
         type: PAR8
         dir: in
       -
-        name: "*TACHO"
+        name: "TACHO"
         desc: Tacho pulses [-MAX .. +MAX]
         type: PAR32
         dir: out
@@ -7284,7 +7284,7 @@ ops:
                 type: PAR32
                 dir: out
               -
-                name: "*IP"
+                name: "IP"
                 desc: Address of image
                 type: PAR32
                 dir: out
@@ -7339,7 +7339,7 @@ ops:
                 type: PAR16
                 dir: out
               -
-                name: "*IP"
+                name: "IP"
                 desc: Address of image
                 type: PAR32
                 dir: out
@@ -7470,7 +7470,7 @@ ops:
                 type: PAR8
                 dir: in
               -
-                name: "*IP"
+                name: "IP"
                 desc: Address of image
                 type: PAR32
                 dir: out
@@ -8457,7 +8457,7 @@ ops:
         dir: in
         enum: *HWTYPE
       -
-        name: "*pNAME"
+        name: "NAME"
         desc: Name of the remote/own device
         type: PAR8
         dir: in
@@ -9156,12 +9156,12 @@ ops:
         dir: in
         enum: *HWTYPE
       -
-        name: "*pNAME"
+        name: "NAME"
         desc: Name of the remote/own device
         type: PAR8
         dir: in
       -
-        name: "Busy"
+        name: "BUSY"
         desc: Busy flag
         type: PAR8
         dir: out
@@ -9220,7 +9220,7 @@ ops:
         type: PAR8
         dir: in
       -
-        name: "Types"
+        name: "TYPES"
         desc: Data type of the content of the mailbox
         type: PAR8
         dir: in
