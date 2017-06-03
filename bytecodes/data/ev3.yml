@@ -4614,7 +4614,7 @@ ops:
                 type: PAR8
                 dir: in
               -
-                name: "TYPE"
+                name: "ITEM_TYPE"
                 desc: >
                   Item type (folder, byte code file, sound file, ...)(must be a
                   zero initialised variable)
@@ -9584,12 +9584,12 @@ ops:
         type: PAR8
         dir: in
       -
-        name: "LENGTH"
+        name: "LENGTH_IN"
         desc: Amount of data passed to this opcode
         type: PAR8
         dir: in
       -
-        name: "LENGTH"
+        name: "LENGTH_OUT"
         desc: Amount of data returned
         type: PAR16
         dir: out
@@ -9613,12 +9613,12 @@ ops:
         type: PAR8
         dir: in
       -
-        name: "LENGTH"
+        name: "LENGTH_IN"
         desc: Amount of data passed to this opcode
         type: PAR8
         dir: in
       -
-        name: "LENGTH"
+        name: "LENGTH_OUT"
         desc: Amount of data returned
         type: PAR16
         dir: out
@@ -9642,12 +9642,12 @@ ops:
         type: PAR8
         dir: in
       -
-        name: "LENGTH"
+        name: "LENGTH_IN"
         desc: Amount of data passed to this opcode
         type: PAR8
         dir: in
       -
-        name: "LENGTH"
+        name: "LENGTH_OUT"
         desc: Amount of data returned
         type: PAR16
         dir: out
@@ -9671,12 +9671,12 @@ ops:
         type: PAR8
         dir: in
       -
-        name: "LENGTH"
+        name: "LENGTH_IN"
         desc: Amount of data passed to this opcode
         type: PAR8
         dir: in
       -
-        name: "LENGTH"
+        name: "LENGTH_OUT"
         desc: Amount of data returned
         type: PAR16
         dir: out
@@ -9700,12 +9700,12 @@ ops:
         type: PAR8
         dir: in
       -
-        name: "LENGTH"
+        name: "LENGTH_IN"
         desc: Amount of data passed to this opcode
         type: PAR8
         dir: in
       -
-        name: "LENGTH"
+        name: "LENGTH_OUT"
         desc: Amount of data returned
         type: PAR16
         dir: out
@@ -9729,12 +9729,12 @@ ops:
         type: PAR8
         dir: in
       -
-        name: "LENGTH"
+        name: "LENGTH_IN"
         desc: Amount of data passed to this opcode
         type: PAR8
         dir: in
       -
-        name: "LENGTH"
+        name: "LENGTH_OUT"
         desc: Amount of data returned
         type: PAR16
         dir: out
@@ -9758,12 +9758,12 @@ ops:
         type: PAR8
         dir: in
       -
-        name: "LENGTH"
+        name: "LENGTH_IN"
         desc: Amount of data passed to this opcode
         type: PAR8
         dir: in
       -
-        name: "LENGTH"
+        name: "LENGTH_OUT"
         desc: Amount of data returned
         type: PAR16
         dir: out
@@ -9787,12 +9787,12 @@ ops:
         type: PAR8
         dir: in
       -
-        name: "LENGTH"
+        name: "LENGTH_IN"
         desc: Amount of data passed to this opcode
         type: PAR8
         dir: in
       -
-        name: "LENGTH"
+        name: "LENGTH_OUT"
         desc: Amount of data returned
         type: PAR16
         dir: out
@@ -9816,12 +9816,12 @@ ops:
         type: PAR8
         dir: in
       -
-        name: "LENGTH"
+        name: "LENGTH_IN"
         desc: Amount of data passed to this opcode
         type: PAR8
         dir: in
       -
-        name: "LENGTH"
+        name: "LENGTH_OUT"
         desc: Amount of data returned
         type: PAR16
         dir: out
@@ -9845,12 +9845,12 @@ ops:
         type: PAR8
         dir: in
       -
-        name: "LENGTH"
+        name: "LENGTH_IN"
         desc: Amount of data passed to this opcode
         type: PAR8
         dir: in
       -
-        name: "LENGTH"
+        name: "LENGTH_OUT"
         desc: Amount of data returned
         type: PAR16
         dir: out
