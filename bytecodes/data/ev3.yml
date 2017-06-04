@@ -1,6 +1,9 @@
 %YAML 1.1
 ---
 
+# The canonical source for this file is https://github.com/ev3dev/lmsasm/blob/master/bytecodes/data/ev3.yml
+# Do not make changes to this file unless you also submit a pull request.
+
 defines:
   OUTPUTS:
     value: 4
