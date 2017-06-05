@@ -4565,7 +4565,7 @@ ops:
               -
                 name: "DEFAULT"
                 desc: Default string (0 = none)
-                type: PAR8
+                type: PARS
                 dir: in
               -
                 name: "CHARSET"
