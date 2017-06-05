@@ -1792,10 +1792,8 @@ ops:
         name: "SOURCE"
         desc: First element to initiate DATA8 array with
         type: PARVALUES
+        element-type: PAR8
         dir: in
-      -
-        name: "VALUES"
-        type: PAR8
 
   MOVE8_8:
     desc: Move 8 bit value from SOURCE to DESTINATION
@@ -7834,12 +7832,9 @@ ops:
                 dir: in
               -
                 name: "VALUES"
-                type: PARVALUES
-                dir: in
-              -
-                name: "VALUE"
                 desc: First value to write - type must be equal to the array type
-                type: PAR8
+                type: PARVALUES
+                element-type: PAR8
                 dir: in
 
           INIT16:
@@ -7862,12 +7857,9 @@ ops:
                 dir: in
               -
                 name: "VALUES"
-                type: PARVALUES
-                dir: in
-              -
-                name: "VALUE"
                 desc: First value to write - type must be equal to the array type
-                type: PAR16
+                type: PARVALUES
+                element-type: PAR16
                 dir: in
 
           INIT32:
@@ -7890,12 +7882,9 @@ ops:
                 dir: in
               -
                 name: "VALUES"
-                type: PARVALUES
-                dir: in
-              -
-                name: "VALUE"
                 desc: First value to write - type must be equal to the array type
-                type: PAR32
+                type: PARVALUES
+                element-type: PAR32
                 dir: in
 
           INITF:
@@ -7918,12 +7907,9 @@ ops:
                 dir: in
               -
                 name: "VALUES"
-                type: PARVALUES
-                dir: in
-              -
-                name: "VALUE"
                 desc: First value to write - type must be equal to the array type
-                type: PARF
+                type: PARVALUES
+                element-type: PARF
                 dir: in
 
           SIZE:
