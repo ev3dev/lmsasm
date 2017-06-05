@@ -2011,7 +2011,7 @@ ops:
     params:
       -
         name: "OFFSET"
-        type: PAR32
+        type: PARLAB
         dir: in
 
   JR_FALSE:
@@ -2024,7 +2024,7 @@ ops:
         dir: in
       -
         name: "OFFSET"
-        type: PAR32
+        type: PARLAB
         dir: in
 
   JR_TRUE:
@@ -2037,7 +2037,7 @@ ops:
         dir: in
       -
         name: "OFFSET"
-        type: PAR32
+        type: PARLAB
         dir: in
 
   JR_NAN:
@@ -2050,7 +2050,7 @@ ops:
         dir: in
       -
         name: "OFFSET"
-        type: PAR32
+        type: PARLAB
         dir: in
 
   # cCompare "COMPARE"
@@ -2642,7 +2642,7 @@ ops:
         dir: in
       -
         name: "OFFSET"
-        type: PAR32
+        type: PARLAB
         dir: in
 
   JR_LT16:
@@ -2659,7 +2659,7 @@ ops:
         dir: in
       -
         name: "OFFSET"
-        type: PAR32
+        type: PARLAB
         dir: in
 
   JR_LT32:
@@ -2676,7 +2676,7 @@ ops:
         dir: in
       -
         name: "OFFSET"
-        type: PAR32
+        type: PARLAB
         dir: in
 
   JR_LTF:
@@ -2693,7 +2693,7 @@ ops:
         dir: in
       -
         name: "OFFSET"
-        type: PAR32
+        type: PARLAB
         dir: in
 
   JR_GT8:
@@ -2710,7 +2710,7 @@ ops:
         dir: in
       -
         name: "OFFSET"
-        type: PAR32
+        type: PARLAB
         dir: in
 
   JR_GT16:
@@ -2727,7 +2727,7 @@ ops:
         dir: in
       -
         name: "OFFSET"
-        type: PAR32
+        type: PARLAB
         dir: in
 
   JR_GT32:
@@ -2744,7 +2744,7 @@ ops:
         dir: in
       -
         name: "OFFSET"
-        type: PAR32
+        type: PARLAB
         dir: in
 
   JR_GTF:
@@ -2761,7 +2761,7 @@ ops:
         dir: in
       -
         name: "OFFSET"
-        type: PAR32
+        type: PARLAB
         dir: in
 
   JR_EQ8:
@@ -2778,7 +2778,7 @@ ops:
         dir: in
       -
         name: "OFFSET"
-        type: PAR32
+        type: PARLAB
         dir: in
 
   JR_EQ16:
@@ -2795,7 +2795,7 @@ ops:
         dir: in
       -
         name: "OFFSET"
-        type: PAR32
+        type: PARLAB
         dir: in
 
   JR_EQ32:
@@ -2812,7 +2812,7 @@ ops:
         dir: in
       -
         name: "OFFSET"
-        type: PAR32
+        type: PARLAB
         dir: in
 
   JR_EQF:
@@ -2829,7 +2829,7 @@ ops:
         dir: in
       -
         name: "OFFSET"
-        type: PAR32
+        type: PARLAB
         dir: in
 
   JR_NEQ8:
@@ -2846,7 +2846,7 @@ ops:
         dir: in
       -
         name: "OFFSET"
-        type: PAR32
+        type: PARLAB
         dir: in
 
   JR_NEQ16:
@@ -2863,7 +2863,7 @@ ops:
         dir: in
       -
         name: "OFFSET"
-        type: PAR32
+        type: PARLAB
         dir: in
 
   JR_NEQ32:
@@ -2880,7 +2880,7 @@ ops:
         dir: in
       -
         name: "OFFSET"
-        type: PAR32
+        type: PARLAB
         dir: in
 
   JR_NEQF:
@@ -2897,7 +2897,7 @@ ops:
         dir: in
       -
         name: "OFFSET"
-        type: PAR32
+        type: PARLAB
         dir: in
 
   JR_LTEQ8:
@@ -2914,7 +2914,7 @@ ops:
         dir: in
       -
         name: "OFFSET"
-        type: PAR32
+        type: PARLAB
         dir: in
 
   JR_LTEQ16:
@@ -2931,7 +2931,7 @@ ops:
         dir: in
       -
         name: "OFFSET"
-        type: PAR32
+        type: PARLAB
         dir: in
 
   JR_LTEQ32:
@@ -2948,7 +2948,7 @@ ops:
         dir: in
       -
         name: "OFFSET"
-        type: PAR32
+        type: PARLAB
         dir: in
 
   JR_LTEQF:
@@ -2965,7 +2965,7 @@ ops:
         dir: in
       -
         name: "OFFSET"
-        type: PAR32
+        type: PARLAB
         dir: in
 
   JR_GTEQ8:
@@ -2982,7 +2982,7 @@ ops:
         dir: in
       -
         name: "OFFSET"
-        type: PAR32
+        type: PARLAB
         dir: in
 
   JR_GTEQ16:
@@ -2999,7 +2999,7 @@ ops:
         dir: in
       -
         name: "OFFSET"
-        type: PAR32
+        type: PARLAB
         dir: in
 
   JR_GTEQ32:
@@ -3016,7 +3016,7 @@ ops:
         dir: in
       -
         name: "OFFSET"
-        type: PAR32
+        type: PARLAB
         dir: in
 
   JR_GTEQF:
@@ -3033,7 +3033,7 @@ ops:
         dir: in
       -
         name: "OFFSET"
-        type: PAR32
+        type: PARLAB
         dir: in
 
   # VM
