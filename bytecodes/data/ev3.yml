@@ -2558,7 +2558,7 @@ ops:
       -
         name: "COMMAND"
         desc: Command string (HND)
-        type: PAR8
+        type: PARS
         dir: in
       -
         name: "STATUS"
@@ -2618,7 +2618,7 @@ ops:
       -
         name: "NOTE"
         desc: Note string (HND) (e.c. "C#4")
-        type: PAR8
+        type: PARS
         dir: in
       -
         name: "FREQ"
@@ -3078,8 +3078,8 @@ ops:
                 dir: in
               -
                 name: "DESTINATION"
-                desc: String variable or handle to string
-                type: PAR8
+                desc: Message
+                type: PARS
                 dir: out
           GET_VOLUME:
             value: 4
@@ -3129,7 +3129,7 @@ ops:
               -
                 name: "SOURCE1"
                 desc: String variable or handle to string
-                type: PAR8
+                type: PARS
                 dir: in
               -
                 name: "SIZE"
@@ -3143,17 +3143,17 @@ ops:
               -
                 name: "SOURCE1"
                 desc: String variable or handle to string
-                type: PAR8
+                type: PARS
                 dir: in
               -
                 name: "SOURCE2"
                 desc: String variable or handle to string
-                type: PAR8
+                type: PARS
                 dir: in
               -
                 name: "DESTINATION"
                 desc: String variable or handle to string
-                type: PAR8
+                type: PARS
                 dir: out
           COMPARE:
             desc: Compare two strings
@@ -3162,12 +3162,12 @@ ops:
               -
                 name: "SOURCE1"
                 desc: String variable or handle to string
-                type: PAR8
+                type: PARS
                 dir: in
               -
                 name: "SOURCE2"
                 desc: String variable or handle to string
-                type: PAR8
+                type: PARS
                 dir: in
               -
                 name: "RESULT"
@@ -3181,12 +3181,12 @@ ops:
               -
                 name: "SOURCE1"
                 desc: String variable or handle to string
-                type: PAR8
+                type: PARS
                 dir: in
               -
                 name: "DESTINATION"
                 desc: String variable or handle to string
-                type: PAR8
+                type: PARS
                 dir: out
           VALUE_TO_STRING:
             desc: Convert floating point value to a string (strips trailing zeroes)
@@ -3212,7 +3212,7 @@ ops:
               -
                 name: "DESTINATION"
                 desc: String variable or handle to string
-                type: PAR8
+                type: PARS
                 dir: out
           STRING_TO_VALUE:
             value: 7
@@ -3220,7 +3220,7 @@ ops:
               -
                 name: "SOURCE1"
                 desc: String variable or handle to string
-                type: PAR8
+                type: PARS
                 dir: in
               -
                 name: "DESTINATION"
@@ -3234,12 +3234,12 @@ ops:
               -
                 name: "SOURCE1"
                 desc: String variable or handle to string
-                type: PAR8
+                type: PARS
                 dir: in
               -
                 name: "DESTINATION"
                 desc: String variable or handle to string
-                type: PAR8
+                type: PARS
                 dir: out
           NUMBER_TO_STRING:
             desc: Convert integer value to a string
@@ -3258,7 +3258,7 @@ ops:
               -
                 name: "DESTINATION"
                 desc: String variable or handle to string
-                type: PAR8
+                type: PARS
                 dir: out
           SUB:
             desc: >
@@ -3269,17 +3269,17 @@ ops:
               -
                 name: "SOURCE1"
                 desc: String variable or handle to string
-                type: PAR8
+                type: PARS
                 dir: in
               -
                 name: "SOURCE2"
                 desc: String variable or handle to string
-                type: PAR8
+                type: PARS
                 dir: in
               -
                 name: "DESTINATION"
                 desc: String variable or handle to string
-                type: PAR8
+                type: PARS
                 dir: out
           VALUE_FORMATTED:
             desc: Convert floating point value to a formatted string
@@ -3293,7 +3293,7 @@ ops:
               -
                 name: "FORMAT"
                 desc: Format string variable or handle to string
-                type: PAR8
+                type: PARS
                 dir: in
               -
                 name: "SIZE"
@@ -3303,7 +3303,7 @@ ops:
               -
                 name: "DESTINATION"
                 desc: String variable or handle to string
-                type: PAR8
+                type: PARS
                 dir: out
           NUMBER_FORMATTED:
             desc: Convert integer number to a formatted string
@@ -3317,7 +3317,7 @@ ops:
               -
                 name: "FORMAT"
                 desc: Format string variable or handle to string
-                type: PAR8
+                type: PARS
                 dir: in
               -
                 name: "SIZE"
@@ -3327,7 +3327,7 @@ ops:
               -
                 name: "DESTINATION"
                 desc: String variable or handle to string
-                type: PAR8
+                type: PARS
                 dir: out
 
   MEMORY_WRITE:
@@ -3437,7 +3437,7 @@ ops:
               -
                 name: "DESTINATION"
                 desc: String variable or handle to string
-                type: PAR8
+                type: PARS
                 dir: out
 
           GET_EVENT:
@@ -3492,7 +3492,7 @@ ops:
               -
                 name: "DESTINATION"
                 desc: String variable or handle to string
-                type: PAR8
+                type: PARS
                 dir: out
 
           GET_HW_VERS:
@@ -3507,7 +3507,7 @@ ops:
               -
                 name: "DESTINATION"
                 desc: String variable or handle to string
-                type: PAR8
+                type: PARS
                 dir: out
 
           GET_FW_VERS:
@@ -3522,7 +3522,7 @@ ops:
               -
                 name: "DESTINATION"
                 desc: String variable or handle to string
-                type: PAR8
+                type: PARS
                 dir: out
 
           GET_FW_BUILD:
@@ -3537,7 +3537,7 @@ ops:
               -
                 name: "DESTINATION"
                 desc: String variable or handle to string
-                type: PAR8
+                type: PARS
                 dir: out
 
           GET_OS_BUILD:
@@ -3552,7 +3552,7 @@ ops:
               -
                 name: "DESTINATION"
                 desc: String variable or handle to string
-                type: PAR8
+                type: PARS
                 dir: out
 
           GET_ADDRESS:
@@ -3656,7 +3656,7 @@ ops:
               -
                 name: "DESTINATION"
                 desc: String variable or handle to string
-                type: PAR8
+                type: PARS
                 dir: out
 
           GET_IP:
@@ -3671,7 +3671,7 @@ ops:
               -
                 name: "DESTINATION"
                 desc: String variable or handle to string
-                type: PAR8
+                type: PARS
                 dir: out
 
           GET_POWER:
@@ -3779,8 +3779,8 @@ ops:
             params:
               -
                 name: "STRING"
-                desc: First character in string to write
-                type: PAR8
+                desc: String
+                type: PARS
                 dir: in
 
           VALUE8:
@@ -3880,8 +3880,8 @@ ops:
             params:
               -
                 name: "TEXT"
-                desc: First character in text box text (must be zero terminated)
-                type: PAR8
+                desc: Text box text (must be zero terminated)
+                type: PARS
                 dir: in
               -
                 name: "SIZE"
@@ -3897,7 +3897,7 @@ ops:
               -
                 name: "SOURCE"
                 desc: String variable or handle to string to append
-                type: PAR8
+                type: PARS
                 dir: in
 
           SET_BUSY:
@@ -4259,8 +4259,8 @@ ops:
                 dir: in
               -
                 name: "STRING"
-                desc: First character in string to draw
-                type: PAR8
+                desc: Text to draw
+                type: PARS
                 dir: in
 
           ICON:
@@ -4482,8 +4482,8 @@ ops:
                 dir: in
               -
                 name: "STRING"
-                desc: First character in notification string
-                type: PAR8
+                desc: Notification text
+                type: PARS
                 dir: in
               -
                 name: "STATE"
@@ -4521,8 +4521,8 @@ ops:
                 dir: in
               -
                 name: "STRING"
-                desc: First character in question string
-                type: PAR8
+                desc: Question text
+                type: PARS
                 dir: in
               -
                 name: "STATE"
@@ -4576,8 +4576,8 @@ ops:
                 dir: in
               -
                 name: "STRING"
-                desc: First character in string receiving keyboard input
-                type: PAR8
+                desc: Keyboard input
+                type: PARS
                 dir: out
 
           BROWSE:
@@ -4623,8 +4623,8 @@ ops:
                 dir: out
               -
                 name: "STRING"
-                desc: First character in string receiving selected item name
-                type: PAR8
+                desc: Selected item name
+                type: PARS
                 dir: out
 
           VERTBAR:
@@ -4855,8 +4855,8 @@ ops:
                 dir: in
               -
                 name: "STRING"
-                desc: First character in string to draw
-                type: PAR8
+                desc: Text to draw
+                type: PARS
                 dir: in
 
           FILLCIRCLE:
@@ -4950,8 +4950,8 @@ ops:
                 dir: in
               -
                 name: "NAME"
-                desc: First character in filename (character string)
-                type: PAR8
+                desc: File name
+                type: PARS
                 dir: in
 
           POPUP:
@@ -5609,7 +5609,7 @@ ops:
                 dir: in
               -
                 name: "NAME"
-                desc: First character in filename (character string)
+                desc: File name
                 type: PARS
                 dir: in
 
@@ -5623,7 +5623,7 @@ ops:
                 dir: in
               -
                 name: "NAME"
-                desc: First character in filename (character string)
+                desc: File name
                 type: PARS
                 dir: in
 
@@ -5735,7 +5735,7 @@ ops:
               -
                 name: "TYPEDATA"
                 desc: String variable or handle to string containing type data
-                type: PAR8
+                type: PARS
                 dir: in
               -
                 name: "FORCE"
@@ -5875,7 +5875,7 @@ ops:
               -
                 name: "DESTINATION"
                 desc: String variable or handle to string
-                type: PAR8
+                type: PARS
                 dir: out
 
           CAL_MIN:
@@ -6169,7 +6169,7 @@ ops:
               -
                 name: "DESTINATION"
                 desc: String variable or handle to string
-                type: PAR8
+                type: PARS
                 dir: out
 
           GET_MODENAME:
@@ -6198,7 +6198,7 @@ ops:
               -
                 name: "DESTINATION"
                 desc: String variable or handle to string
-                type: PAR8
+                type: PARS
                 dir: out
 
           SET_RAW:
@@ -7109,8 +7109,8 @@ ops:
             params:
               -
                 name: "NAME"
-                desc: First character in file name (character string)
-                type: PAR8
+                desc: File name
+                type: PARS
                 dir: in
               -
                 name: "HANDLE"
@@ -7125,8 +7125,8 @@ ops:
             params:
               -
                 name: "NAME"
-                desc: First character in file name (character string)
-                type: PAR8
+                desc: File name
+                type: PARS
                 dir: in
               -
                 name: "HANDLE"
@@ -7146,8 +7146,8 @@ ops:
             params:
               -
                 name: "NAME"
-                desc: First character in file name (character string)
-                type: PAR8
+                desc: File name
+                type: PARS
                 dir: in
               -
                 name: "HANDLE"
@@ -7230,8 +7230,8 @@ ops:
                 dir: in
               -
                 name: "TEXT"
-                desc: First character in text to read (character string)
-                type: PAR8
+                desc: Text to read
+                type: PARS
                 dir: out
 
           WRITE_TEXT:
@@ -7251,8 +7251,8 @@ ops:
                 dir: in
               -
                 name: "TEXT"
-                desc: First character in text to write (character string)
-                type: PAR8
+                desc: Text to write
+                type: PARS
                 dir: in
 
           CLOSE:
@@ -7276,8 +7276,8 @@ ops:
                 dir: in
               -
                 name: "NAME"
-                desc: First character in name (character string)
-                type: PAR8
+                desc: Image name
+                type: PARS
                 dir: in
               -
                 name: "SIZE"
@@ -7296,8 +7296,8 @@ ops:
             params:
               -
                 name: "NAME"
-                desc: First character in file name (character string)
-                type: PAR8
+                desc: File name
+                type: PARS
                 dir: in
               -
                 name: "HANDLE"
@@ -7317,8 +7317,8 @@ ops:
             params:
               -
                 name: "NAME"
-                desc: First character in folder name (character string)
-                type: PAR8
+                desc: Folder name
+                type: PARS
                 dir: in
               -
                 name: "SUCCESS"
@@ -7364,8 +7364,8 @@ ops:
             params:
               -
                 name: "NAME"
-                desc: First character in folder name (ex "../prjs/")
-                type: PAR8
+                desc: Folder name (ex "../prjs/")
+                type: PARS
                 dir: in
               -
                 name: "ITEMS"
@@ -7392,8 +7392,8 @@ ops:
             params:
               -
                 name: "NAME"
-                desc: First character in folder name (ex "../prjs/")
-                type: PAR8
+                desc: Folder name (ex "../prjs/")
+                type: PARS
                 dir: in
               -
                 name: "ITEM"
@@ -7407,8 +7407,8 @@ ops:
                 dir: in
               -
                 name: "STRING"
-                desc: First character in character string
-                type: PAR8
+                desc: Subfolder name
+                type: PARS
                 dir: out
 
           WRITE_LOG:
@@ -7447,8 +7447,8 @@ ops:
                 dir: in
               -
                 name: "NAME"
-                desc: First character in file name (character string)
-                type: PAR8
+                desc: File name
+                type: PARS
                 dir: in
 
           GET_IMAGE:
@@ -7456,8 +7456,8 @@ ops:
             params:
               -
                 name: "NAME"
-                desc: First character in name (character string)
-                type: PAR8
+                desc: Image name
+                type: PARS
                 dir: in
               -
                 name: "PRGID"
@@ -7481,13 +7481,13 @@ ops:
             params:
               -
                 name: "NAME"
-                desc: First character in name (character string)
-                type: PAR8
+                desc: Name
+                type: PARS
                 dir: in
               -
                 name: "STRING"
-                desc: First character in item name string
-                type: PAR8
+                desc: Item name
+                type: PARS
                 dir: in
               -
                 name: "ITEM"
@@ -7509,8 +7509,8 @@ ops:
             params:
               -
                 name: "STRING"
-                desc: First character in character string
-                type: PAR8
+                desc: File Name
+                type: PARS
                 dir: in
 
           GET_CACHE_FILE:
@@ -7528,8 +7528,8 @@ ops:
                 dir: in
               -
                 name: "STRING"
-                desc: First character in character string
-                type: PAR8
+                desc: File name
+                type: PARS
                 dir: out
 
           DEL_CACHE_FILE:
@@ -7537,8 +7537,8 @@ ops:
             params:
               -
                 name: "STRING"
-                desc: First character in character string
-                type: PAR8
+                desc: File name
+                type: PARS
                 dir: out
 
           DEL_SUBFOLDER:
@@ -7546,8 +7546,8 @@ ops:
             params:
               -
                 name: "NAME"
-                desc: First character in folder name (ex "../prjs/")
-                type: PAR8
+                desc: Folder name (ex "../prjs/")
+                type: PARS
                 dir: in
               -
                 name: "ITEM"
@@ -7566,8 +7566,8 @@ ops:
                 dir: in
               -
                 name: "NAME"
-                desc: First First character in file name (character string or HND)
-                type: PAR8
+                desc: File name (character string or HND)
+                type: PARS
                 dir: in
 
           OPEN_LOG:
@@ -7576,8 +7576,8 @@ ops:
             params:
               -
                 name: "NAME"
-                desc: First character in file name (character string)
-                type: PAR8
+                desc: File name
+                type: PARS
                 dir: in
               -
                 name: "syncedTime"
@@ -7601,8 +7601,8 @@ ops:
                 dir: in
               -
                 name: "SDATA"
-                desc: First character in sensor type data (character string)
-                type: PAR8
+                desc: Sensor type data
+                type: PARS
                 dir: in
               -
                 name: "HANDLE"
@@ -7657,8 +7657,8 @@ ops:
             params:
               -
                 name: "NAME"
-                desc: First character in file name (character string)
-                type: PAR8
+                desc: File name
+                type: PARS
                 dir: in
             remarks: if name starts with '~','/' or '.' it is not from current folder
 
@@ -7668,13 +7668,13 @@ ops:
             params:
               -
                 name: "SOURCE"
-                desc: First character in source file name (character string)
-                type: PAR8
+                desc: Source file name
+                type: PARS
                 dir: in
               -
                 name: "DEST"
-                desc: First character in destination file name (character string)
-                type: PAR8
+                desc: Destination file name
+                type: PARS
                 dir: in
             remarks: if name starts with '~','/' or '.' it is not from current folder
 
@@ -8118,8 +8118,8 @@ ops:
             params:
               -
                 name: "NAME"
-                desc: First character in file name (character string)
-                type: PAR8
+                desc: File name
+                type: PARS
                 dir: in
               -
                 name: "FLAG"
@@ -8134,8 +8134,8 @@ ops:
             params:
               -
                 name: "NAME"
-                desc: First character in file name (character string)
-                type: PAR8
+                desc: File name
+                type: PARS
                 dir: in
               -
                 name: "FILES"
@@ -8155,8 +8155,8 @@ ops:
             params:
               -
                 name: "FILENAME"
-                desc: First character in file name (character string)
-                type: PAR8
+                desc: File name
+                type: PARS
                 dir: in
               -
                 name: "LENGTH"
@@ -8165,18 +8165,18 @@ ops:
                 dir: in
               -
                 name: "FOLDER"
-                desc: First character in folder name (character string)
-                type: PAR8
+                desc: Folder name
+                type: PARS
                 dir: out
               -
                 name: "NAME"
-                desc: First character in name (character string)
-                type: PAR8
+                desc: Name
+                type: PARS
                 dir: out
               -
                 name: "EXT"
-                desc: First character in extension (character string)
-                type: PAR8
+                desc: Extension
+                type: PARS
                 dir: out
             remarks: >
               Example: passing "../folder/subfolder/name.ext" in FILENAME will
@@ -8189,18 +8189,18 @@ ops:
             params:
               -
                 name: "FOLDER"
-                desc: First character in folder name (character string)
-                type: PAR8
+                desc: Folder name
+                type: PARS
                 dir: in
               -
                 name: "NAME"
-                desc: First character in name (character string)
-                type: PAR8
+                desc: Name
+                type: PARS
                 dir: in
               -
                 name: "EXT"
-                desc: First character in extension (character string)
-                type: PAR8
+                desc: Extension
+                type: PARS
                 dir: in
               -
                 name: "LENGTH"
@@ -8209,8 +8209,8 @@ ops:
                 dir: in
               -
                 name: "FILENAME"
-                desc: First character in file name (character string)
-                type: PAR8
+                desc: File name
+                type: PARS
                 dir: out
             remarks: >
               Example: passing "../folder/subfolder" in FOLDER, "name" in NAME
@@ -8223,8 +8223,8 @@ ops:
             params:
               -
                 name: "FILENAME"
-                desc: First character in file name (character string)
-                type: PAR8
+                desc: File name
+                type: PARS
                 dir: in
               -
                 name: "OK"
@@ -8238,8 +8238,8 @@ ops:
             params:
               -
                 name: "FILENAME"
-                desc: First character in file name (character string)
-                type: PAR8
+                desc: File name
+                type: PARS
                 dir: in
             remarks: .raf is the same as .tar.gz
 
@@ -8249,8 +8249,8 @@ ops:
             params:
               -
                 name: "FILENAME"
-                desc: First character in file name (character string)
-                type: PAR8
+                desc: File name
+                type: PARS
                 dir: in
             remarks: .raf is the same as .tar.gz
 
@@ -8265,8 +8265,8 @@ ops:
                 dir: in
               -
                 name: "FOLDERNAME"
-                desc: First character in folder name (character string)
-                type: PAR8
+                desc: Folder name
+                type: PARS
                 dir: out
 
   # cMove "READ"
@@ -8567,8 +8567,8 @@ ops:
                 enum: *HWTYPE
               -
                 name: "NAME"
-                desc: First character in character string
-                type: PAR8
+                desc: Name
+                type: PARS
                 dir: in
               -
                 name: "LENGTH"
@@ -8577,8 +8577,8 @@ ops:
                 dir: in
               -
                 name: "PINCODE"
-                desc: First character in character string
-                type: PAR8
+                desc: Pin code
+                type: PARS
                 dir: out
             remarks: For now "1234" is returned
 
@@ -8646,8 +8646,8 @@ ops:
                 dir: in
               -
                 name: "NAME"
-                desc: First character in character string
-                type: PAR8
+                desc: Name
+                type: PARS
                 dir: out
               -
                 name: "PAIRED"
@@ -8713,8 +8713,8 @@ ops:
                 dir: in
               -
                 name: "NAME"
-                desc: First character in character string
-                type: PAR8
+                desc: Name
+                type: PARS
                 dir: out
               -
                 name: "PAIRED"
@@ -8753,8 +8753,8 @@ ops:
                 dir: in
               -
                 name: "STRING"
-                desc: First character in BT adr string
-                type: PAR8
+                desc: Bluetooth address
+                type: PARS
                 dir: out
 
           GET_BRICKNAME:
@@ -8768,8 +8768,8 @@ ops:
                 dir: in
               -
                 name: "NAME"
-                desc: First character in brick name
-                type: PAR8
+                desc: Brick name
+                type: PARS
                 dir: out
 
           GET_NETWORK:
@@ -8789,18 +8789,18 @@ ops:
                 dir: in
               -
                 name: "NAME"
-                desc: First character in AP name
-                type: PAR8
+                desc: Access point (AP) name
+                type: PARS
                 dir: out
               -
                 name: "MAC"
-                desc: First character in MAC address string
-                type: PAR8
+                desc: MAC address
+                type: PARS
                 dir: out
               -
                 name: "IP"
-                desc: First character in IP address string
-                type: PAR8
+                desc: IP address
+                type: PARS
                 dir: out
 
           GET_PRESENT:
@@ -8887,8 +8887,8 @@ ops:
                 dir: in
               -
                 name: "NAME"
-                desc: First character in name
-                type: PAR8
+                desc: Name
+                type: PARS
                 dir: in
               -
                 name: "TYPE"
@@ -8981,13 +8981,13 @@ ops:
                 enum: *HWTYPE
               -
                 name: "NAME"
-                desc: First character in character string
-                type: PAR8
+                desc: Name
+                type: PARS
                 dir: in
               -
                 name: "PINCODE"
-                desc: First character in character string
-                type: PAR8
+                desc: Pin code
+                type: PARS
                 dir: in
             remarks: >
               Set the pincode for a remote device. Used when requested by
@@ -9026,8 +9026,8 @@ ops:
                 enum: *HWTYPE
               -
                 name: "NAME"
-                desc: First character in character string
-                type: PAR8
+                desc: Name
+                type: PARS
                 dir: in
               -
                 name: "CONNECTION"
@@ -9041,8 +9041,8 @@ ops:
             params:
               -
                 name: "NAME"
-                desc: First character in character string
-                type: PAR8
+                desc: Name
+                type: PARS
                 dir: in
 
           SET_MOVEUP:
@@ -9113,8 +9113,8 @@ ops:
                 enum: *HWTYPE
               -
                 name: "NAME"
-                desc: First character in character string
-                type: PAR8
+                desc: Name
+                type: PARS
                 dir: in
 
           SET_MODE2:
@@ -9513,8 +9513,8 @@ ops:
     params:
       -
         name: "NAME"
-        desc: First character in file name (character string)
-        type: PAR8
+        desc: File name
+        type: PARS
         dir: in
       -
         name: "MD5SUM"
