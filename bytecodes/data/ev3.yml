@@ -4210,7 +4210,7 @@ ops:
                 type: PAR16
                 dir: in
               -
-                name: "Y1 "
+                name: "Y1"
                 desc: Y end [0..LCD_HEIGHT]
                 type: PAR16
                 dir: in
@@ -4375,7 +4375,7 @@ ops:
                 type: PAR16
                 dir: in
               -
-                name: "Y1 "
+                name: "Y1"
                 desc: Y size [0..LCD_HEIGHT - Y0]
                 type: PAR16
                 dir: in
@@ -4404,7 +4404,7 @@ ops:
                 type: PAR16
                 dir: in
               -
-                name: "Y1 "
+                name: "Y1"
                 desc: Y size [0..LCD_HEIGHT - Y0]
                 type: PAR16
                 dir: in
@@ -4437,7 +4437,7 @@ ops:
                 type: PAR16
                 dir: in
               -
-                name: "Y1 "
+                name: "Y1"
                 desc: Y size [0..LCD_HEIGHT - Y0]
                 type: PAR16
                 dir: in
@@ -4690,7 +4690,7 @@ ops:
                 type: PAR16
                 dir: in
               -
-                name: "Y1 "
+                name: "Y1"
                 desc: Y size [0..LCD_HEIGHT]
                 type: PAR16
                 dir: in
@@ -4766,17 +4766,17 @@ ops:
                 type: PAR16
                 dir: in
               -
-                name: "Y1 "
+                name: "Y1"
                 desc: Y end [0..LCD_HEIGHT]
                 type: PAR16
                 dir: in
               -
-                name: "ON "
+                name: "ON"
                 desc: On pixels
                 type: PAR16
                 dir: in
               -
-                name: "OFF "
+                name: "OFF"
                 desc: Off pixels
                 type: PAR16
                 dir: in
