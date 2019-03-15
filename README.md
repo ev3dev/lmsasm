@@ -13,6 +13,11 @@ of the [official EV3 Firmware Source Code][lms downloads].
 [lms downloads]: http://www.lego.com/en-us/mindstorms/downloads
 
 
+## Download
+
+Pre-compiled executables are available on [GitHub](https://github.com/ev3dev/lmsasm/releases).
+
+
 ## Disclaimer
 
 LEGO® is a trademark of the LEGO Group of companies which does not sponsor,
