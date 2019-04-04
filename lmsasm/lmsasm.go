@@ -18,6 +18,7 @@ func main() {
 	support := flag.String("support", string(bytecodes.SupportTypeOfficial),
 		"Supported bytecode definitions to use. 'official', 'xtended' or 'compat'")
 	output := flag.String("output", "out.rbf", "Output file name.")
+	version := flag.Uint("version", 0, "Bytecode version identifier.")
 	flag.Parse()
 
 	if flag.NArg() == 0 {
@@ -37,7 +38,7 @@ func main() {
 	}
 
 	a := assembler.NewAssembler(fs, f)
-	options := assembler.AssembleOptions{}
+	options := assembler.AssembleOptions{Version: uint16(*version)}
 	p, err := a.Assemble(&options)
 	if err != nil {
 		log.Fatal("Error assembling file:", err)
