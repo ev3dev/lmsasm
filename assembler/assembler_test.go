@@ -96,7 +96,8 @@ func TestOfficial(t *testing.T) {
 		}
 		t.Log("Assembling", n)
 		a := NewAssembler(fs, f)
-		p, err := a.Assemble()
+		options := AssembleOptions{Version: 109}
+		p, err := a.Assemble(&options)
 		if err != nil {
 			t.Error("Failed to assemble file:", err)
 			continue

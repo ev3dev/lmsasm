@@ -485,7 +485,7 @@ func emitExpr(expr ast.Expr, globals, locals map[string]int32) (inst *Instructio
 type Program struct {
 	Magic      [4]byte
 	Size       int32
-	Version    int16
+	Version    uint16
 	GlobalSize int32
 	Objects    []*Object
 }
@@ -505,7 +505,13 @@ type Instruction struct {
 	label *ast.Ident
 }
 
-func (a *Assembler) Assemble() (Program, error) {
+// AssembleOptions specify options for the Assemble() function
+type AssembleOptions struct {
+	Version uint16
+}
+
+// Assemble compiles code into LMS2012 VM bytecodes
+func (a *Assembler) Assemble(options *AssembleOptions) (Program, error) {
 	var nextGlobal int32
 	var objects []*Object
 	globals := make(map[string]int32)
@@ -696,12 +702,10 @@ func (a *Assembler) Assemble() (Program, error) {
 			objects = append(objects, o)
 		}
 	}
-	// TODO: get version from yaml
-	version := int16(109)
 	p := Program{
 		Magic:      [4]byte{'L', 'E', 'G', 'O'},
 		Size:       pc,
-		Version:    version,
+		Version:    options.Version,
 		GlobalSize: nextGlobal,
 		Objects:    objects,
 	}

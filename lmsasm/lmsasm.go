@@ -37,7 +37,8 @@ func main() {
 	}
 
 	a := assembler.NewAssembler(fs, f)
-	p, err := a.Assemble()
+	options := assembler.AssembleOptions{}
+	p, err := a.Assemble(&options)
 	if err != nil {
 		log.Fatal("Error assembling file:", err)
 	}
