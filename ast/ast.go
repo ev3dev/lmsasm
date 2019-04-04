@@ -311,7 +311,7 @@ type (
 	ObjDecl struct {
 		Scope      *Scope      // local scope
 		TokPos     token.Pos   // position of Tok
-		Tok        token.Token // VMTHREAD, SUBCALL
+		Tok        token.Token // VMTHREAD, SUBCALL, BLOCK
 		Name       *Ident
 		Index      int32
 		ParamCount uint8

@@ -812,7 +812,7 @@ func (p *parser) parseDecl(sync func(*parser)) ast.Decl {
 	case token.PARAMTYPE:
 		f = p.parseParamSpec
 
-	case token.VMTHREAD, token.SUBCALL:
+	case token.VMTHREAD, token.SUBCALL, token.BLOCK:
 		return p.parseObjDecl(tok)
 
 	default:

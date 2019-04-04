@@ -382,3 +382,29 @@ end:
 		t.Errorf("parseSnippit(%q): %v", src, err)
 	}
 }
+
+func TestObject2(t *testing.T) {
+	src := "block myobj { }"
+	f, err := parseSnippit(src)
+	if err == nil {
+		if len(f.Decls) != 1 {
+			t.Errorf("parseSnippit(%q): incorrect number of Decls (%d)", src, len(f.Decls))
+		}
+		d := f.Decls[0].(*ast.ObjDecl)
+		if d == nil {
+			t.Errorf("parseSnippit(%q): expecting ast.ObjDecl but got %T", src, f.Decls[0])
+		} else {
+			if d.Tok != token.BLOCK {
+				t.Errorf("parseSnippit(%q): expecting 'block' but got '%v'", src, d.Tok)
+			}
+			if d.Name.Name != "myobj" {
+				t.Errorf("parseSnippit(%q): expecting 'myobj' but got '%v'", src, d.Name.Name)
+			}
+			if len(d.Body) != 0 {
+				t.Errorf("parseSnippit(%q): expecting '0' but got '%v'", src, len(d.Body))
+			}
+		}
+	} else {
+		t.Errorf("parseSnippit(%q): %v", src, err)
+	}
+}

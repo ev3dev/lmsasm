@@ -492,7 +492,7 @@ type Program struct {
 
 type Object struct {
 	Offset       int32
-	Owner        int16
+	Owner        uint16
 	Trigger      int16
 	LocalSize    int32
 	Instructions []*Instruction
@@ -541,11 +541,16 @@ func (a *Assembler) Assemble() (Program, error) {
 			}
 		case *ast.ObjDecl:
 			offset := pc
+			var owner uint16
 			var trigger int16
 			var nextLocal int32
 			var instructions []*Instruction
 			locals := make(map[string]int32)
 			labels := make(map[string]int32)
+
+			if d.Tok == token.BLOCK {
+				owner = 1
+			}
 
 			if d.Tok == token.SUBCALL {
 				trigger = 1
@@ -683,7 +688,7 @@ func (a *Assembler) Assemble() (Program, error) {
 
 			o := &Object{
 				Offset:       offset,
-				Owner:        0,
+				Owner:        owner,
 				Trigger:      trigger,
 				LocalSize:    nextLocal,
 				Instructions: instructions,

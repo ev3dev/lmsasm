@@ -53,6 +53,7 @@ const (
 	DEFINE
 	VMTHREAD
 	SUBCALL
+	BLOCK
 	keyword_end
 
 	type_begin
@@ -91,6 +92,7 @@ var tokens = [...]string{
 	DEFINE:   "define",
 	VMTHREAD: "vmthread",
 	SUBCALL:  "subcall",
+	BLOCK:    "block",
 
 	DATATYPE:  "DATATYPE",
 	PARAMTYPE: "PARAMTYPE",
