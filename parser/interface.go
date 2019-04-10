@@ -52,8 +52,7 @@ type Mode uint
 const (
 	Trace             = 1 << iota      // print a trace of parsed productions
 	DeclarationErrors                  // report declaration errors
-	SpuriousErrors                     // same as AllErrors, for backward-compatibility
-	AllErrors         = SpuriousErrors // report all errors (not just the first 10 on different lines)
+	AllErrors                          // report all errors (not just the first 10 on different lines)
 )
 
 // ParseFile parses the source code of a single Go source file and returns
