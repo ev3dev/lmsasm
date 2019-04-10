@@ -6,6 +6,7 @@ package assembler
 
 import (
 	"bytes"
+	"fmt"
 	"github.com/ev3dev/lmsasm/ast"
 	"github.com/ev3dev/lmsasm/bytecodes"
 	"github.com/ev3dev/lmsasm/parser"
@@ -16,11 +17,35 @@ import (
 	"testing"
 )
 
-func TestResolveConstIntWithNilObj(t *testing.T) {
+func TestResolveConstIntWithBadExpr(t *testing.T) {
+	expr := ast.BadExpr{}
+	_, err := resolveConstInt(&expr)
+	if err == nil {
+		t.Error("should have received error because expr is ast.BadExpr")
+	}
+}
+
+func TestResolveConstIntWithIdentWithNilObj(t *testing.T) {
 	expr := ast.Ident{}
 	_, err := resolveConstInt(&expr)
 	if err == nil {
-		t.Errorf("should have receive error because expr.Obj == nil")
+		t.Error("should have received error because expr.Obj == nil")
+	}
+}
+
+func TestResolveConstIntWithIdentWithInvalidObjKind(t *testing.T) {
+	for kind := ast.Bad; kind <= ast.Lbl; kind++ {
+		// ast.Con is the only valid kind, so don't test it here
+		if kind == ast.Con {
+			continue
+		}
+
+		obj := ast.Object{Kind: kind}
+		expr := ast.Ident{Obj: &obj}
+		_, err := resolveConstInt(&expr)
+		if err == nil {
+			t.Error("should have received error because expr.Obj.Kind is invalid")
+		}
 	}
 }
 
@@ -36,6 +61,21 @@ func TestResolveConstIntWithIdentWithBadCon(t *testing.T) {
 	_, err = resolveConstInt(&expr)
 	if err == nil {
 		t.Error("should have received error because expr.Obj.Decl is not *ast.DefineSpec")
+	}
+}
+
+func TestResolveConstIntWithIdentWithConWithDefineSpec(t *testing.T) {
+	expected := int32(99)
+	value := ast.BasicLit{Kind: token.INT, Value: fmt.Sprint(expected)}
+	spec := ast.DefineSpec{Value: &value}
+	obj := ast.Object{Kind: ast.Con, Decl: &spec}
+	expr := ast.Ident{Obj: &obj}
+	actual, err := resolveConstInt(&expr)
+	if err != nil {
+		t.Errorf("unexpected error: %v", err)
+	}
+	if actual != expected {
+		t.Error("expecting to get back the same value we passed in")
 	}
 }
 
