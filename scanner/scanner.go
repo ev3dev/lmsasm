@@ -479,7 +479,7 @@ redo:
 			tok = token.ADD
 			ch = s.next()
 		case '-':
-			// negitive numbers should already be handled
+			// negative numbers should already be handled
 			tok = token.SUB
 			ch = s.next()
 		case '*':
