@@ -60,8 +60,11 @@ func resolveConstInt(expr ast.Expr) (value int32, err error) {
 			case bytecodes.EnumMember:
 				value = c.Value
 			case nil:
-				d := e.Obj.Decl.(*ast.DefineSpec)
-				value, err = resolveConstInt(d.Value)
+				if d, ok := e.Obj.Decl.(*ast.DefineSpec); ok {
+					value, err = resolveConstInt(d.Value)
+				} else {
+					err = errors.New("Constant identifier is missing declaration")
+				}
 			default:
 				err = errors.New("Unknown constant")
 			}

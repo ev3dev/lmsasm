@@ -24,6 +24,21 @@ func TestResolveConstIntWithNilObj(t *testing.T) {
 	}
 }
 
+func TestResolveConstIntWithIdentWithBadCon(t *testing.T) {
+	obj := ast.Object{Kind: ast.Con}
+	expr := ast.Ident{Obj: &obj}
+	_, err := resolveConstInt(&expr)
+	if err == nil {
+		t.Error("should have received error because expr.Obj.Decl == nil")
+	}
+
+	obj.Decl = 0
+	_, err = resolveConstInt(&expr)
+	if err == nil {
+		t.Error("should have received error because expr.Obj.Decl is not *ast.DefineSpec")
+	}
+}
+
 type literalInfo struct {
 	Lit   ast.Expr
 	Bytes []byte
