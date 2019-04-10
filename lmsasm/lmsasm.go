@@ -19,6 +19,7 @@ func main() {
 		"Supported bytecode definitions to use. 'official', 'xtended' or 'compat'")
 	output := flag.String("output", "out.rbf", "Output file name.")
 	version := flag.Uint("version", 0, "Bytecode version identifier.")
+	debug := flag.Bool("debug", false, "Enable debug output.")
 	flag.Parse()
 
 	if flag.NArg() == 0 {
@@ -32,7 +33,12 @@ func main() {
 		log.Fatal("Error reading bytecodes:", err)
 	}
 
-	f, err := parser.ParseFile(fs, filename, nil, s, parser.DeclarationErrors)
+	var mode parser.Mode = parser.DeclarationErrors
+	if *debug {
+		mode |= parser.Trace
+	}
+
+	f, err := parser.ParseFile(fs, filename, nil, s, mode)
 	if err != nil {
 		log.Fatal("Error parsing file:", err)
 	}
