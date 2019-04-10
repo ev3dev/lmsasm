@@ -16,6 +16,14 @@ import (
 	"testing"
 )
 
+func TestResolveConstIntWithNilObj(t *testing.T) {
+	expr := ast.Ident{}
+	_, err := resolveConstInt(&expr)
+	if err == nil {
+		t.Errorf("should have receive error because expr.Obj == nil")
+	}
+}
+
 type literalInfo struct {
 	Lit   ast.Expr
 	Bytes []byte

@@ -43,6 +43,10 @@ func resolveConstInt(expr ast.Expr) (value int32, err error) {
 			err = errors.New("Expecting integer literal")
 		}
 	case *ast.Ident:
+		if e.Obj == nil {
+			err = errors.New("Unknown identifier in expression")
+			return
+		}
 		switch e.Obj.Kind {
 		case ast.Con:
 			switch c := e.Obj.Data.(type) {
