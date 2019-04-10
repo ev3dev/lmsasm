@@ -123,7 +123,7 @@ func getValueSpecSize(spec *ast.ValueSpec) (size int32, err error) {
 			size *= 4
 		}
 	default:
-		err = errors.New(fmt.Sprintf("Unknown value data type '%v'", spec.Type))
+		err = fmt.Errorf("Unknown value data type '%v'", spec.Type)
 	}
 
 	return
@@ -140,7 +140,7 @@ func getParamSpecSize(spec *ast.ParamSpec) (size int32, err error) {
 	case token.IN_S, token.OUT_S, token.IO_S:
 		size, err = resolveConstInt(spec.Length)
 	default:
-		err = errors.New(fmt.Sprintf("Unknown parameter data type '%v'", spec.Type))
+		err = fmt.Errorf("Unknown parameter data type '%v'", spec.Type)
 	}
 
 	return
