@@ -711,8 +711,11 @@ func (a *Assembler) Assemble(options *AssembleOptions) (Program, error) {
 			if d.Tok == token.SUBCALL {
 				if x, ok := a.file.Scope.Outer.Objects["RETURN"]; ok {
 					i := emitUint8(x.Data.(bytecodes.Opcode).Value, "return")
-					pc += i.size
-					instructions = append(instructions, i)
+					// skip implicit return if last instruction is RETURN
+					if !bytes.Equal(instructions[len(instructions)-1].Bytes, i.Bytes) {
+						pc += i.size
+						instructions = append(instructions, i)
+					}
 				} else {
 					// TODO: would be better to add RBrace token to ast.ObjDecl
 					// and use it's pos here.
