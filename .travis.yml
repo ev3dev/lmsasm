@@ -5,3 +5,18 @@ go:
 - '1.10' # bionic
 - '1.11' # buster
 - tip
+before_deploy:
+- export RELEASE_DIR=$(mktemp -d)
+- ./.travis/build-releases.sh
+deploy:
+  provider: releases
+  api_key:
+    secure: hpReOs1AYovYK05V/4Ih1slIENCOmZaXKQ6+uKwGjchOeRqCzZKk2nqJAYV/p1KFEyyIhYmcCLlKXGibI4tGdfQotLSq40AG4KHIaV30g53oCMBa596g5KdTBLd74A1d5FPUBAV83M5nRmMBqa/Nj1uxolX7CQZvqGhfRjjMVJl2rDtQI3RSPlutdH+IccwRDOXkXMgZN86Tt60XS62zq9fkTCdKZMLAXJ2nLecPS5w8crSNxmPvuaKcZvDb4GRNQmDDz2xoxIXKk8o5HWn6jlM73EwDQtI4IZONGCTBPHVlIDxN+nJlsO4Fs07cZ684CprKn0siQ6j73vtxyBHWw2j3/+2aOQo/p5MIgBeat2Rgp/Rc1TyYl8hHsO2UHJxrEU2CdbhxPtpcJAyX9SRUmfeJPX2HyVF1OUoPSeS15LiNz8dxQ4icqgiQXskRoLcgHNxkf1pFhI0SmheGC4O2JRWWy1pdMGY77+wrEWWNivqVU1w8aDKvNpOzZXZyi0zHTy+RggmWdXBJtyQZgkPIQyQ/u3OqJFp8HZXsaKdb5tVlv5890bYZ8w7jHuhVvYQFx+SZXJyVs72NwUZiDbSdKMXLSqA4eSSnJmar9Ui/FUGsnkE/x6Ew9aoNeRranNDh4RY/IjOy2l5hheTaSqpc5Ewzayl6dcYXUof9M7jpOhM=
+  file:
+  - $RELEASE_DIR/lmsasm-$TRAVIS_TAG-darwin-amd64.zip
+  - $RELEASE_DIR/lmsasm-$TRAVIS_TAG-linux-amd64.zip
+  - $RELEASE_DIR/lmsasm-$TRAVIS_TAG-windows-amd64.zip
+  on:
+    repo: ev3dev/lmsasm
+    tags: true
+    condition: $TRAVIS_GO_VERSION =~ ^1\.11
