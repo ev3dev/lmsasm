@@ -8,7 +8,7 @@ lmsasm - LEGO MINDSTORMS bytecode assembler
 
 # SYNOPSIS
 
-lmsasm [--support *vm*] [--version *version*] [--debug] [--output *out-file*] *in-file*
+lmsasm [--support *vm*] [--version *version*] [--debug] [--ev3g] [--output *out-file*] *in-file*
 
 # DESCRIPTION
 
@@ -29,6 +29,12 @@ is "official".
 
 --debug
 : Useful for debugging compiler problems. Produces lots of output.
+
+--ev3g
+: When set, this enables EV3-G compatibility quirks. This causes the generated
+  byte codes to match the format used by the official EV3 desktop software.
+  This doesn't really do anything useful unless you are trying to make the
+  output exactly match an existing file byte-for-byte.
 
 --output *out-file*
 : The name of the output file. The default is "out.rbf".

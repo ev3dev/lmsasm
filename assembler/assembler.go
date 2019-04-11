@@ -260,11 +260,21 @@ func emitIntConst(value, qualifier string) *Instruction {
 	}
 }
 
-func emitFloatConst(value, qualifier string) *Instruction {
+func emitFloatConst(value, qualifier string, quirks QuirkFlags) *Instruction {
 	f, _ := strconv.ParseFloat(strings.TrimSuffix(value, "F"), 32)
 	// TODO: check for error
-	i := int32(math.Float32bits(float32(f)))
-	b := lcBytes(PRIMPAR_CONST, i)
+
+	var b []byte
+	if quirks&OptimizeFloatConst != 0 {
+		i := int32(math.Float32bits(float32(f)))
+		b = lcBytes(PRIMPAR_CONST, i)
+	} else {
+		// EV3-G quirk - 0.0F is always emitted as long value
+		buf := new(bytes.Buffer)
+		buf.WriteByte(PRIMPAR_LONG | PRIMPAR_CONST | PRIMPAR_4_BYTES)
+		binary.Write(buf, binary.LittleEndian, float32(f))
+		b = buf.Bytes()
+	}
 
 	return &Instruction{
 		Bytes: b,
@@ -366,7 +376,7 @@ func emitObjCall(obj *ast.ObjDecl) *Instruction {
 	}
 }
 
-func emitExpr(expr ast.Expr, globals, locals map[string]int32) (inst *Instruction, err error) {
+func emitExpr(expr ast.Expr, globals, locals map[string]int32, quirks QuirkFlags) (inst *Instruction, err error) {
 	switch e := expr.(type) {
 	case *ast.BadExpr:
 		err = errors.New("Bad expression")
@@ -386,7 +396,7 @@ func emitExpr(expr ast.Expr, globals, locals map[string]int32) (inst *Instructio
 				case int:
 					inst = emitIntConst(strconv.Itoa(v), "define")
 				case float64:
-					inst = emitFloatConst(strconv.FormatFloat(v, 'f', -1, 32), "define")
+					inst = emitFloatConst(strconv.FormatFloat(v, 'f', -1, 32), "define", quirks)
 				case string:
 					inst = emitStringConst(v, "define")
 				default:
@@ -396,7 +406,7 @@ func emitExpr(expr ast.Expr, globals, locals map[string]int32) (inst *Instructio
 				inst = emitEnum(c.Value)
 			case nil:
 				d := e.Obj.Decl.(*ast.DefineSpec)
-				inst, err = emitExpr(d.Value, globals, locals)
+				inst, err = emitExpr(d.Value, globals, locals, quirks)
 			default:
 				err = errors.New("Unknown constant")
 			}
@@ -435,13 +445,13 @@ func emitExpr(expr ast.Expr, globals, locals map[string]int32) (inst *Instructio
 		case token.INT:
 			inst = emitIntConst(e.Value, "literal")
 		case token.FLOAT:
-			inst = emitFloatConst(e.Value, "literal")
+			inst = emitFloatConst(e.Value, "literal", quirks)
 		case token.STRING:
 			// e.Value is quoted, so slice to trim the quotes
 			inst = emitStringConst(e.Value[1:len(e.Value)-1], "literal")
 		}
 	case *ast.ParenExpr:
-		inst, err = emitExpr(e.X, globals, locals)
+		inst, err = emitExpr(e.X, globals, locals, quirks)
 	case *ast.UnaryExpr:
 		switch e.Op {
 		case token.AT:
@@ -461,14 +471,14 @@ func emitExpr(expr ast.Expr, globals, locals map[string]int32) (inst *Instructio
 				err = errors.New("Expecting identifier")
 			}
 		case token.ADD:
-			inst, err = emitExpr(e.X, globals, locals)
+			inst, err = emitExpr(e.X, globals, locals, quirks)
 		case token.SUB:
 			if lit, ok := e.X.(*ast.BasicLit); ok {
 				switch lit.Kind {
 				case token.INT:
 					inst = emitIntConst("-"+lit.Value, "literal")
 				case token.FLOAT:
-					inst = emitFloatConst("-"+lit.Value, "literal")
+					inst = emitFloatConst("-"+lit.Value, "literal", quirks)
 				case token.STRING:
 					err = errors.New("Expecting numeric literal")
 				}
@@ -512,9 +522,50 @@ type Instruction struct {
 	label *ast.Ident
 }
 
+// QuirkFlags change the compiler behavior
+type QuirkFlags uint32
+
+// QuirkFlags values
+const (
+	OptimizeFloatConst QuirkFlags = 1 << iota // allow float constant values to be smaller than PRIMPAR_LONG | PRIMPAR_CONST | PRIMPAR_4_BYTES
+	OptimizeLabels                            // allow labels offset constant values to be smaller than PRIMPAR_LONG | PRIMPAR_CONST | PRIMPAR_2_BYTES
+)
+
 // AssembleOptions specify options for the Assemble() function
 type AssembleOptions struct {
 	Version uint16
+	Quirks  QuirkFlags
+}
+
+// OptimizeLabels reduces the size of offsets to labels to the optimum size
+// instead of using the default size of 3 bytes. The return value is the total
+// size in which the list of instructions has changed.
+func optimizeLabels(instructions []*Instruction, labels map[string]int32, baseOffset int32) int32 {
+	totalDiff := int32(0)
+	ipc := baseOffset
+	for _, i := range instructions {
+		if i.label != nil {
+			if offset, ok := labels[i.label.Name]; ok {
+				// see what the actual size of the label is
+				bytes := lcBytes(PRIMPAR_CONST, offset-ipc-i.size)
+				diff := i.size - int32(len(bytes))
+				// if the size of the label changed from the previous value then
+				// update the size of this instruction and the offset of all labels
+				// after this instruction
+				if diff > 0 {
+					totalDiff += diff
+					i.size -= diff
+					for n, l := range labels {
+						if l > ipc {
+							labels[n] -= diff
+						}
+					}
+				}
+			}
+		}
+		ipc += i.size
+	}
+	return totalDiff
 }
 
 // Assemble compiles code into LMS2012 VM bytecodes
@@ -641,7 +692,7 @@ func (a *Assembler) Assemble(options *AssembleOptions) (Program, error) {
 						for _, arg := range s.Args {
 							// TODO: check that the arg type matches the opcode template
 							// from yaml and the the number of args is correct
-							i, err := emitExpr(arg, globals, locals)
+							i, err := emitExpr(arg, globals, locals, options.Quirks)
 							if err == nil {
 								pc += i.size
 								instructions = append(instructions, i)
@@ -683,14 +734,30 @@ func (a *Assembler) Assemble(options *AssembleOptions) (Program, error) {
 
 			// resolve the labels
 
+			// The EV3-G desktop software optimizes the size of labels
+			if options.Quirks&OptimizeLabels != 0 {
+				for {
+					diff := optimizeLabels(instructions, labels, offset)
+					if diff == 0 {
+						break
+					}
+					pc -= diff
+				}
+			}
+
 			ipc := offset
 			for _, i := range instructions {
 				if i.label != nil {
 					if offset, ok := labels[i.label.Name]; ok {
-						buf := new(bytes.Buffer)
-						buf.WriteByte(PRIMPAR_LONG | PRIMPAR_2_BYTES)
-						binary.Write(buf, binary.LittleEndian, int16(offset-ipc-3))
-						i.Bytes = buf.Bytes()
+						if options.Quirks&OptimizeLabels != 0 {
+							i.Bytes = lcBytes(PRIMPAR_CONST, int32(offset-ipc-i.size))
+						} else {
+							// all labels need to be 3 bytes in size
+							buf := new(bytes.Buffer)
+							buf.WriteByte(PRIMPAR_LONG | PRIMPAR_2_BYTES)
+							binary.Write(buf, binary.LittleEndian, int16(offset-ipc-3))
+							i.Bytes = buf.Bytes()
+						}
 					} else {
 						a.errors.Add(a.fs.Position(i.label.Pos()), "Could not find matching label")
 					}

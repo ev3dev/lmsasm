@@ -20,6 +20,7 @@ func main() {
 	output := flag.String("output", "out.rbf", "Output file name.")
 	version := flag.Uint("version", 0, "Bytecode version identifier.")
 	debug := flag.Bool("debug", false, "Enable debug output.")
+	ev3g := flag.Bool("ev3g", false, "Enable EV3-G compiler quirks.")
 	flag.Parse()
 
 	if flag.NArg() == 0 {
@@ -44,7 +45,11 @@ func main() {
 	}
 
 	a := assembler.NewAssembler(fs, f)
-	options := assembler.AssembleOptions{Version: uint16(*version)}
+	options := assembler.AssembleOptions{Version: uint16(*version), Quirks: assembler.OptimizeFloatConst}
+	if *ev3g {
+		options.Quirks &^= assembler.OptimizeFloatConst
+		options.Quirks |= assembler.OptimizeLabels
+	}
 	p, err := a.Assemble(&options)
 	if err != nil {
 		log.Fatal("Error assembling file:", err)

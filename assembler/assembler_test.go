@@ -80,40 +80,44 @@ func TestResolveConstIntWithIdentWithConWithDefineSpec(t *testing.T) {
 }
 
 type literalInfo struct {
-	Lit   ast.Expr
-	Bytes []byte
+	Lit    ast.Expr
+	Bytes  []byte
+	quirks QuirkFlags
 }
 
 var literals = []literalInfo{
-	{&ast.BasicLit{Kind: token.INT, Value: "0"}, []byte{0x00}},
-	{&ast.BasicLit{Kind: token.INT, Value: "1"}, []byte{0x01}},
-	{&ast.BasicLit{Kind: token.INT, Value: "-1"}, []byte{0x3f}},
-	{&ast.BasicLit{Kind: token.INT, Value: "31"}, []byte{0x1F}},
-	{&ast.BasicLit{Kind: token.INT, Value: "-31"}, []byte{0x21}},
-	{&ast.BasicLit{Kind: token.INT, Value: "32"}, []byte{0x81, 0x20}},
-	{&ast.BasicLit{Kind: token.INT, Value: "-32"}, []byte{0x81, 0xe0}},
-	{&ast.BasicLit{Kind: token.INT, Value: "127"}, []byte{0x81, 0x7f}},
-	{&ast.BasicLit{Kind: token.INT, Value: "-127"}, []byte{0x81, 0x81}},
-	{&ast.BasicLit{Kind: token.INT, Value: "128"}, []byte{0x82, 0x80, 0x00}},
-	{&ast.BasicLit{Kind: token.INT, Value: "-128"}, []byte{0x82, 0x80, 0xff}},
-	{&ast.BasicLit{Kind: token.INT, Value: "32767"}, []byte{0x82, 0xff, 0x7f}},
-	{&ast.BasicLit{Kind: token.INT, Value: "-32767"}, []byte{0x82, 0x01, 0x80}},
-	{&ast.BasicLit{Kind: token.INT, Value: "32768"}, []byte{0x83, 0x00, 0x80, 0x00, 0x00}},
-	{&ast.BasicLit{Kind: token.INT, Value: "-32768"}, []byte{0x83, 0x00, 0x80, 0xff, 0xff}},
-	{&ast.BasicLit{Kind: token.INT, Value: "2147483647"}, []byte{0x83, 0xff, 0xff, 0xff, 0x7f}},
-	{&ast.BasicLit{Kind: token.INT, Value: "0x01"}, []byte{0x01}},
-	{&ast.BasicLit{Kind: token.INT, Value: "-2147483647"}, []byte{0x83, 0x01, 0x00, 0x00, 0x80}},
-	{&ast.BasicLit{Kind: token.FLOAT, Value: "0.0F"}, []byte{0x00}},
-	{&ast.BasicLit{Kind: token.FLOAT, Value: "1.0F"}, []byte{0x83, 0x00, 0x00, 0x80, 0x3f}},
-	{&ast.BasicLit{Kind: token.FLOAT, Value: "-1.0F"}, []byte{0x83, 0x00, 0x00, 0x80, 0xbf}},
-	{&ast.BasicLit{Kind: token.STRING, Value: ""}, []byte{0x80, 0x00}},
-	{&ast.BasicLit{Kind: token.STRING, Value: "test"}, []byte{0x80, 0x74, 0x65, 0x73, 0x74, 0x00}},
-	{&ast.BasicLit{Kind: token.STRING, Value: "\\n"}, []byte{0x80, 0x0a, 0x00}},
-	{&ast.BasicLit{Kind: token.STRING, Value: "\\q"}, []byte{0x80, 0x27, 0x00}},
-	{&ast.BasicLit{Kind: token.STRING, Value: "\\r"}, []byte{0x80, 0x0d, 0x00}},
-	{&ast.BasicLit{Kind: token.STRING, Value: "\\t"}, []byte{0x80, 0x09, 0x00}},
-	{&ast.BasicLit{Kind: token.STRING, Value: "\\\\"}, []byte{0x80, 0x5c, 0x00}},
-	{&ast.BasicLit{Kind: token.STRING, Value: "\\t\\t\\t\\t"}, []byte{0x80, 0x09, 0x09, 0x09, 0x09, 0x00}},
+	{&ast.BasicLit{Kind: token.INT, Value: "0"}, []byte{0x00}, 0},
+	{&ast.BasicLit{Kind: token.INT, Value: "1"}, []byte{0x01}, 0},
+	{&ast.BasicLit{Kind: token.INT, Value: "-1"}, []byte{0x3f}, 0},
+	{&ast.BasicLit{Kind: token.INT, Value: "31"}, []byte{0x1F}, 0},
+	{&ast.BasicLit{Kind: token.INT, Value: "-31"}, []byte{0x21}, 0},
+	{&ast.BasicLit{Kind: token.INT, Value: "32"}, []byte{0x81, 0x20}, 0},
+	{&ast.BasicLit{Kind: token.INT, Value: "-32"}, []byte{0x81, 0xe0}, 0},
+	{&ast.BasicLit{Kind: token.INT, Value: "127"}, []byte{0x81, 0x7f}, 0},
+	{&ast.BasicLit{Kind: token.INT, Value: "-127"}, []byte{0x81, 0x81}, 0},
+	{&ast.BasicLit{Kind: token.INT, Value: "128"}, []byte{0x82, 0x80, 0x00}, 0},
+	{&ast.BasicLit{Kind: token.INT, Value: "-128"}, []byte{0x82, 0x80, 0xff}, 0},
+	{&ast.BasicLit{Kind: token.INT, Value: "32767"}, []byte{0x82, 0xff, 0x7f}, 0},
+	{&ast.BasicLit{Kind: token.INT, Value: "-32767"}, []byte{0x82, 0x01, 0x80}, 0},
+	{&ast.BasicLit{Kind: token.INT, Value: "32768"}, []byte{0x83, 0x00, 0x80, 0x00, 0x00}, 0},
+	{&ast.BasicLit{Kind: token.INT, Value: "-32768"}, []byte{0x83, 0x00, 0x80, 0xff, 0xff}, 0},
+	{&ast.BasicLit{Kind: token.INT, Value: "2147483647"}, []byte{0x83, 0xff, 0xff, 0xff, 0x7f}, 0},
+	{&ast.BasicLit{Kind: token.INT, Value: "0x01"}, []byte{0x01}, 0},
+	{&ast.BasicLit{Kind: token.INT, Value: "-2147483647"}, []byte{0x83, 0x01, 0x00, 0x00, 0x80}, 0},
+	{&ast.BasicLit{Kind: token.FLOAT, Value: "0.0F"}, []byte{0x83, 0x00, 0x00, 0x00, 0x00}, 0},
+	{&ast.BasicLit{Kind: token.FLOAT, Value: "0.0F"}, []byte{0x00}, OptimizeFloatConst},
+	{&ast.BasicLit{Kind: token.FLOAT, Value: "1.0F"}, []byte{0x83, 0x00, 0x00, 0x80, 0x3f}, 0},
+	{&ast.BasicLit{Kind: token.FLOAT, Value: "1.0F"}, []byte{0x83, 0x00, 0x00, 0x80, 0x3f}, OptimizeFloatConst},
+	{&ast.BasicLit{Kind: token.FLOAT, Value: "-1.0F"}, []byte{0x83, 0x00, 0x00, 0x80, 0xbf}, 0},
+	{&ast.BasicLit{Kind: token.FLOAT, Value: "-1.0F"}, []byte{0x83, 0x00, 0x00, 0x80, 0xbf}, OptimizeFloatConst},
+	{&ast.BasicLit{Kind: token.STRING, Value: ""}, []byte{0x80, 0x00}, 0},
+	{&ast.BasicLit{Kind: token.STRING, Value: "test"}, []byte{0x80, 0x74, 0x65, 0x73, 0x74, 0x00}, 0},
+	{&ast.BasicLit{Kind: token.STRING, Value: "\\n"}, []byte{0x80, 0x0a, 0x00}, 0},
+	{&ast.BasicLit{Kind: token.STRING, Value: "\\q"}, []byte{0x80, 0x27, 0x00}, 0},
+	{&ast.BasicLit{Kind: token.STRING, Value: "\\r"}, []byte{0x80, 0x0d, 0x00}, 0},
+	{&ast.BasicLit{Kind: token.STRING, Value: "\\t"}, []byte{0x80, 0x09, 0x00}, 0},
+	{&ast.BasicLit{Kind: token.STRING, Value: "\\\\"}, []byte{0x80, 0x5c, 0x00}, 0},
+	{&ast.BasicLit{Kind: token.STRING, Value: "\\t\\t\\t\\t"}, []byte{0x80, 0x09, 0x09, 0x09, 0x09, 0x00}, 0},
 }
 
 func TestBasicLit(t *testing.T) {
@@ -124,7 +128,7 @@ func TestBasicLit(t *testing.T) {
 		case token.INT:
 			inst = emitIntConst(l.Value, "")
 		case token.FLOAT:
-			inst = emitFloatConst(l.Value, "")
+			inst = emitFloatConst(l.Value, "", r.quirks)
 		case token.STRING:
 			inst = emitStringConst(l.Value, "")
 		}
@@ -159,7 +163,7 @@ func TestOfficial(t *testing.T) {
 		}
 		t.Log("Assembling", n)
 		a := NewAssembler(fs, f)
-		options := AssembleOptions{Version: 109}
+		options := AssembleOptions{Version: 109, Quirks: OptimizeFloatConst}
 		p, err := a.Assemble(&options)
 		if err != nil {
 			t.Error("Failed to assemble file:", err)
