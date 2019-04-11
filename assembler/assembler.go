@@ -1,4 +1,4 @@
-// Copyright 2016 David Lechner <david@lechnology.com>
+// Copyright 2016,2019 David Lechner <david@lechnology.com>
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -527,8 +527,9 @@ type QuirkFlags uint32
 
 // QuirkFlags values
 const (
-	OptimizeFloatConst QuirkFlags = 1 << iota // allow float constant values to be smaller than PRIMPAR_LONG | PRIMPAR_CONST | PRIMPAR_4_BYTES
-	OptimizeLabels                            // allow labels offset constant values to be smaller than PRIMPAR_LONG | PRIMPAR_CONST | PRIMPAR_2_BYTES
+	OptimizeFloatConst       QuirkFlags = 1 << iota // allow float constant values to be smaller than PRIMPAR_LONG | PRIMPAR_CONST | PRIMPAR_4_BYTES
+	OptimizeLabels                                  // allow labels offset constant values to be smaller than PRIMPAR_LONG | PRIMPAR_CONST | PRIMPAR_2_BYTES
+	OptimizeDuplicateObjects                        // allow multiple object pointer to point to the same bytecodes
 )
 
 // AssembleOptions specify options for the Assemble() function
@@ -776,6 +777,38 @@ func (a *Assembler) Assemble(options *AssembleOptions) (Program, error) {
 				LocalSize:    nextLocal,
 				Instructions: instructions,
 			}
+
+			if options.Quirks&OptimizeDuplicateObjects != 0 {
+				for _, o2 := range objects {
+					if o.Owner != o2.Owner {
+						continue
+					}
+					if o.Trigger != o2.Trigger {
+						continue
+					}
+					if o.LocalSize != o2.LocalSize {
+						continue
+					}
+					instEqual := func() bool {
+						for i := range o.Instructions {
+							if !bytes.Equal(o.Instructions[i].Bytes, o2.Instructions[i].Bytes) {
+								return false
+							}
+						}
+						return true
+					}
+					if !instEqual() {
+						continue
+					}
+					// objects are equal, so make new object point to offset of
+					// old object
+					o.Offset = o2.Offset
+					o.Instructions = nil
+					pc = offset
+					break
+				}
+			}
+
 			objects = append(objects, o)
 		}
 	}

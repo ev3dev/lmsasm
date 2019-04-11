@@ -1,4 +1,4 @@
-// Copyright 2016 David Lechner <david@lechnology.com>
+// Copyright 2016,2019 David Lechner <david@lechnology.com>
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -48,7 +48,7 @@ func main() {
 	options := assembler.AssembleOptions{Version: uint16(*version), Quirks: assembler.OptimizeFloatConst}
 	if *ev3g {
 		options.Quirks &^= assembler.OptimizeFloatConst
-		options.Quirks |= assembler.OptimizeLabels
+		options.Quirks |= assembler.OptimizeLabels | assembler.OptimizeDuplicateObjects
 	}
 	p, err := a.Assemble(&options)
 	if err != nil {
