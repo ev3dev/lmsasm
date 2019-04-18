@@ -13,6 +13,12 @@ of the [official EV3 Firmware Source Code][lms downloads].
 [lms downloads]: http://www.lego.com/en-us/mindstorms/downloads
 
 
+There is also a `lmsgen` tool that can be used to generate code based on the
+[bytecode definitions file][ev3.yml].
+
+[ev3.yml]: https://github.com/ev3dev/lmsasm/blob/master/bytecodes/data/ev3.yml
+
+
 ## Download
 
 Pre-compiled executables are available on [GitHub](https://github.com/ev3dev/lmsasm/releases).
