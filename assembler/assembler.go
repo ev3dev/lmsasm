@@ -687,7 +687,9 @@ func (a *Assembler) Assemble(options *AssembleOptions) (Program, error) {
 					goto start
 				case *ast.CallStmt:
 					x := s.Op.Obj
-					if x.Kind == ast.Op {
+					if x == nil {
+						a.errors.Add(a.fs.Position(s.Op.Pos()), "Unknown opcode")
+					} else if x.Kind == ast.Op {
 						i := emitUint8(x.Data.(bytecodes.Opcode).Value, "opcode")
 						pc += i.size
 						instructions = append(instructions, i)
