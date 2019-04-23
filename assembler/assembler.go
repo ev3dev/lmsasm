@@ -614,6 +614,7 @@ func (a *Assembler) Assemble(options *AssembleOptions) (Program, error) {
 			labels := make(map[string]int32)
 
 			if d.Tok == token.BLOCK {
+				trigger = 1
 				owner = 1
 			}
 
