@@ -9,6 +9,7 @@ package bytecodes
 
 import (
 	"fmt"
+
 	"github.com/ev3dev/lmsasm/ast"
 	"gopkg.in/yaml.v2"
 )
@@ -28,12 +29,14 @@ type Opcode struct {
 }
 
 type Param struct {
-	Name     string
-	Desc     string ",omitempty"
-	Type     ParamType
-	Commands map[string]Command ",omitempty"
-	Enum     *Enum              ",omitempty"
-	Remarks  string             ",omitempty"
+	Name        string
+	Desc        string ",omitempty"
+	Type        ParamType
+	ElementType ParamType "element-type,omitempty"
+	Dir         Direction
+	Commands    map[string]Command ",omitempty"
+	Enum        *Enum              ",omitempty"
+	Remarks     string             ",omitempty"
 }
 
 type ParamType string

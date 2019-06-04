@@ -41,7 +41,7 @@ func TestEv3(t *testing.T) {
 				t.Errorf("Missing 'name:' for param %v in opcode '%v'", i, k)
 			}
 			switch p.Type {
-			case ParamTypeNumberParams, ParamTypeLabel, ParamTypeValues,
+			case ParamTypeNumberParams, ParamTypeLabel,
 				ParamTypeInt8, ParamTypeInt16, ParamTypeInt32, ParamTypeFloat,
 				ParamTypeString, ParamTypeVariable:
 				// we're good
@@ -55,10 +55,19 @@ func TestEv3(t *testing.T) {
 								t.Errorf("Missing 'name:' for command '%v' param %v in opcode '%v'", sk, si, k)
 							}
 							switch sp.Type {
-							case ParamTypeNumberParams, ParamTypeLabel, ParamTypeValues,
+							case ParamTypeNumberParams, ParamTypeLabel,
 								ParamTypeInt8, ParamTypeInt16, ParamTypeInt32, ParamTypeFloat,
 								ParamTypeString, ParamTypeVariable:
 								// we're good
+							case ParamTypeValues:
+								switch sp.ElementType  {
+								case ParamTypeInt8, ParamTypeInt16, ParamTypeInt32, ParamTypeFloat:
+									// OK
+								case "":
+									t.Errorf("Missing element-type on PARVALUES for command %v in opcode %v", sk, k)
+								default:
+									t.Errorf("Bad element-type '%v' on PARVALUES for command %v in opcode %v", sp.ElementType, sk, k)
+								}
 							case ParamTypeSubparam:
 								// nested subparam not allowed
 								fallthrough
@@ -76,6 +85,14 @@ func TestEv3(t *testing.T) {
 						}
 					}
 				}
+			case ParamTypeValues:
+				switch p.ElementType  {
+				case ParamTypeInt8, ParamTypeInt16, ParamTypeInt32, ParamTypeFloat:
+					// OK
+				case "":
+					t.Errorf("Missing element-type on PARVALUES in opcode %v", k)
+				default:
+					t.Errorf("Bad element-type '%v' on PARVALUES in opcode %v", p.ElementType, k)
 				}
 			default:
 				t.Errorf("Bad param type '%v' for opcode '%v', param '%v", p.Type, k, p.Name)
