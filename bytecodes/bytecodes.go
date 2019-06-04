@@ -51,6 +51,14 @@ const (
 	ParamTypeVariable               = "PARV"
 )
 
+type Direction string
+
+const (
+	DirectionIn    Direction = "in"
+	DirectionOut             = "out"
+	DirectionInOut           = "inout"
+)
+
 type SupportType string
 
 const (

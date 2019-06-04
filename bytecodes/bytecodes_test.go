@@ -65,11 +65,28 @@ func TestEv3(t *testing.T) {
 							default:
 								t.Errorf("Bad param type '%v' for command '%v' in opcode '%v', param '%v", sp.Type, sk, k, sp.Name)
 							}
+							switch sp.Dir  {
+							case DirectionIn, DirectionOut, DirectionInOut:
+								// OK
+							case "":
+								t.Errorf("Missing 'dir:' for param %v for command %v in opcode %v", si, sk, k)
+							default:
+								t.Errorf("Bad 'dir: %v' for param %v for command %v in opcode %v", sp.Dir, si, sk, k)
+							}
 						}
 					}
 				}
+				}
 			default:
 				t.Errorf("Bad param type '%v' for opcode '%v', param '%v", p.Type, k, p.Name)
+			}
+			switch p.Dir  {
+			case DirectionIn, DirectionOut, DirectionInOut:
+				// OK
+			case "":
+				t.Errorf("Missing 'dir:' for param %v in opcode %v", i, k)
+			default:
+				t.Errorf("Bad 'dir: %v' for param %v in opcode %v", p.Dir, i, k)
 			}
 		}
 	}
