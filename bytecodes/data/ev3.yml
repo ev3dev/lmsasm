@@ -3045,6 +3045,7 @@ ops:
       -
         name: "CMD"
         type: SUBP
+        dir: in
         commands:
           SET_ERROR:
             value: 1
@@ -3121,6 +3122,7 @@ ops:
       -
         name: "CMD"
         type: SUBP
+        dir: in
         commands:
           GET_SIZE:
             desc: Get size of string (not including zero termination)
@@ -3406,6 +3408,7 @@ ops:
       -
         name: "CMD"
         type: SUBP
+        dir: in
         commands:
           GET_VBATT:
             value: 1
@@ -3446,6 +3449,7 @@ ops:
               -
                 name: "EVENT"
                 type: PAR8
+                dir: out
 
           GET_TBATT:
             value: 5
@@ -3603,6 +3607,7 @@ ops:
               -
                 name: "FLAG"
                 type: PAR8
+                dir: out
 
           GET_WARNING:
             value: 17
@@ -3610,6 +3615,7 @@ ops:
               -
                 name: "WARNINGS"
                 type: PAR8
+                dir: out
                 enum: *WARNING
 
           GET_LBATT:
@@ -3628,21 +3634,27 @@ ops:
               -
                 name: "TEXT"
                 type: PAR8
+                dir: in
               -
                 name: "SIZE"
                 type: PAR32
+                dir: in
               -
                 name: "DEL"
                 type: PAR8
+                dir: in
               -
                 name: "LENGTH"
                 type: PAR8
+                dir: in
               -
                 name: "LINE"
                 type: PAR16
+                dir: in
               -
                 name: "DESTINATION"
                 type: PAR8
+                dir: in
 
           GET_VERSION:
             desc: Get version string
@@ -3743,6 +3755,7 @@ ops:
       -
         name: "CMD"
         type: SUBP
+        dir: in
         commands:
           WRITE_FLUSH:
             value: 1
@@ -3773,6 +3786,7 @@ ops:
               -
                 name: "VALUE"
                 type: PAR8
+                dir: in
 
           PUT_STRING:
             value: 8
@@ -3866,6 +3880,7 @@ ops:
               -
                 name: "VALUE"
                 type: PAR8
+                dir: in
 
           SET_PULSE:
             value: 18
@@ -3873,6 +3888,7 @@ ops:
               -
                 name: "VALUE"
                 type: PAR8
+                dir: in
 
           TEXTBOX_APPEND:
             desc: Append line of text at the bottom of a text box
@@ -3971,6 +3987,7 @@ ops:
       -
         name: "CMD"
         type: SUBP
+        dir: in
         commands:
           SHORTPRESS:
             value: 1
@@ -4158,6 +4175,7 @@ ops:
       -
         name: "CMD"
         type: SUBP
+        dir: in
         commands:
           UPDATE:
             value: 0
@@ -4741,6 +4759,7 @@ ops:
               -
                 name: "Y"
                 type: PAR16
+                dir: in
 
           DOTLINE:
             value: 21
@@ -4960,6 +4979,7 @@ ops:
               -
                 name: "OPEN"
                 type: PAR8
+                dir: in
 
           GRAPH_SETUP:
             value: 30
@@ -5038,27 +5058,35 @@ ops:
               -
                 name: "X0"
                 type: PAR16
+                dir: in
               -
                 name: "Y0"
                 type: PAR16
+                dir: in
               -
                 name: "X1"
                 type: PAR16
+                dir: in
               -
                 name: "Y1"
                 type: PAR16
+                dir: in
               -
                 name: "TEXT"
                 type: PAR8
+                dir: in
               -
                 name: "SIZE"
                 type: PAR32
+                dir: in
               -
                 name: "DEL"
                 type: PAR8
+                dir: in
               -
                 name: "LINE"
                 type: PAR8
+                dir: in
     remarks: Dispatch status can change to BUSYBREAK
 
 
@@ -5157,6 +5185,7 @@ ops:
         name: "CMD"
         desc: Specific command parameter
         type: SUBP
+        dir: in
         commands:
           EXP:
             desc: e^x            r = expf(x)
@@ -5511,6 +5540,7 @@ ops:
       -
         name: "CMD"
         type: SUBP
+        dir: in
         commands:
           COMMAND:
             value: 14
@@ -5575,6 +5605,7 @@ ops:
       -
         name: "CMD"
         type: SUBP
+        dir: in
         commands:
           BREAK:
             value: 0
@@ -8461,15 +8492,19 @@ ops:
       -
         name: "VALUE1"
         type: PAR8
+        dir: in
       -
         name: "VALUE2"
         type: PAR8
+        dir: in
       -
         name: "VALUE3"
         type: PAR16
+        dir: in
       -
         name: "VALUE4"
         type: PAR8
+        dir: in
     remarks: Dispatch status changes to INSTRBREAK
 
   COM_WRITEDATA:
@@ -8479,15 +8514,19 @@ ops:
       -
         name: "VALUE1"
         type: PAR8
+        dir: in
       -
         name: "VALUE2"
         type: PAR8
+        dir: in
       -
         name: "VALUE3"
         type: PAR16
+        dir: in
       -
         name: "VALUE4"
         type: PAR8
+        dir: in
     remarks: Dispatch status changes to INSTRBREAK
 
   COM_GET:
@@ -8497,6 +8536,7 @@ ops:
       -
         name: "CMD"
         type: SUBP
+        dir: in
         commands:
           GET_ON_OFF:
             desc: Get active state
@@ -8847,9 +8887,11 @@ ops:
               -
                 name: "HARDWARE"
                 type: PAR8
+                dir: in
               -
                 name: "ITEMS"
                 type: PAR8
+                dir: out
 
           CONNEC_ITEM:
             value: 18
@@ -8857,18 +8899,23 @@ ops:
               -
                 name: "HARDWARE"
                 type: PAR8
+                dir: in
               -
                 name: "ITEM"
                 type: PAR8
+                dir: in
               -
                 name: "LENGTH"
                 type: PAR8
+                dir: in
               -
                 name: "NAME"
                 type: PAR8
+                dir: in
               -
                 name: "TYPE"
                 type: PAR8
+                dir: out
 
           GET_INCOMING:
             desc: Returns the encryption mode of the hardware. WIFI only
@@ -8920,6 +8967,7 @@ ops:
       -
         name: "CMD"
         type: SUBP
+        dir: in
         commands:
           SET_ON_OFF:
             desc: Set active state, either on or off
@@ -9165,11 +9213,13 @@ ops:
       -
         name: "HARDWARE"
         type: PAR8
+        dir: in
         enum: *HWTYPE
       -
         name: "REMOTE_NAME"
         desc: Pointer to remote brick name
         type: PAR8
+        dir: in
     remarks: Dispatch status can return FAILBREAK
 
   COM_WRITEFILE:
@@ -9179,19 +9229,23 @@ ops:
       -
         name: "HARDWARE"
         type: PAR8
+        dir: in
         enum: *HWTYPE
       -
         name: "REMOTE_NAME"
         desc: Pointer to remote brick name
         type: PAR8
+        dir: in
       -
         name: "FILE_NAME"
         desc: File/folder name to send
         type: PAR8
+        dir: in
       -
         name: "FILE_TYPE"
         desc: File or folder type to send
         type: PAR8
+        dir: in
     remarks: Dispatch status can return FAILBREAK
 
   MAILBOX_OPEN:
