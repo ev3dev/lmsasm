@@ -12,6 +12,7 @@ package parser
 import (
 	"bytes"
 	"fmt"
+
 	"github.com/ev3dev/lmsasm/ast"
 	"github.com/ev3dev/lmsasm/scanner"
 	"github.com/ev3dev/lmsasm/token"
@@ -485,7 +486,7 @@ func (p *parser) parseExpr() ast.Expr {
 		p.next()
 		return x
 
-	case token.ADD, token.SUB, token.AT:
+	case token.ADD, token.SUB, token.AT, token.BANG:
 		x := p.parseUnaryExpr()
 		return x
 
@@ -572,6 +573,11 @@ func (p *parser) parseUnaryExpr() ast.Expr {
 		pos, op := p.pos, p.tok
 		p.next()
 		x := p.parseIdent()
+		return &ast.UnaryExpr{OpPos: pos, Op: op, X: p.checkExpr(x)}
+	case token.BANG:
+		pos, op := p.pos, p.tok
+		p.next()
+		x := p.parseExpr()
 		return &ast.UnaryExpr{OpPos: pos, Op: op, X: p.checkExpr(x)}
 	}
 

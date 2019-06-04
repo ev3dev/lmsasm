@@ -36,7 +36,8 @@ const (
 	MUL // *
 	QUO // /
 
-	AT // @
+	AT   // @
+	BANG // !
 
 	LPAREN // (
 	LBRACE // {
@@ -78,7 +79,8 @@ var tokens = [...]string{
 	MUL: "*",
 	QUO: "/",
 
-	AT: "@",
+	AT:   "@",
+	BANG: "!",
 
 	LPAREN: "(",
 	LBRACE: "{",

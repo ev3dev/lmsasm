@@ -470,6 +470,8 @@ func emitExpr(expr ast.Expr, globals, locals map[string]int32, quirks QuirkFlags
 			} else {
 				err = errors.New("Expecting identifier")
 			}
+		case token.BANG:
+			inst, err = emitExpr(e.X, globals, locals, quirks)
 		case token.ADD:
 			inst, err = emitExpr(e.X, globals, locals, quirks)
 		case token.SUB:

@@ -124,6 +124,8 @@ var tokenList = []tokenInfo{
 	{token.RPAREN, ")"},
 	{token.RBRACE, "}"},
 	{token.COLON, ":"},
+	{token.AT, "@"},
+	{token.BANG, "!"},
 }
 
 func makeSource(pattern string) *bytes.Buffer {

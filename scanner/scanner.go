@@ -13,10 +13,11 @@ package scanner
 import (
 	"bytes"
 	"fmt"
-	"github.com/ev3dev/lmsasm/token"
 	"io"
 	"os"
 	"unicode/utf8"
+
+	"github.com/ev3dev/lmsasm/token"
 )
 
 const whitespace = 1<<'\t' | 1<<'\n' | 1<<'\r' | 1<<' '
@@ -496,6 +497,9 @@ redo:
 			}
 		case '@':
 			tok = token.AT
+			ch = s.next()
+		case '!':
+			tok = token.BANG
 			ch = s.next()
 		case '(':
 			tok = token.LPAREN
