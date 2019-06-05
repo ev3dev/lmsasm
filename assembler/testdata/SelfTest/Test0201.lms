@@ -364,8 +364,8 @@ subcall   TestRange                                                   //  void T
   DATAS   String LINE                                                 //
   DATAS   Result LINE                                                 //
                                                                       //
-  JR_LT32(IstWert,Min,Error)                                          //    if ((IstWert >= Min) &&
-  JR_GT32(IstWert,Max,Error)                                          //        (IstWert <= Max))
+  JR_LT32(!IstWert,!Min,Error)                                        //    if ((IstWert >= Min) &&
+  JR_GT32(!IstWert,!Max,Error)                                        //        (IstWert <= Max))
                                                                       //    {
   STRINGS(ADD,'  ',Text,String)                                       //      STRINGS(ADD,'  ',Text,String)
   STRINGS(ADD,String,' = [',String)                                   //      STRINGS(ADD,String,' = [',String)

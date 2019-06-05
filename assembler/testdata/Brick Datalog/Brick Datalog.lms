@@ -139,7 +139,7 @@ DontShowVersion:                                                      //    }
   CALL(UpdateModes)                                                   //    UpdateModes()
   CALL(UpdateDeviceInPort)                                            //    UpdateDeviceInPort()
   MOVE8_8(0,SelectedPort)                                             //    SelectedPort  =  0
-  JR_NEQ8(NoOfPorts,0,NotNull)                                        //    if (NoOfPorts == 0)
+  JR_NEQ8(!NoOfPorts,0,NotNull)                                       //    if (NoOfPorts == 0)
                                                                       //    {
   MOVE8_8(ALL_PORTS,SelectedPort)                                     //      SelectedPort  = ALL_PORTS
 NotNull:                                                              //    }
@@ -185,7 +185,7 @@ NotRightLogging:                                                      //        
   UI_BUTTON(SHORTPRESS,ENTER_BUTTON,State)                            //          UI_BUTTON(SHORTPRESS,ENTER_BUTTON,State)
   JR_FALSE(State,NotEnterLogging)                                     //          if (State)
                                                                       //          {
-  JR_LTEQ8(NoOfPorts,0,NoPorts)                                       //            if (NoOfPorts > 0)
+  JR_LTEQ8(!NoOfPorts,0,NoPorts)                                      //            if (NoOfPorts > 0)
                                                                       //            {
   MOVE8_8(LOGGING,SelectedMode)                                       //              SelectedMode  =  LOGGING
   MOVE8_8(1,Update)                                                   //              Update        =  1
@@ -304,7 +304,7 @@ NotWantedIdle:                                                        //      }
                                                                       //
   JR_NEQ8(SelectedMode,IDLE,NotIDLE)                                  //      if (SelectedMode == IDLE)
                                                                       //      {
-  INPUT_DEVICE_LIST(0,0,Tmp)                                          //        INPUT_DEVICE_LIST(0,0,Tmp)
+  INPUT_DEVICE_LIST(0,!0,Tmp)                                         //        INPUT_DEVICE_LIST(0,0,Tmp)
   JR_FALSE(Tmp,NoChange)                                              //        if (Tmp == 1)
                                                                       //        {
   MOVE8_8(0,SelectedPort)                                             //          SelectedPort  =  0
@@ -470,7 +470,7 @@ subcall   IdleScreen                                                  //  IdleSc
                                                                       //
   MOVE32_32(GRAPH_SAMPLETIME,IdleSampleTime)                          //      IdleSampleTime    =  GRAPH_SAMPLETIME
   UI_DRAW(FILLWINDOW,BG_COLOR,TOPLINE_HEIGHT,0)                       //      UI_DRAW(FILLWINDOW,BG_COLOR,TOPLINE_HEIGHT,0)
-  UI_DRAW(GRAPH_SETUP,16,100,NoOfPorts,@hOffsets,@hSpans,@hMins,@hMaxs,@hValues) // UI_DRAW(GRAPH_SETUP,16,100,NoOfPorts,@hOffsets,@hSpans,@hMins,@hMaxs,@hValues)
+  UI_DRAW(GRAPH_SETUP,16,100,!NoOfPorts,@hOffsets,@hSpans,@hMins,@hMaxs,@hValues) // UI_DRAW(GRAPH_SETUP,16,100,NoOfPorts,@hOffsets,@hSpans,@hMins,@hMaxs,@hValues)
                                                                       //
   TIMER_READ(StartTime)                                               //      TIMER_READ(StartTime)
   SUB32(StartTime,IdleSampleTime,Timer)                               //      Timer  =  StartTime - IdleSampleTime
@@ -737,7 +737,7 @@ subcall   LoggingScreen                                               //  Loggin
                                                                       //
   MOVE8_8(0,Pointer)                                                  //      Pointer  =  0
 InitData:                                                             //      while (Pointer < NoOfPorts)
-  JR_GTEQ8(Pointer,NoOfPorts,InitDataDone)                            //      {
+  JR_GTEQ8(Pointer,!NoOfPorts,InitDataDone)                           //      {
                                                                       //
   STRINGS(ADD,Buffer,TERMINATION,Buffer)                              //        STRINGS(ADD,Buffer,TERMINATION,Buffer)
                                                                       //
@@ -782,7 +782,7 @@ InitDataDone:                                                         //
   FILE(GET_LOG_SYNC_TIME,SyncTime,SyncTick)                           //
   FILE(OPEN_LOG,TMPLOGFILE,SyncTime,SyncTick,0,SampleTime,0,Buffer,Handle) // FILE(OPEN_LOG,TMPLOGFILE,SyncTime,SyncTick,0,SampleTime,0,Buffer,Handle)
                                                                       //
-  UI_DRAW(GRAPH_SETUP,16,100,NoOfPorts,@hOffsets,@hSpans,@hMins,@hMaxs,@hValues) // UI_DRAW(GRAPH_SETUP,16,100,NoOfPorts,@hOffsets,@hSpans,@hMins,@hMaxs,@hValues)
+  UI_DRAW(GRAPH_SETUP,16,100,!NoOfPorts,@hOffsets,@hSpans,@hMins,@hMaxs,@hValues) // UI_DRAW(GRAPH_SETUP,16,100,NoOfPorts,@hOffsets,@hSpans,@hMins,@hMaxs,@hValues)
                                                                       //
   JR_FALSE(HighSpeedLogging,GraphOk)                                  //      if (HighSpeedLogging)
                                                                       //      {
@@ -861,7 +861,7 @@ NotChanged:                                                           //    }
 //! \anchor file_write_log
 //! \verbatim
                                                                       //
-  FILE(WRITE_LOG,Handle,Time,NoOfPorts,@hValues)                      //      FILE(WRITE_LOG,Handle,Time,NoOfPorts,@hValues)
+  FILE(WRITE_LOG,Handle,Time,!NoOfPorts,@hValues)                     //      FILE(WRITE_LOG,Handle,Time,NoOfPorts,@hValues)
                                                                       //
   KEEP_ALIVE(Data8)                                                   //      KEEP_ALIVE(Data8)
                                                                       //
@@ -1146,7 +1146,7 @@ subcall   SetupScreen                                                 //  SetupS
   DATA8   Modes                                                       //
   DATAS   ModeName MODENAME_SIZE                                      //
                                                                       //
-  MOVE8_8(SETUP_BAR,Cursor)                                           //    Cursor  =  SETUP_BAR
+  MOVE8_8(SETUP_BAR,!Cursor)                                          //    Cursor  =  SETUP_BAR
   MOVE8_8(1,Run)                                                      //    Run     =  1
   CALL(UpdateModes)                                                   //    UpdateModes()
   ARRAY(CREATE8,0,hModesTmp)                                          //    ARRAY(CREATE8,0,hModesTmp)
@@ -1222,11 +1222,11 @@ EndMode:                                                              //        
                                                                       //
   UI_DRAW(INVERSERECT,SETUP_CURSOR_STARTX,CursorY,SETUP_CURSOR_WIDTH,SETUP_CURSOR_HEIGHT) // UI_DRAW(INVERSERECT,SETUP_CURSOR_STARTX,CursorY,SETUP_CURSOR_WIDTH,SETUP_CURSOR_HEIGHT)
                                                                       //
-  MOVE8_32(Cursor,Index)                                              //        Index  =  Cursor
+  MOVE8_32(!Cursor,Index)                                             //        Index  =  Cursor
   ARRAY_READ(hModesTmp,Index,Mode)                                    //        Mode   =  hModesTmp[Index]
   JR_EQ8(Mode,-1,NoMode2)                                             //        if (Mode != -1)
                                                                       //        {
-  CALL(ShowDeviceType,134,17,Cursor,Mode)                             //          ShowDeviceType(134,17,Cursor,Mode)
+  CALL(ShowDeviceType,134,17,!Cursor,Mode)                            //          ShowDeviceType(134,17,Cursor,Mode)
 NoMode2:                                                              //        }
 NoBar2:                                                               //      }
                                                                       //
@@ -1239,7 +1239,7 @@ NoBar2:                                                               //      }
   UI_BUTTON(FLUSH)                                                    //      UI_BUTTON(FLUSH)
                                                                       //      do
 WaitForPress:                                                         //      {
-  INPUT_DEVICE_LIST(0,0,Tmp)                                          //        INPUT_DEVICE_LIST(0,0,Tmp)
+  INPUT_DEVICE_LIST(0,!0,Tmp)                                         //        INPUT_DEVICE_LIST(0,0,Tmp)
   JR_TRUE(Tmp,ListChanged)                                            //        if (Tmp == 0)
                                                                       //        {
   UI_BUTTON(TESTSHORTPRESS,ANY_BUTTON,Tmp)                            //          UI_BUTTON(TESTSHORTPRESS,ANY_BUTTON,Tmp)
@@ -1263,7 +1263,7 @@ LowEnough:                                                            //      }
   JR_GTEQ16(Cursor,SETUP_BAR,NoBar3)                                  //      if (Cursor < SETUP_BAR)
                                                                       //      {
                                                                       //
-  MOVE8_32(Cursor,Index)                                              //        Index  =  Cursor
+  MOVE8_32(!Cursor,Index)                                             //        Index  =  Cursor
   ARRAY_READ(hMaxModes,Index,Modes)                                   //        Modes  =  hMaxModes[Index]
   ARRAY_READ(hModesTmp,Index,Mode)                                    //        Mode   =  hModesTmp[Index]
                                                                       //
@@ -1357,7 +1357,7 @@ OutputModeOk:                                                         //      }
                                                                       //    }
   JR_LT8(Device,OUTPUTS,CheckOutput)                                  //    while (Device < OUTPUTS
                                                                       //
-  MOVE32_8(Index,NoOfPorts)                                           //
+  MOVE32_8(Index,!NoOfPorts)                                          //
 }                                                                     //  }
                                                                       //
                                                                       //
@@ -1416,7 +1416,7 @@ CheckOutputEmpty:                                                     //      }
                                                                       //    }
   JR_LT8(Device,OUTPUTS,CheckOutput)                                  //    while (Device < OUTPUTS
                                                                       //
-  MOVE32_8(Index,NoOfPorts)                                           //
+  MOVE32_8(Index,!NoOfPorts)                                          //
 }                                                                     //  }
                                                                       //
                                                                       //
@@ -1443,7 +1443,7 @@ subcall   InitSensorData                                              //  InitSe
   // Init device data to log                                          //
   MOVE8_8(0,Pointer)                                                  //      Pointer  =  0
 InitData:                                                             //      while (Pointer < NoOfPorts)
-  JR_GTEQ8(Pointer,NoOfPorts,InitDataDone)                            //      {
+  JR_GTEQ8(Pointer,!NoOfPorts,InitDataDone)                           //      {
                                                                       //
   // Get and save device formats                                      //
   MOVE8_32(Pointer,Index)                                             //        Index             =  Pointer
@@ -1617,9 +1617,9 @@ subcall   ConvertText                                                 //  Conver
   DATA8   Text0                                                       //
   DATA8   Text1                                                       //
                                                                       //
-  ADD8(Port,'1',Text0)                                                //    Text0   =  '1' + Port
+  ADD8(Port,!'1',Text0)                                               //    Text0   =  '1' + Port
   MOVE8_8(0,Text1)                                                    //    Text1   =  0
-  STRINGS(DUPLICATE,Text0,Text)                                       //    STRINGS(DUPLICATE,Text0,Text)
+  STRINGS(DUPLICATE,!Text0,Text)                                      //    STRINGS(DUPLICATE,Text0,Text)
                                                                       //
 }                                                                     //  }
                                                                       //
@@ -1630,14 +1630,14 @@ subcall   ConvertText                                                 //  Conver
 subcall   CheckPort                                                   //  CheckPort(void)
 {                                                                     //  {
                                                                       //
-  JR_LT8(SelectedPort,NoOfPorts,NotTooHigh)                           //    if (SelectedPort >= NoOfPorts)
+  JR_LT8(SelectedPort,!NoOfPorts,NotTooHigh)                          //    if (SelectedPort >= NoOfPorts)
                                                                       //    {
   MOVE8_8(ALL_PORTS,SelectedPort)                                     //      SelectedPort  = ALL_PORTS
                                                                       //
 NotTooHigh:                                                           //    }
   JR_GTEQ8(SelectedPort,ALL_PORTS,NotTooLow)                          //    if (SelectedPort < ALL_PORTS)
                                                                       //    {
-  MOVE8_8(NoOfPorts,SelectedPort)                                     //      SelectedPort  =  NoOfPorts
+  MOVE8_8(!NoOfPorts,SelectedPort)                                    //      SelectedPort  =  NoOfPorts
                                                                       //
   SUB8(SelectedPort,1,SelectedPort)                                   //      SelectedPort--
   JR_GTEQ8(SelectedPort,ALL_PORTS,NotTooLow1)                         //      if (SelectedPort < ALL_PORTS)

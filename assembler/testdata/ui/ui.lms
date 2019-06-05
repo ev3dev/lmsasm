@@ -557,8 +557,8 @@ StateGtEqFirst:                                                       //      }
 StateLtEqLast:                                                        //      }            
                                                                       //
                                                                       //
-  UI_BUTTON(SHORTPRESS,BACK_BUTTON,Tmp)                               //      UI_BUTTON(SHORTPRESS,BACK_BUTTON,Tmp)                                                              
-  JR_FALSE(Tmp,NoBackPress)                                           //      if (Tmp)
+  UI_BUTTON(SHORTPRESS,BACK_BUTTON,!Tmp)                              //      UI_BUTTON(SHORTPRESS,BACK_BUTTON,Tmp)                                                              
+  JR_FALSE(!Tmp,NoBackPress)                                          //      if (Tmp)
                                                                       //      {
   JR_NEQ16(State,STATE_FIRST,NoTurnOff)                               //        if (State == STATE_FIRST)
                                                                       //        {                                       
@@ -579,10 +579,10 @@ NoBackPress:                                                          //      }
   CALL(TurnOffPopup)                                                  //        CALL(TurnOffPopup)
 NotTurnOff:                                                           //      }
                                                                       //
-  UI_BUTTON(TESTLONGPRESS,BACK_BUTTON,Tmp)                            //      UI_BUTTON(LONGPRESS,BACK_BUTTON,Tmp)                                                              
-  JR_FALSE(Tmp,NoLongBackPress)                                       //      if (Tmp)
+  UI_BUTTON(TESTLONGPRESS,BACK_BUTTON,!Tmp)                           //      UI_BUTTON(LONGPRESS,BACK_BUTTON,Tmp)                                                              
+  JR_FALSE(!Tmp,NoLongBackPress)                                      //      if (Tmp)
                                                                       //      {
-  UI_BUTTON(LONGPRESS,BACK_BUTTON,Tmp)                                //        UI_BUTTON(LONGPRESS,BACK_BUTTON,Tmp)                                                              
+  UI_BUTTON(LONGPRESS,BACK_BUTTON,!Tmp)                               //        UI_BUTTON(LONGPRESS,BACK_BUTTON,Tmp)                                                              
   CALL(TurnOffPopup)                                                  //        CALL(TurnOffPopup)
 NoLongBackPress:                                                      //      }
                                                                       //  
@@ -777,7 +777,7 @@ FileNotProgram:                                                       //        
                                                                       //              {
   ARRAY(CREATE8,Size,hTextbox)                                        //                ARRAY(CREATE8,Size,hTextbox)
                                                                       //
-  FILE(READ_BYTES,hFile,Size,@hTextbox)                               //                FILE(READ_BYTES,hFile,Size,@hTextbox)
+  FILE(READ_BYTES,hFile,!Size,@hTextbox)                              //                FILE(READ_BYTES,hFile,Size,@hTextbox)
                                                                       //
   FILE(CLOSE,hFile)                                                   //                FILE(CLOSE,hFile)
                                                                       //
@@ -984,7 +984,7 @@ subcall   ActionPopup                                                 //  void A
   MOVE8_8(0,Yes)                                                      //    Yes       =  0
   MOVE32_32(0,Stat)                                                   //    Stat      =  0
   MOVE8_8(0,Init)                                                     //    Init      =  0
-  AND8(FileType,0xF0,Media)                                           //    Media     =  FileType & 0xF0
+  AND8(FileType,!0xF0,Media)                                          //    Media     =  FileType & 0xF0
   AND8(FileType,0x0F,FileType)                                        //    FileType  =  FileType & 0x0F
                                                                       //
   CALL(AddExt,Name,FileType)                                          //    AddExt(Name,FileType)
@@ -1207,9 +1207,9 @@ MoreThanRun:                                                          //    }
   JR_NEQ32(Icons,Tmp,NotDelete)                                       //      if (Icons == Tmp)
                                                                       //      {
   // Move to trash                                                    //
-  MOVE8_8(0,Stat)                                                     //        Stat  =  0
+  MOVE8_8(0,!Stat)                                                    //        Stat  =  0
   MOVE8_8(0,Yes)                                                      //        Yes   =  0
-  UI_DRAW(QUESTION,FG_COLOR,16,50,WARNSIGN,TO_TRASH,'',Stat,Yes)      //        UI_DRAW(QUESTION,FG_COLOR,16,50,WARNSIGN,TO_TRASH,'',Stat,Yes)
+  UI_DRAW(QUESTION,FG_COLOR,16,50,WARNSIGN,TO_TRASH,'',!Stat,Yes)     //        UI_DRAW(QUESTION,FG_COLOR,16,50,WARNSIGN,TO_TRASH,'',Stat,Yes)
                                                                       //
   JR_NEQ8(Yes,1,NotYes1)                                              //        if (Yes == 1)
                                                                       //        {
@@ -1224,9 +1224,9 @@ NotDelete:                                                            //      }
   JR_NEQ32(Icons,Tmp,NotToBluetooth)                                  //      if (Icons == Tmp)
                                                                       //      {
   // Move to bluetooth                                                //
-  MOVE8_8(0,Stat)                                                     //        Stat  =  0
+  MOVE8_8(0,!Stat)                                                    //        Stat  =  0
   MOVE8_8(0,Yes)                                                      //        Yes   =  0
-  UI_DRAW(QUESTION,FG_COLOR,16,50,TO_BLUETOOTH,ICON_NONE,'',Stat,Yes) //        UI_DRAW(QUESTION,FG_COLOR,16,50,TO_BLUETOOTH,ICON_NONE,'',Stat,Yes)
+  UI_DRAW(QUESTION,FG_COLOR,16,50,TO_BLUETOOTH,ICON_NONE,'',!Stat,Yes)//        UI_DRAW(QUESTION,FG_COLOR,16,50,TO_BLUETOOTH,ICON_NONE,'',Stat,Yes)
   JR_NEQ8(Yes,1,NotYes2)                                              //        if (Yes == 1)
                                                                       //        {
                                                                       //
@@ -1240,9 +1240,9 @@ NotToBluetooth:                                                       //      }
   JR_NEQ32(Icons,Tmp,NotToSdcard)                                     //      if (Icons == Tmp)
                                                                       //      {
   // Move to sdcard                                                   //
-  MOVE8_8(0,Stat)                                                     //        Stat  =  0
+  MOVE8_8(0,!Stat)                                                    //        Stat  =  0
   MOVE8_8(0,Yes)                                                      //        Yes   =  0
-  UI_DRAW(QUESTION,FG_COLOR,16,50,TO_SDCARD,ICON_NONE,'',Stat,Yes)    //        UI_DRAW(QUESTION,FG_COLOR,16,50,TO_SDCARD,ICON_NONE,'',Stat,Yes)
+  UI_DRAW(QUESTION,FG_COLOR,16,50,TO_SDCARD,ICON_NONE,'',!Stat,Yes)   //        UI_DRAW(QUESTION,FG_COLOR,16,50,TO_SDCARD,ICON_NONE,'',Stat,Yes)
   JR_NEQ8(Yes,1,NotYes4)                                              //        if (Yes == 1)
                                                                       //        {
   CALL(Copy,Name,TYPE_SDCARD,FileType)                                //          CALL(Copy,Name,TYPE_SDCARD,FileType)                                                               
@@ -1254,9 +1254,9 @@ NotToSdcard:                                                          //      }
   JR_NEQ32(Icons,Tmp,NotToUsbstick)                                   //      if (Icons == Tmp)
                                                                       //      {
   // Move to usbstick                                                 //
-  MOVE8_8(0,Stat)                                                     //        Stat  =  0
+  MOVE8_8(0,!Stat)                                                    //        Stat  =  0
   MOVE8_8(0,Yes)                                                      //        Yes   =  0
-  UI_DRAW(QUESTION,FG_COLOR,16,50,TO_USBSTICK,ICON_NONE,'',Stat,Yes)  //        UI_DRAW(QUESTION,FG_COLOR,16,50,TO_USBSTICK,ICON_NONE,'',Stat,Yes)
+  UI_DRAW(QUESTION,FG_COLOR,16,50,TO_USBSTICK,ICON_NONE,'',!Stat,Yes) //        UI_DRAW(QUESTION,FG_COLOR,16,50,TO_USBSTICK,ICON_NONE,'',Stat,Yes)
   JR_NEQ8(Yes,1,NotYes4)                                              //        if (Yes == 1)
                                                                       //        {
   CALL(Copy,Name,TYPE_USBSTICK,FileType)                              //          CALL(Copy,Name,TYPE_USBSTICK,Media,FileType)                                                               
@@ -1268,9 +1268,9 @@ NotToUsbstick:                                                        //      }
   JR_NEQ32(Icons,Tmp,NotToBrick)                                      //      if (Icons == Tmp)
                                                                       //      {
   // Move to brick                                                    //
-  MOVE8_8(0,Stat)                                                     //        Stat  =  0
+  MOVE8_8(0,!Stat)                                                    //        Stat  =  0
   MOVE8_8(0,Yes)                                                      //        Yes   =  0
-  UI_DRAW(QUESTION,FG_COLOR,16,50,TO_BRICK,ICON_NONE,'',Stat,Yes)     //        UI_DRAW(QUESTION,FG_COLOR,16,50,TO_BRICK,ICON_NONE,'',Stat,Yes)
+  UI_DRAW(QUESTION,FG_COLOR,16,50,TO_BRICK,ICON_NONE,'',!Stat,Yes)    //        UI_DRAW(QUESTION,FG_COLOR,16,50,TO_BRICK,ICON_NONE,'',Stat,Yes)
   JR_NEQ8(Yes,1,NotYes3)                                              //        if (Yes == 1)
                                                                       //        {
   CALL(Copy,Name,0,FileType)                                          //          CALL(Copy,Name,0,FileType)                                                               
@@ -1475,7 +1475,7 @@ FileFound:                                                            //    }
                                                                       //
   JR_FALSE(Flag,NotDebug)                                             //    if (Flag)
                                                                       //    {
-  MOVE8_8(DEBUG_SLOT,Slot)                                            //      Slot  =  DEBUG_SLOT
+  MOVE8_8(DEBUG_SLOT,!Slot)                                           //      Slot  =  DEBUG_SLOT
                                                                       //
 NotDebug:                                                             //    }
                                                                       //

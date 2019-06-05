@@ -276,27 +276,27 @@ subcall   Test0202                                                    //  void T
   FILE(READ_TEXT,hFile,DEL_TAB,FILENAMESIZE,String)                   //
   CALL(TestCheck,'LOG header         ',String,'Sensor2')              //
   FILE(READ_TEXT,hFile,DEL_CRLF,FILENAMESIZE,String)                  //
-  FILE(READ_BYTES,hFile,4,Result)                                     //
+  FILE(READ_BYTES,hFile,4,!Result)                                    //
   CALL(TestRange,'LOG sample         ',Result,0.0F,0.0F)              //
-  FILE(READ_BYTES,hFile,4,Result)                                     //
+  FILE(READ_BYTES,hFile,4,!Result)                                    //
   CALL(TestRange,'LOG sample         ',Result,1.1F,1.1F)              //
-  FILE(READ_BYTES,hFile,4,Result)                                     //
+  FILE(READ_BYTES,hFile,4,!Result)                                    //
   CALL(TestRange,'LOG sample         ',Result,1.2F,1.2F)              //
-  FILE(READ_BYTES,hFile,4,Result)                                     //                                 
+  FILE(READ_BYTES,hFile,4,!Result)                                    //                                 
   CALL(TestRange,'LOG sample         ',Result,100.0F,100.0F)          //
-  FILE(READ_BYTES,hFile,4,Result)                                     //
+  FILE(READ_BYTES,hFile,4,!Result)                                    //
   CALL(TestRange,'LOG sample         ',Result,2.1F,2.1F)              //
-  FILE(READ_BYTES,hFile,4,Result)                                     //
+  FILE(READ_BYTES,hFile,4,!Result)                                    //
   CALL(TestRange,'LOG sample         ',Result,2.2F,2.2F)              //
-  FILE(READ_BYTES,hFile,4,Data32)                                     //
+  FILE(READ_BYTES,hFile,4,!Data32)                                    //
   XOR32(Data32,0xFFFFFFFF,Data32)                                     //
   MOVE32_F(Data32,Result)                                             //
   CALL(TestRange,'LOG trailer        ',Result,0.0F,0.0F)              //
-  FILE(READ_BYTES,hFile,4,Data32)                                     //
+  FILE(READ_BYTES,hFile,4,!Data32)                                    //
   XOR32(Data32,0xFFFFFFFF,Data32)                                     //
   MOVE32_F(Data32,Result)                                             //
   CALL(TestRange,'LOG trailer        ',Result,0.0F,0.0F)              //
-  FILE(READ_BYTES,hFile,4,Data32)                                     //
+  FILE(READ_BYTES,hFile,4,!Data32)                                    //
   XOR32(Data32,0xFFFFFFFF,Data32)                                     //
   MOVE32_F(Data32,Result)                                             //
   CALL(TestRange,'LOG trailer        ',Result,-1.0F,-1.0F)            //
@@ -388,27 +388,27 @@ subcall   Test0202                                                    //  void T
   FILE(READ_TEXT,hFile,DEL_TAB,FILENAMESIZE,String)                   //
   CALL(TestCheck,'LOG header         ',String,'Sensor2')              //
   FILE(READ_TEXT,hFile,DEL_CRLF,FILENAMESIZE,String)                  //
-  FILE(READ_BYTES,hFile,4,Result)                                     //
+  FILE(READ_BYTES,hFile,4,!Result)                                    //
   CALL(TestRange,'LOG sample         ',Result,0.0F,0.0F)              //
-  FILE(READ_BYTES,hFile,4,Result)                                     //
+  FILE(READ_BYTES,hFile,4,!Result)                                    //
   CALL(TestRange,'LOG sample         ',Result,1.1F,1.1F)              //
-  FILE(READ_BYTES,hFile,4,Result)                                     //
+  FILE(READ_BYTES,hFile,4,!Result)                                    //
   CALL(TestRange,'LOG sample         ',Result,1.2F,1.2F)              //
-  FILE(READ_BYTES,hFile,4,Result)                                     //                                 
+  FILE(READ_BYTES,hFile,4,!Result)                                    //                                 
   CALL(TestRange,'LOG sample         ',Result,1.0F,1.0F)              //
-  FILE(READ_BYTES,hFile,4,Result)                                     //
+  FILE(READ_BYTES,hFile,4,!Result)                                    //
   CALL(TestRange,'LOG sample         ',Result,2.1F,2.1F)              //
-  FILE(READ_BYTES,hFile,4,Result)                                     //
+  FILE(READ_BYTES,hFile,4,!Result)                                    //
   CALL(TestRange,'LOG sample         ',Result,2.2F,2.2F)              //
-  FILE(READ_BYTES,hFile,4,Data32)                                     //
+  FILE(READ_BYTES,hFile,4,!Data32)                                    //
   XOR32(Data32,0xFFFFFFFF,Data32)                                     //
   MOVE32_F(Data32,Result)                                             //
   CALL(TestRange,'LOG trailer        ',Result,0.0F,0.0F)              //
-  FILE(READ_BYTES,hFile,4,Data32)                                     //
+  FILE(READ_BYTES,hFile,4,!Data32)                                    //
   XOR32(Data32,0xFFFFFFFF,Data32)                                     //
   MOVE32_F(Data32,Result)                                             //
   CALL(TestRange,'LOG trailer        ',Result,0.0F,0.0F)              //
-  FILE(READ_BYTES,hFile,4,Data32)                                     //
+  FILE(READ_BYTES,hFile,4,!Data32)                                    //
   XOR32(Data32,0xFFFFFFFF,Data32)                                     //
   MOVE32_F(Data32,Result)                                             //
   CALL(TestRange,'LOG trailer        ',Result,-1.0F,-1.0F)            //
@@ -501,8 +501,8 @@ subcall   TestRange                                                   //  void T
   DATAS   String LINE                                                 //
   DATAS   Result LINE                                                 //
                                                                       //
-  JR_LT32(IstWert,Min,Error)                                          //    if ((IstWert >= Min) &&
-  JR_GT32(IstWert,Max,Error)                                          //        (IstWert <= Max))
+  JR_LT32(!IstWert,!Min,Error)                                        //    if ((IstWert >= Min) &&
+  JR_GT32(!IstWert,!Max,Error)                                        //        (IstWert <= Max))
                                                                       //    {
   STRINGS(ADD,'  ',Text,String)                                       //      STRINGS(ADD,'  ',Text,String)
   STRINGS(ADD,String,' = [',String)                                   //      STRINGS(ADD,String,' = [',String)

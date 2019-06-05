@@ -46,29 +46,29 @@ subcall   Test0107                                                    //  void T
   CALL(TestCheck,'READ8              ',String,'    76')               //
                                                                       //
   STRINGS(DUPLICATE,'            ',String)                            //
-  WRITE16(0x454C,2,String)                                            //
+  WRITE16(0x454C,2,!String)                                           //
   CALL(TestCheck,'WRITE16 0x454C     ',String,'    LE      ')         //
                                                                       //
-  READ16(String,2,Data16)                                             //
+  READ16(!String,2,Data16)                                            //
   MOVE16_F(Data16,DataF)                                              //
   STRINGS(VALUE_TO_STRING,DataF,13,6,String)                          //
   CALL(TestCheck,'READ16             ',String,' 17740')               //
                                                                       //
   STRINGS(DUPLICATE,'            ',String)                            //
-  WRITE32(0x4F47454C,1,String)                                        //
+  WRITE32(0x4F47454C,1,!String)                                       //
   CALL(TestCheck,'WRITE32 0x4F47454C ',String,'    LEGO    ')         //
                                                                       //
-  READ32(String,1,Data32)                                             //
+  READ32(!String,1,Data32)                                            //
   MOVE32_F(Data32,DataF)                                              //
   STRINGS(VALUE_TO_STRING,DataF,13,6,String)                          //
   CALL(TestCheck,'READ32             ',String,'1330070912')           //
                                                                       //
   STRINGS(DUPLICATE,'            ',String)                            //
-  MOVE32_32(0x4F47454C,DataF)                                         //
-  WRITEF(DataF,1,String)                                              //
+  MOVE32_32(0x4F47454C,!DataF)                                        //
+  WRITEF(DataF,1,!String)                                             //
   CALL(TestCheck,'WRITEF  0x4F47454C ',String,'    LEGO    ')         //
                                                                       //
-  READF(String,1,DataF)                                               //
+  READF(!String,1,DataF)                                              //
   STRINGS(VALUE_TO_STRING,DataF,13,6,String)                          //
   CALL(TestCheck,'READF              ',String,'3343207424')           //
                                                                       //

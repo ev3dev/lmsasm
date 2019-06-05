@@ -37,8 +37,8 @@ subcall   Test0105                                                    //  void T
   OR8(0x55,0x00,Data8)                                                //
   CALL(TestResult8,'OR8   0x55 0x00    ',Data8,0x55)                  //
                                                                       //
-  OR8(0x55,0xAA,Data8)                                                //
-  CALL(TestResult8,'OR8   0x55 0xAA    ',Data8,0xFF)                  //
+  OR8(0x55,!0xAA,Data8)                                               //
+  CALL(TestResult8,'OR8   0x55 0xAA    ',Data8,!0xFF)                 //
                                                                       //
   OR8(0x55,0x55,Data8)                                                //
   CALL(TestResult8,'OR8   0x55 0x55    ',Data8,0x55)                  //
@@ -46,7 +46,7 @@ subcall   Test0105                                                    //  void T
   AND8(0x55,0x00,Data8)                                               //
   CALL(TestResult8,'AND8  0x55 0x00    ',Data8,0x00)                  //
                                                                       //
-  AND8(0x55,0xAA,Data8)                                               //
+  AND8(0x55,!0xAA,Data8)                                              //
   CALL(TestResult8,'AND8  0x55 0xAA    ',Data8,0x00)                  //
                                                                       //
   AND8(0x55,0x55,Data8)                                               //
@@ -55,14 +55,14 @@ subcall   Test0105                                                    //  void T
   XOR8(0x55,0x00,Data8)                                               //
   CALL(TestResult8,'XOR8  0x55 0x00    ',Data8,0x55)                  //
                                                                       //
-  XOR8(0x55,0xAA,Data8)                                               //
-  CALL(TestResult8,'XOR8  0x55 0xAA    ',Data8,0xFF)                  //
+  XOR8(0x55,!0xAA,Data8)                                              //
+  CALL(TestResult8,'XOR8  0x55 0xAA    ',Data8,!0xFF)                 //
                                                                       //
   XOR8(0x55,0x55,Data8)                                               //
   CALL(TestResult8,'XOR8  0x55 0x55    ',Data8,0x00)                  //
                                                                       //
   RL8(0x55,1,Data8)                                                   //
-  CALL(TestResult8,'RL8   0x55 1       ',Data8,0xAA)                  //
+  CALL(TestResult8,'RL8   0x55 1       ',Data8,!0xAA)                 //
                                                                       //
   RL8(0x55,2,Data8)                                                   //
   CALL(TestResult8,'RL8   0x55 2       ',Data8,0x54)                  //
@@ -75,8 +75,8 @@ subcall   Test0105                                                    //  void T
   OR16(0x5555,0x0000,Data16)                                          //
   CALL(TestResult16,'OR16  0x5555 0x0000',Data16,0x5555)              //
                                                                       //
-  OR16(0x5555,0xAAAA,Data16)                                          //
-  CALL(TestResult16,'OR16  0x5555 0xAAAA',Data16,0xFFFF)              //
+  OR16(0x5555,!0xAAAA,Data16)                                         //
+  CALL(TestResult16,'OR16  0x5555 0xAAAA',Data16,!0xFFFF)             //
                                                                       //
   OR16(0x5555,0x5555,Data16)                                          //
   CALL(TestResult16,'OR16  0x5555 0x5555',Data16,0x5555)              //
@@ -84,7 +84,7 @@ subcall   Test0105                                                    //  void T
   AND16(0x5555,0x0000,Data16)                                         //
   CALL(TestResult16,'AND16 0x5555 0x0000',Data16,0x0000)              //
                                                                       //
-  AND16(0x5555,0xAAAA,Data16)                                         //
+  AND16(0x5555,!0xAAAA,Data16)                                        //
   CALL(TestResult16,'AND16 0x5555 0xAAAA',Data16,0x0000)              //
                                                                       //
   AND16(0x5555,0x5555,Data16)                                         //
@@ -93,14 +93,14 @@ subcall   Test0105                                                    //  void T
   XOR16(0x5555,0x0000,Data16)                                         //
   CALL(TestResult16,'XOR16 0x5555 0x0000',Data16,0x5555)              //
                                                                       //
-  XOR16(0x5555,0xAAAA,Data16)                                         //
-  CALL(TestResult16,'XOR16 0x5555 0xAAAA',Data16,0xFFFF)              //
+  XOR16(0x5555,!0xAAAA,Data16)                                        //
+  CALL(TestResult16,'XOR16 0x5555 0xAAAA',Data16,!0xFFFF)             //
                                                                       //
   XOR16(0x5555,0x5555,Data16)                                         //
   CALL(TestResult16,'XOR16 0x5555 0x5555',Data16,0x0000)              //
                                                                       //
   RL16(0x5555,1,Data16)                                               //
-  CALL(TestResult16,'RL16  0x5555 1     ',Data16,0xAAAA)              //
+  CALL(TestResult16,'RL16  0x5555 1     ',Data16,!0xAAAA)             //
                                                                       //
   RL16(0x5555,2,Data16)                                               //
   CALL(TestResult16,'RL16  0x5555 2     ',Data16,0x5554)              //

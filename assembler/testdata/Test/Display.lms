@@ -81,7 +81,7 @@ NotLeftButton:                                                        //      }
   UI_BUTTON(SHORTPRESS,RIGHT_BUTTON,Tmp)                              //      UI_BUTTON(SHORTPRESS,RIGHT_BUTTON,Tmp)
   JR_FALSE(Tmp,NotRightButton)                                        //      if (Tmp != FALSE)
                                                                       //      {
-  UI_DRAW(FILLWINDOW,0xAA,0,0)                                        //        UI_DRAW(FILLWINDOW,0xAA,0,0
+  UI_DRAW(FILLWINDOW,!0xAA,0,0)                                       //        UI_DRAW(FILLWINDOW,0xAA,0,0
   UI_DRAW(UPDATE)                                                     //        UI_DRAW(UPDATE)
 NotRightButton:                                                       //      }
                                                                       //

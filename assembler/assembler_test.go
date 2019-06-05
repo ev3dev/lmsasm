@@ -7,14 +7,15 @@ package assembler
 import (
 	"bytes"
 	"fmt"
-	"github.com/ev3dev/lmsasm/ast"
-	"github.com/ev3dev/lmsasm/bytecodes"
-	"github.com/ev3dev/lmsasm/parser"
-	"github.com/ev3dev/lmsasm/token"
 	"io/ioutil"
 	"path/filepath"
 	"strings"
 	"testing"
+
+	"github.com/ev3dev/lmsasm/ast"
+	"github.com/ev3dev/lmsasm/bytecodes"
+	"github.com/ev3dev/lmsasm/parser"
+	"github.com/ev3dev/lmsasm/token"
 )
 
 func TestResolveConstIntWithBadExpr(t *testing.T) {
@@ -104,6 +105,8 @@ var literals = []literalInfo{
 	{&ast.BasicLit{Kind: token.INT, Value: "2147483647"}, []byte{0x83, 0xff, 0xff, 0xff, 0x7f}, 0},
 	{&ast.BasicLit{Kind: token.INT, Value: "0x01"}, []byte{0x01}, 0},
 	{&ast.BasicLit{Kind: token.INT, Value: "-2147483647"}, []byte{0x83, 0x01, 0x00, 0x00, 0x80}, 0},
+	{&ast.BasicLit{Kind: token.INT, Value: "0xAAAAAAAA"}, []byte{0x83, 0xaa, 0xaa, 0xaa, 0xaa}, AllowUnsignedIntConstant},
+	{&ast.BasicLit{Kind: token.INT, Value: "0xFFFFFFFF"}, []byte{0x83, 0xff, 0xff, 0xff, 0xff}, AllowUnsignedIntConstant},
 	{&ast.BasicLit{Kind: token.FLOAT, Value: "0.0F"}, []byte{0x83, 0x00, 0x00, 0x00, 0x00}, 0},
 	{&ast.BasicLit{Kind: token.FLOAT, Value: "0.0F"}, []byte{0x00}, OptimizeFloatConst},
 	{&ast.BasicLit{Kind: token.FLOAT, Value: "1.0F"}, []byte{0x83, 0x00, 0x00, 0x80, 0x3f}, 0},
@@ -123,14 +126,24 @@ var literals = []literalInfo{
 func TestBasicLit(t *testing.T) {
 	for _, r := range literals {
 		var inst *Instruction
+		var err error
 		l := r.Lit.(*ast.BasicLit)
 		switch l.Kind {
 		case token.INT:
-			inst = emitIntConst(l.Value, "")
+			inst, err = emitIntConst(l.Value, "", bytecodes.ParamTypeInt32, r.quirks)
+			if err != nil {
+				t.Fatalf("error from emitIntConst: %v", err)
+			}
 		case token.FLOAT:
-			inst = emitFloatConst(l.Value, "", r.quirks)
+			inst , err = emitFloatConst(l.Value, "", bytecodes.ParamTypeFloat, r.quirks)
+			if err != nil {
+				t.Fatalf("error from emitFloatConst: %v", err)
+			}
 		case token.STRING:
-			inst = emitStringConst(l.Value, "")
+			inst,err = emitStringConst(l.Value, "", bytecodes.ParamTypeString)
+			if err != nil {
+				t.Fatalf("error from emitStringConst: %v", err)
+			}
 		}
 		if len(inst.Bytes) == len(r.Bytes) {
 			for i, x := range inst.Bytes {
@@ -163,7 +176,7 @@ func TestOfficial(t *testing.T) {
 		}
 		t.Log("Assembling", n)
 		a := NewAssembler(fs, f)
-		options := AssembleOptions{Version: 109, Quirks: OptimizeFloatConst}
+		options := AssembleOptions{Version: 109, Quirks: OptimizeFloatConst | AllowUnsignedIntConstant}
 		p, err := a.Assemble(&options)
 		if err != nil {
 			t.Error("Failed to assemble file:", err)

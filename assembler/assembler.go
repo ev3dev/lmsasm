@@ -1,4 +1,5 @@
 // Copyright 2016,2019 David Lechner <david@lechnology.com>
+// Copyright 2019 LEGO System A/S
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -9,14 +10,15 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
-	"github.com/ev3dev/lmsasm/ast"
-	"github.com/ev3dev/lmsasm/bytecodes"
-	"github.com/ev3dev/lmsasm/scanner"
-	"github.com/ev3dev/lmsasm/token"
 	"io"
 	"math"
 	"strconv"
 	"strings"
+
+	"github.com/ev3dev/lmsasm/ast"
+	"github.com/ev3dev/lmsasm/bytecodes"
+	"github.com/ev3dev/lmsasm/scanner"
+	"github.com/ev3dev/lmsasm/token"
 )
 
 type Assembler struct {
@@ -241,28 +243,60 @@ func lcBytes(flag byte, i int32) []byte {
 	return buf.Bytes()
 }
 
-func emitIntConst(value, qualifier string) *Instruction {
+func emitIntConst(value, qualifier string, paramType bytecodes.ParamType, quirks QuirkFlags) (*Instruction, error) {
 	i, err := strconv.ParseInt(value, 0, 32)
 	b := lcBytes(PRIMPAR_CONST, int32(i))
 	if err != nil {
-		// TODO: uint32 should not be allowed in lms source code. However,
-		// SelfTest/Test2020.lms from the official source code uses 0xFFFFFFFF,
-		// so allowing it for now.
-		u, _ := strconv.ParseUint(value, 0, 32)
-		// TODO: should check and return error here
-		binary.LittleEndian.PutUint32(b[1:], uint32(u))
+		// There are some test programs that use values like 0xFFFFFFFF for DATA32
+		if quirks&AllowUnsignedIntConstant != 0 {
+			u, err := strconv.ParseUint(value, 0, 32)
+			if err != nil {
+				return nil, err
+			}
+			binary.LittleEndian.PutUint32(b[1:], uint32(u))
+		} else {
+			return nil, err
+		}
+	}
+
+	switch paramType {
+	case bytecodes.ParamTypeInt8, bytecodes.ParamTypeNumberParams:
+		if b[0]&PRIMPAR_LONG != 0 {
+			if b[0]&PRIMPAR_BYTES != PRIMPAR_1_BYTE {
+				return nil, fmt.Errorf("Integer value is too big for %v", paramType)
+			}
+		}
+	case bytecodes.ParamTypeInt16:
+		if b[0]&PRIMPAR_LONG != 0 {
+			if b[0]&PRIMPAR_BYTES == PRIMPAR_4_BYTES {
+				return nil, fmt.Errorf("Integer value is too big for %v", paramType)
+			}
+		}
+	case bytecodes.ParamTypeInt32, bytecodes.ParamTypeVariable:
+		// OK
+	default:
+		return nil, fmt.Errorf("Using int constant for non-integer parameter %v", paramType)
 	}
 
 	return &Instruction{
 		Bytes: b,
 		size:  int32(len(b)),
 		Desc:  qualifier + " int",
-	}
+	}, nil
 }
 
-func emitFloatConst(value, qualifier string, quirks QuirkFlags) *Instruction {
-	f, _ := strconv.ParseFloat(strings.TrimSuffix(value, "F"), 32)
-	// TODO: check for error
+func emitFloatConst(value, qualifier string, paramType bytecodes.ParamType, quirks QuirkFlags) (*Instruction, error) {
+	f, err := strconv.ParseFloat(strings.TrimSuffix(value, "F"), 32)
+	if err != nil {
+		return nil, err
+	}
+
+	switch paramType {
+	case bytecodes.ParamTypeFloat, bytecodes.ParamTypeVariable:
+		// OK
+	default:
+		return nil, fmt.Errorf("Using float constant for non-float parameter %v", paramType)
+	}
 
 	var b []byte
 	if quirks&OptimizeFloatConst != 0 {
@@ -280,10 +314,19 @@ func emitFloatConst(value, qualifier string, quirks QuirkFlags) *Instruction {
 		Bytes: b,
 		size:  int32(len(b)),
 		Desc:  qualifier + " float",
-	}
+	}, nil
 }
 
-func emitStringConst(value, qualifier string) *Instruction {
+func emitStringConst(value, qualifier string, paramType bytecodes.ParamType) (*Instruction, error) {
+	switch paramType {
+	case bytecodes.ParamTypeString, bytecodes.ParamTypeVariable:
+		// OK
+	case bytecodes.ParamTypeInt8:
+		// TODO: ev3.yml needs to be updated to differentiate between PAR8 and array of PAR8
+	default:
+		return nil, fmt.Errorf("Using string constant for non-string parameter %v", paramType)
+	}
+
 	buf := new(bytes.Buffer)
 	buf.WriteByte(byte(PRIMPAR_LONG | PRIMPAR_CONST | PRIMPAR_STRING_OLD))
 	s := value
@@ -301,20 +344,43 @@ func emitStringConst(value, qualifier string) *Instruction {
 		Bytes: buf.Bytes(),
 		size:  int32(buf.Len()),
 		Desc:  qualifier + " string",
-	}
+	}, nil
 }
 
-func emitEnum(value int32) *Instruction {
+func emitEnum(value int32, paramType bytecodes.ParamType) (*Instruction, error) {
 	b := lcBytes(PRIMPAR_CONST, value)
+
+	switch paramType {
+	case bytecodes.ParamTypeInt8, bytecodes.ParamTypeNumberParams:
+		if b[0]&PRIMPAR_LONG != 0 {
+			if b[0]&PRIMPAR_BYTES != PRIMPAR_1_BYTE {
+				return nil, fmt.Errorf("Enum value is too big for %v", paramType)
+			}
+		}
+	case bytecodes.ParamTypeInt16:
+		if b[0]&PRIMPAR_LONG != 0 {
+			if b[0]&PRIMPAR_BYTES == PRIMPAR_4_BYTES {
+				return nil, fmt.Errorf("Enum value is too big for %v", paramType)
+			}
+		}
+	case bytecodes.ParamTypeInt32, bytecodes.ParamTypeVariable:
+		// OK
+	default:
+		return nil, fmt.Errorf("Using enum constant for non-integer parameter %v", paramType)
+	}
 
 	return &Instruction{
 		Bytes: b,
 		size:  int32(len(b)),
 		Desc:  "enum",
-	}
+	}, nil
 }
 
-func emitVar(offset int32, global bool) *Instruction {
+func emitVar(offset int32, global bool, valueType token.ValueType, paramType bytecodes.ParamType) (*Instruction, error) {
+	if !valueTypeOk(valueType, paramType) {
+		return nil, fmt.Errorf("Variable type %v does not match parameter type %v", valueType, paramType)
+	}
+
 	var flag byte
 	var desc string
 	if global {
@@ -330,10 +396,19 @@ func emitVar(offset int32, global bool) *Instruction {
 		Bytes: b,
 		size:  int32(len(b)),
 		Desc:  desc,
-	}
+	}, nil
 }
 
-func emitHandle(offset int16, global bool) *Instruction {
+func emitHandle(offset int16, global bool, paramType bytecodes.ParamType) (*Instruction, error) {
+	switch paramType {
+	case bytecodes.ParamTypeString, bytecodes.ParamTypeVariable:
+		// OK
+	case bytecodes.ParamTypeInt8, bytecodes.ParamTypeInt16, bytecodes.ParamTypeInt32, bytecodes.ParamTypeFloat:
+		// TODO: ev3.yml needs to be updated to differentiate between PAR8 and array of PAR8
+	default:
+		return nil, fmt.Errorf("Cannot use handle for parameter %v", paramType)
+	}
+
 	flags := byte(PRIMPAR_LONG | PRIMPAR_VARIABLE | PRIMPAR_HANDLE)
 	var desc string
 	if global {
@@ -357,7 +432,7 @@ func emitHandle(offset int16, global bool) *Instruction {
 		Bytes: buf.Bytes(),
 		size:  int32(buf.Len()),
 		Desc:  desc + " handle",
-	}
+	}, nil
 }
 
 func emitObjCall(obj *ast.ObjDecl) *Instruction {
@@ -376,7 +451,8 @@ func emitObjCall(obj *ast.ObjDecl) *Instruction {
 	}
 }
 
-func emitExpr(expr ast.Expr, globals, locals map[string]int32, quirks QuirkFlags) (inst *Instruction, err error) {
+func emitExpr(expr ast.Expr, paramType bytecodes.ParamType, direction bytecodes.Direction,
+	globals, locals map[string]variableInfo, quirks QuirkFlags) (inst *Instruction, err error) {
 	switch e := expr.(type) {
 	case *ast.BadExpr:
 		err = errors.New("Bad expression")
@@ -390,23 +466,27 @@ func emitExpr(expr ast.Expr, globals, locals map[string]int32, quirks QuirkFlags
 		case ast.Bad:
 			err = errors.New("Bad identifier")
 		case ast.Con:
+			if direction != bytecodes.DirectionIn {
+				err = errors.New("Cannot use constant as argument to out parameter")
+				return
+			}
 			switch c := e.Obj.Data.(type) {
 			case bytecodes.Define:
 				switch v := c.Value.(type) {
 				case int:
-					inst = emitIntConst(strconv.Itoa(v), "define")
+					inst, err = emitIntConst(strconv.Itoa(v), "define", paramType, quirks)
 				case float64:
-					inst = emitFloatConst(strconv.FormatFloat(v, 'f', -1, 32), "define", quirks)
+					inst, err = emitFloatConst(strconv.FormatFloat(v, 'f', -1, 32), "define", paramType, quirks)
 				case string:
-					inst = emitStringConst(v, "define")
+					inst, err = emitStringConst(v, "define", paramType)
 				default:
 					err = errors.New("Unknown type in bytecode defines")
 				}
 			case bytecodes.EnumMember:
-				inst = emitEnum(c.Value)
+				inst, err = emitEnum(c.Value, paramType)
 			case nil:
 				d := e.Obj.Decl.(*ast.DefineSpec)
-				inst, err = emitExpr(d.Value, globals, locals, quirks)
+				inst, err = emitExpr(d.Value, paramType, direction, globals, locals, quirks)
 			default:
 				err = errors.New("Unknown constant")
 			}
@@ -414,20 +494,20 @@ func emitExpr(expr ast.Expr, globals, locals map[string]int32, quirks QuirkFlags
 			o := e.Obj.Decl.(*ast.ObjDecl)
 			inst = emitObjCall(o)
 		case ast.Var:
-			offset, ok := locals[e.Name]
+			info, ok := locals[e.Name]
 			global := false
 			if !ok {
-				offset, ok = globals[e.Name]
+				info, ok = globals[e.Name]
 				global = true
 			}
 			if ok {
-				inst = emitVar(offset, global)
+				inst, err = emitVar(info.offset, global, info.valueType, paramType)
 			} else {
 				err = errors.New("Unknown variable")
 			}
 		case ast.Par:
-			if offset, ok := locals[e.Name]; ok {
-				inst = emitVar(offset, false)
+			if info, ok := locals[e.Name]; ok {
+				inst, err = emitVar(info.offset, false, info.valueType, paramType)
 			} else {
 				err = errors.New("Unknown parameter")
 			}
@@ -435,35 +515,41 @@ func emitExpr(expr ast.Expr, globals, locals map[string]int32, quirks QuirkFlags
 			err = errors.New("Opcode not allowed as argument")
 		case ast.Cmd:
 			cmd := e.Obj.Data.(bytecodes.Command)
-			inst = emitIntConst(strconv.Itoa(int(cmd.Value)), "subcommand")
+			inst, err = emitIntConst(strconv.Itoa(int(cmd.Value)), "subcommand", bytecodes.ParamTypeInt8, quirks)
 		case ast.Lbl:
 			// label bytes will be filled in later
 			inst = &Instruction{size: 3, Desc: "label", label: e}
 		}
 	case *ast.BasicLit:
+		if direction != bytecodes.DirectionIn {
+			err = errors.New("Using literal on out parameter")
+			return
+		}
 		switch e.Kind {
 		case token.INT:
-			inst = emitIntConst(e.Value, "literal")
+			inst, err = emitIntConst(e.Value, "literal", paramType, quirks)
 		case token.FLOAT:
-			inst = emitFloatConst(e.Value, "literal", quirks)
+			inst, err = emitFloatConst(e.Value, "literal", paramType, quirks)
 		case token.STRING:
 			// e.Value is quoted, so slice to trim the quotes
-			inst = emitStringConst(e.Value[1:len(e.Value)-1], "literal")
+			inst, err = emitStringConst(e.Value[1:len(e.Value)-1], "literal", paramType)
+		default:
+			err = errors.New("Bad literal")
 		}
 	case *ast.ParenExpr:
-		inst, err = emitExpr(e.X, globals, locals, quirks)
+		inst, err = emitExpr(e.X, paramType, direction, globals, locals, quirks)
 	case *ast.UnaryExpr:
 		switch e.Op {
 		case token.AT:
 			if ident, ok := e.X.(*ast.Ident); ok {
-				offset, ok := locals[ident.Name]
+				info, ok := locals[ident.Name]
 				global := false
 				if !ok {
-					offset, ok = globals[ident.Name]
+					info, ok = globals[ident.Name]
 					global = true
 				}
 				if ok {
-					inst = emitHandle(int16(offset), global)
+					inst, err = emitHandle(int16(info.offset), global, paramType)
 				} else {
 					err = errors.New("Unknown handle")
 				}
@@ -471,16 +557,17 @@ func emitExpr(expr ast.Expr, globals, locals map[string]int32, quirks QuirkFlags
 				err = errors.New("Expecting identifier")
 			}
 		case token.BANG:
-			inst, err = emitExpr(e.X, globals, locals, quirks)
+			// bang operator lets us pass anything as a parameter - unsafe!
+			inst, err = emitExpr(e.X, bytecodes.ParamTypeVariable, bytecodes.DirectionIn, globals, locals, quirks)
 		case token.ADD:
-			inst, err = emitExpr(e.X, globals, locals, quirks)
+			inst, err = emitExpr(e.X, paramType, direction, globals, locals, quirks)
 		case token.SUB:
 			if lit, ok := e.X.(*ast.BasicLit); ok {
 				switch lit.Kind {
 				case token.INT:
-					inst = emitIntConst("-"+lit.Value, "literal")
+					inst, err = emitIntConst("-"+lit.Value, "literal", paramType, quirks)
 				case token.FLOAT:
-					inst = emitFloatConst("-"+lit.Value, "literal", quirks)
+					inst, err = emitFloatConst("-"+lit.Value, "literal", paramType, quirks)
 				case token.STRING:
 					err = errors.New("Expecting numeric literal")
 				}
@@ -494,7 +581,7 @@ func emitExpr(expr ast.Expr, globals, locals map[string]int32, quirks QuirkFlags
 		// TODO: should handle types other than int
 		var i int32
 		if i, err = resolveConstInt(e); err == nil {
-			inst = emitIntConst(strconv.Itoa(int(i)), "sum")
+			inst, err = emitIntConst(strconv.Itoa(int(i)), "sum", paramType, quirks)
 		}
 	}
 
@@ -532,6 +619,7 @@ const (
 	OptimizeFloatConst       QuirkFlags = 1 << iota // allow float constant values to be smaller than PRIMPAR_LONG | PRIMPAR_CONST | PRIMPAR_4_BYTES
 	OptimizeLabels                                  // allow labels offset constant values to be smaller than PRIMPAR_LONG | PRIMPAR_CONST | PRIMPAR_2_BYTES
 	OptimizeDuplicateObjects                        // allow multiple object pointer to point to the same bytecodes
+	AllowUnsignedIntConstant                        // allow unsigned integer constants like 0xFFFFFFFF
 )
 
 // AssembleOptions specify options for the Assemble() function
@@ -571,11 +659,104 @@ func optimizeLabels(instructions []*Instruction, labels map[string]int32, baseOf
 	return totalDiff
 }
 
+func tokenParamTypeToBytecodeParamType(paramType token.ParamType) (bytecodes.ParamType, bytecodes.Direction) {
+	switch paramType {
+	case token.IN_8:
+		return bytecodes.ParamTypeInt8, bytecodes.DirectionIn
+	case token.IN_16:
+		return bytecodes.ParamTypeInt16, bytecodes.DirectionIn
+	case token.IN_32:
+		return bytecodes.ParamTypeInt32, bytecodes.DirectionIn
+	case token.IN_F:
+		return bytecodes.ParamTypeFloat, bytecodes.DirectionIn
+	case token.IN_S:
+		return bytecodes.ParamTypeString, bytecodes.DirectionIn
+	case token.OUT_8:
+		return bytecodes.ParamTypeInt8, bytecodes.DirectionOut
+	case token.OUT_16:
+		return bytecodes.ParamTypeInt16, bytecodes.DirectionOut
+	case token.OUT_32:
+		return bytecodes.ParamTypeInt32, bytecodes.DirectionOut
+	case token.OUT_F:
+		return bytecodes.ParamTypeFloat, bytecodes.DirectionOut
+	case token.OUT_S:
+		return bytecodes.ParamTypeString, bytecodes.DirectionOut
+	case token.IO_8:
+		return bytecodes.ParamTypeInt8, bytecodes.DirectionInOut
+	case token.IO_16:
+		return bytecodes.ParamTypeInt16, bytecodes.DirectionInOut
+	case token.IO_32:
+		return bytecodes.ParamTypeInt32, bytecodes.DirectionInOut
+	case token.IO_F:
+		return bytecodes.ParamTypeFloat, bytecodes.DirectionInOut
+	case token.IO_S:
+		return bytecodes.ParamTypeString, bytecodes.DirectionInOut
+	}
+	panic("Bad token.ParamType")
+}
+
+func valueTypeOk(valueType token.ValueType, paramType bytecodes.ParamType) bool {
+	switch valueType {
+	case token.DATA8, token.ARRAY8:
+		return paramType == bytecodes.ParamTypeInt8 || paramType == bytecodes.ParamTypeVariable
+	case token.DATA16, token.ARRAY16:
+		return paramType == bytecodes.ParamTypeInt16 || paramType == bytecodes.ParamTypeVariable
+	case token.DATA32, token.ARRAY32:
+		return paramType == bytecodes.ParamTypeInt32 || paramType == bytecodes.ParamTypeVariable
+	case token.DATAF, token.ARRAYF:
+		return paramType == bytecodes.ParamTypeFloat || paramType == bytecodes.ParamTypeVariable
+	case token.DATAS:
+		return paramType == bytecodes.ParamTypeString || paramType == bytecodes.ParamTypeInt8 || paramType == bytecodes.ParamTypeVariable
+	}
+	panic("Bad token.ValueType")
+}
+
+func tokenParamTypeToTokenValueType(paramType token.ParamType) token.ValueType {
+	switch paramType {
+	case token.IN_8, token.OUT_8, token.IO_8:
+		return token.DATA8
+	case token.IN_16, token.OUT_16, token.IO_16:
+		return token.DATA16
+	case token.IN_32, token.OUT_32, token.IO_32:
+		return token.DATA32
+	case token.IN_F, token.OUT_F, token.IO_F:
+		return token.DATAF
+	case token.IN_S, token.OUT_S, token.IO_S:
+		return token.DATAS
+	}
+	panic("Bad token.ParamType")
+}
+
+func paramTypes(file *ast.File, arg *ast.Ident) ([]token.ParamType, error) {
+	for _, decl := range file.Decls {
+		if objDecl, ok := decl.(*ast.ObjDecl); ok && objDecl.Name.Name == arg.Name {
+			paramTypes := make([]token.ParamType, 0, objDecl.ParamCount)
+			for _, stmt := range objDecl.Body {
+				if x, ok := stmt.(*ast.DeclStmt); ok {
+					if y, ok := x.Decl.(*ast.GenDecl); ok && y.Tok == token.PARAMTYPE {
+						paramTypes = append(paramTypes, y.Spec.(*ast.ParamSpec).Type)
+					}
+				}
+			}
+			if len(paramTypes) != int(objDecl.ParamCount) {
+				panic("Missing parameters")
+			}
+			return paramTypes, nil
+		}
+	}
+	return nil, errors.New("Missing parameters")
+}
+
+type variableInfo struct {
+	offset    int32
+	valueType token.ValueType
+}
+
 // Assemble compiles code into LMS2012 VM bytecodes
 func (a *Assembler) Assemble(options *AssembleOptions) (Program, error) {
 	var nextGlobal int32
 	var objects []*Object
-	globals := make(map[string]int32)
+	globals := make(map[string]variableInfo)
 
 	var headerSize int32 = 16 // size of program header
 	for _, decl := range a.file.Decls {
@@ -601,7 +782,7 @@ func (a *Assembler) Assemble(options *AssembleOptions) (Program, error) {
 				if size == 2 || size == 4 {
 					nextGlobal = align(nextGlobal, size)
 				}
-				globals[s.Name.Name] = nextGlobal
+				globals[s.Name.Name] = variableInfo{nextGlobal, s.Type}
 				nextGlobal += int32(size)
 			case *ast.ParamSpec:
 				a.errors.Add(a.fs.Position(d.Pos()), "Parameter declaration in global scope")
@@ -612,7 +793,7 @@ func (a *Assembler) Assemble(options *AssembleOptions) (Program, error) {
 			var trigger int16
 			var nextLocal int32
 			var instructions []*Instruction
-			locals := make(map[string]int32)
+			locals := make(map[string]variableInfo)
 			labels := make(map[string]int32)
 
 			if d.Tok == token.BLOCK {
@@ -647,7 +828,7 @@ func (a *Assembler) Assemble(options *AssembleOptions) (Program, error) {
 							if size == 2 || size == 4 {
 								nextLocal = align(nextLocal, size)
 							}
-							locals[s.Name.Name] = nextLocal
+							locals[s.Name.Name] = variableInfo{nextLocal, s.Type}
 							nextLocal += int32(size)
 						case *ast.ParamSpec:
 							// TODO: should check that parameters are not declared
@@ -661,7 +842,7 @@ func (a *Assembler) Assemble(options *AssembleOptions) (Program, error) {
 							if size == 2 || size == 4 {
 								nextLocal = align(nextLocal, size)
 							}
-							locals[s.Name.Name] = nextLocal
+							locals[s.Name.Name] = variableInfo{nextLocal, tokenParamTypeToTokenValueType(s.Type)}
 							nextLocal += int32(size)
 							i := emitParamType(s.Type)
 							pc += i.size
@@ -692,13 +873,84 @@ func (a *Assembler) Assemble(options *AssembleOptions) (Program, error) {
 					if x == nil {
 						a.errors.Add(a.fs.Position(s.Op.Pos()), "Unknown opcode")
 					} else if x.Kind == ast.Op {
-						i := emitUint8(x.Data.(bytecodes.Opcode).Value, "opcode")
+						opcode := x.Data.(bytecodes.Opcode)
+						i := emitUint8(opcode.Value, "opcode")
 						pc += i.size
 						instructions = append(instructions, i)
-						for _, arg := range s.Args {
-							// TODO: check that the arg type matches the opcode template
-							// from yaml and the the number of args is correct
-							i, err := emitExpr(arg, globals, locals, options.Quirks)
+						for n, arg := range s.Args {
+							// These are the "anything goes" settings, so assume that by default
+							// Then try to figure out what the parameter type really is
+							var paramType bytecodes.ParamType = bytecodes.ParamTypeVariable
+							var direction = bytecodes.DirectionIn
+
+							// FIXME: look up CALL opcode instead of using 0x09
+							if opcode.Value == 0x09 && n > 0 {
+								// If this is a CALL(), then lookup parameter types from the subcall object
+								paramTypes, err := paramTypes(a.file, (s.Args[0]).(*ast.Ident))
+								if err == nil {
+									paramType, direction = tokenParamTypeToBytecodeParamType(paramTypes[n-1])
+								} else {
+									a.errors.Add(a.fs.Position(arg.Pos()), err.Error())
+								}
+							} else if n > 0 && opcode.Params[0].Type == bytecodes.ParamTypeSubparam {
+								// If this is an opcode with a subcommand, then lookup the parameter
+								// types in the subcommand
+								if ident, ok := s.Args[0].(*ast.Ident); ok {
+									for subp, cmd := range opcode.Params[0].Commands {
+										if subp == ident.Name {
+											if n <= len(cmd.Params) {
+												paramType = cmd.Params[n-1].Type
+												direction = cmd.Params[n-1].Dir
+											}
+											break
+										}
+									}
+								}
+								// No match case is handled below and will result in compiler error
+								// so it is safe to ignore it here.
+							} else if n < len(opcode.Params) {
+								paramType = opcode.Params[n].Type
+								direction = opcode.Params[n].Dir
+
+								// if the parameter is a subcommand, validate it
+								if paramType == bytecodes.ParamTypeSubparam {
+									match := false
+									if ident, ok := arg.(*ast.Ident); ok {
+										for subp := range opcode.Params[n].Commands {
+											if subp == ident.Name {
+												match = true
+												break
+											}
+										}
+									}
+									if !match {
+										a.errors.Add(a.fs.Position(arg.Pos()), fmt.Sprintf("Bad subparameter for opcode %s", x.Name))
+									}
+								}
+							}
+
+							// check the last parameter to see if it is PARVALUES
+							lastParamIndex := len(opcode.Params) - 1
+							lastParam := opcode.Params[lastParamIndex]
+							if opcode.Params[0].Type == bytecodes.ParamTypeSubparam {
+								// If this is an opcode with a subcommand, then lookup the parameter
+								// types in the subcommand
+								if ident, ok := s.Args[0].(*ast.Ident); ok {
+									for subp, cmd := range opcode.Params[0].Commands {
+										if subp == ident.Name && len(cmd.Params) > 0 {
+											lastParamIndex = len(cmd.Params)
+											lastParam = cmd.Params[lastParamIndex-1]
+											break
+										}
+									}
+								}
+							}
+							if paramType == bytecodes.ParamTypeValues || (n > lastParamIndex && lastParam.Type == bytecodes.ParamTypeValues) {
+								paramType = lastParam.ElementType
+								direction = lastParam.Dir
+							}
+
+							i, err := emitExpr(arg, paramType, direction, globals, locals, options.Quirks)
 							if err == nil {
 								pc += i.size
 								instructions = append(instructions, i)

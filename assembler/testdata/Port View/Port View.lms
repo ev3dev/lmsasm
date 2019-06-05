@@ -399,7 +399,7 @@ NotTooHigh:                                                           //        
                                                                       //
 NotTooLow:                                                            //        }
                                                                       //
-  MOVEF_8(Data,Inc)                                                   //        Inc   =  Data
+  MOVEF_8(Data,!Inc)                                                  //        Inc   =  Data
   ADD16(BAR_STARTX,Inc,X)                                             //        X     =  BAR_STARTX + Inc
                                                                       //
   MOVE16_16(BAR_STARTX,X0)                                            //        X0    =  BAR_STARTX
@@ -407,7 +407,7 @@ NotTooLow:                                                            //        
   JR_NEQ32(Data32,0,NotCentered)                                      //        if (Data32 == 0)
                                                                       //        {
   // Centered                                                         //
-  ADD8(X0,50,X0)                                                      //          X0 +=  50
+  ADD8(!X0,50,!X0)                                                    //          X0 +=  50
                                                                       //
   // Show center line                                                 //
   SUB16(BAR_STARTY,1,Y)                                               //          Y   =  BAR_STARTY - 1

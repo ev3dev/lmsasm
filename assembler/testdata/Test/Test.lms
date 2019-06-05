@@ -1598,7 +1598,7 @@ NotLeftButton:                                                        //      }
   JR_FALSE(Tmp,NotRightButton)                                        //      if (Tmp != FALSE)
                                                                       //      {
   UI_DRAW(FILLWINDOW,0x00,0,0)
-  UI_DRAW(FILLWINDOW,0xAA,0,0)
+  UI_DRAW(FILLWINDOW,!0xAA,0,0)
   UI_DRAW(UPDATE)
 NotRightButton:                                                       //      }
 
@@ -2872,9 +2872,9 @@ Loop:
   INPUT_DEVICE(READY_SI,0,SONAR_PORT,0,0,1,Sonar)                                                                      
 
                                                                       
-  RANDOM(0,100,Data32)                                                  
-  MOVE32_F(Data32,Random)
-  MOVE32_8(Data32,Speed)
+  RANDOM(0,100,!Data32)                                                  
+  MOVE32_F(!Data32,Random)
+  MOVE32_8(!Data32,Speed)
   
   ADDF(Rotation,Reflected,SensorSum)
   ADDF(SensorSum,Sonar,SensorSum)                    
