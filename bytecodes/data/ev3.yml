@@ -3846,8 +3846,8 @@ ops:
             params:
               -
                 name: "ARRAY"
-                desc: First byte in byte array to write
-                type: PAR8
+                desc: Address of array to write
+                type: PAR32
                 dir: in
               -
                 name: "LENGTH"
@@ -4997,34 +4997,34 @@ ops:
               -
                 name: "ITEMS"
                 desc: Number of datasets in arrays
-                type: PAR16
+                type: PAR8
                 dir: in
               -
                 name: "OFFSET"
-                desc: DATA16 array (handle) containing Y start cord [0..LCD_HEIGHT]
+                desc: DATA16 array containing Y start cord [0..LCD_HEIGHT]
                 type: PAR16
                 dir: in
               -
                 name: "SPAN"
                 desc: >
-                  DATA16 array (handle) containing Y size [0..(LCD_HEIGHT -
+                  DATA16 array containing Y size [0..(LCD_HEIGHT -
                   hOFFSET[])]
-                type: PAR8
+                type: PAR16
                 dir: in
               -
                 name: "MIN"
-                desc: DATAF array (handle) containing min values
-                type: PAR16
+                desc: DATAF array containing min values
+                type: PARF
                 dir: in
               -
                 name: "MAX"
-                desc: DATAF array (handle) containing max values
-                type: PAR16
+                desc: DATAF array containing max values
+                type: PARF
                 dir: in
               -
                 name: "SAMPLE"
-                desc: DATAF array (handle) containing sample values
-                type: PAR16
+                desc: DATAF array containing sample values
+                type: PARF
                 dir: in
 
           GRAPH_DRAW:
@@ -5085,8 +5085,8 @@ ops:
                 dir: in
               -
                 name: "LINE"
-                type: PAR8
-                dir: in
+                type: PAR16
+                dir: inout
     remarks: Dispatch status can change to BUSYBREAK
 
 
@@ -9218,7 +9218,7 @@ ops:
       -
         name: "REMOTE_NAME"
         desc: Pointer to remote brick name
-        type: PAR8
+        type: PARS
         dir: in
     remarks: Dispatch status can return FAILBREAK
 
@@ -9234,12 +9234,12 @@ ops:
       -
         name: "REMOTE_NAME"
         desc: Pointer to remote brick name
-        type: PAR8
+        type: PARS
         dir: in
       -
         name: "FILE_NAME"
         desc: File/folder name to send
-        type: PAR8
+        type: PARS
         dir: in
       -
         name: "FILE_TYPE"
