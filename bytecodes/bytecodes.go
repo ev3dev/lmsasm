@@ -52,6 +52,7 @@ const (
 	ParamTypeFloat                  = "PARF"
 	ParamTypeString                 = "PARS"
 	ParamTypeVariable               = "PARV"
+	ParamTypeHandle                 = "PARH"
 )
 
 type Direction string

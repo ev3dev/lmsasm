@@ -43,7 +43,7 @@ func TestEv3(t *testing.T) {
 			switch p.Type {
 			case ParamTypeNumberParams, ParamTypeLabel,
 				ParamTypeInt8, ParamTypeInt16, ParamTypeInt32, ParamTypeFloat,
-				ParamTypeString, ParamTypeVariable:
+				ParamTypeString, ParamTypeVariable, ParamTypeHandle:
 				// we're good
 			case ParamTypeSubparam:
 				if p.Commands == nil {
@@ -57,7 +57,7 @@ func TestEv3(t *testing.T) {
 							switch sp.Type {
 							case ParamTypeNumberParams, ParamTypeLabel,
 								ParamTypeInt8, ParamTypeInt16, ParamTypeInt32, ParamTypeFloat,
-								ParamTypeString, ParamTypeVariable:
+								ParamTypeString, ParamTypeVariable, ParamTypeHandle:
 								// we're good
 							case ParamTypeValues:
 								switch sp.ElementType  {
