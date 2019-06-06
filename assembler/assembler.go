@@ -376,9 +376,10 @@ func emitEnum(value int32, paramType bytecodes.ParamType) (*Instruction, error) 
 	}, nil
 }
 
-func emitVar(offset int32, global bool, valueType token.ValueType, paramType bytecodes.ParamType) (*Instruction, error) {
-	if !valueTypeOk(valueType, paramType) {
-		return nil, fmt.Errorf("Variable type %v does not match parameter type %v", valueType, paramType)
+func emitVar(variable variableInfo, global bool, paramType bytecodes.ParamType) (*Instruction, error) {
+	if !valueTypeOk(variable.valueType, paramType) {
+		return nil, fmt.Errorf("Variable type %v does not match parameter type %v",
+			variable.valueType, paramType)
 	}
 
 	var flag byte
@@ -390,7 +391,7 @@ func emitVar(offset int32, global bool, valueType token.ValueType, paramType byt
 		flag = PRIMPAR_LOCAL
 		desc = "local var"
 	}
-	b := lcBytes(PRIMPAR_VARIABLE|flag, offset)
+	b := lcBytes(PRIMPAR_VARIABLE|flag, variable.offset)
 
 	return &Instruction{
 		Bytes: b,
@@ -501,13 +502,13 @@ func emitExpr(expr ast.Expr, paramType bytecodes.ParamType, direction bytecodes.
 				global = true
 			}
 			if ok {
-				inst, err = emitVar(info.offset, global, info.valueType, paramType)
+				inst, err = emitVar(info, global, paramType)
 			} else {
 				err = errors.New("Unknown variable")
 			}
 		case ast.Par:
 			if info, ok := locals[e.Name]; ok {
-				inst, err = emitVar(info.offset, false, info.valueType, paramType)
+				inst, err = emitVar(info, false, paramType)
 			} else {
 				err = errors.New("Unknown parameter")
 			}
