@@ -179,38 +179,38 @@ func emitParamType(typ token.ParamType) *Instruction {
 	var v uint8
 
 	switch typ {
-	case "IN_8":
+	case token.IN_8:
 		v = 0x80
-	case "IN_16":
+	case token.IN_16:
 		v = 0x81
-	case "IN_32":
+	case token.IN_32:
 		v = 0x82
-	case "IN_F":
+	case token.IN_F:
 		v = 0x83
-	case "IN_S":
+	case token.IN_S:
 		v = 0x84
-	case "OUT_8":
+	case token.OUT_8:
 		v = 0x40
-	case "OUT_16":
+	case token.OUT_16:
 		v = 0x41
-	case "OUT_32":
+	case token.OUT_32:
 		v = 0x42
-	case "OUT_F":
+	case token.OUT_F:
 		v = 0x43
-	case "OUT_S":
+	case token.OUT_S:
 		v = 0x44
-	case "IO_8":
+	case token.IO_8:
 		v = 0xc0
-	case "IO_16":
+	case token.IO_16:
 		v = 0xc1
-	case "IO_32":
+	case token.IO_32:
 		v = 0xc2
-	case "IO_F":
+	case token.IO_F:
 		v = 0xc3
-	case "IO_S":
+	case token.IO_S:
 		v = 0xc4
 	default:
-		// TODO: should probably return error
+		panic("Unexpected token.ParamType")
 	}
 
 	return emitUint8(v, "param type")
