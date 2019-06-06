@@ -5699,33 +5699,33 @@ ops:
       -
         name: "INIT"
         desc: >
-          DATA16 array (handle) - to start/reset buffer -> fill array with -1
+          DATA16 array - to start/reset buffer -> fill array with -1
           otherwise don't change
         type: PAR16
         dir: in
       -
         name: "DEVICES"
-        desc: DATA8 array (handle) with devices to sample
+        desc: DATA8 array with devices to sample
         type: PAR8
         dir: in
       -
         name: "TYPES"
-        desc: DATA8 array (handle) with types
+        desc: DATA8 array with types
         type: PAR8
         dir: in
       -
         name: "MODES"
-        desc: DATA8 array (handle) with modes
+        desc: DATA8 array with modes
         type: PAR8
         dir: in
       -
         name: "DATASETS"
-        desc: DATA8 array (handle) with data sets
+        desc: DATA8 array with data sets
         type: PAR8
         dir: in
       -
         name: "VALUES"
-        desc: DATAF array (handle) with values
+        desc: DATAF array with values
         type: PARF
         dir: out
 
@@ -5986,7 +5986,7 @@ ops:
                 dir: in
               -
                 name: "WRITE_DATA"
-                desc: DATA8 array (handle) of data to write
+                desc: DATA8 array of data to write
                 type: PAR8
                 dir: in
               -
@@ -5996,7 +5996,7 @@ ops:
                 dir: in
               -
                 name: "READ_DATA"
-                desc: DATA8 array (handle) to read into
+                desc: DATA8 array to read into
                 type: PAR8
                 dir: out
 
@@ -6159,7 +6159,7 @@ ops:
                 dir: in
               -
                 name: "WRDATA"
-                desc: DATA8 array  (handle) of data to write
+                desc: DATA8 array of data to write
                 type: PAR8
                 dir: in
               -
@@ -6169,7 +6169,7 @@ ops:
                 dir: in
               -
                 name: "RDDATA"
-                desc: DATA8 array  (handle) to read into
+                desc: DATA8 array to read into
                 type: PAR8
                 dir: out
               -
@@ -7146,7 +7146,7 @@ ops:
               -
                 name: "HANDLE"
                 desc: Handle to file
-                type: PAR16
+                type: PARH
                 dir: out
             remarks: if name starts with '~','/' or '.' it is not from current folder
 
@@ -7162,7 +7162,7 @@ ops:
               -
                 name: "HANDLE"
                 desc: Handle to file
-                type: PAR16
+                type: PARH
                 dir: out
               -
                 name: "SIZE"
@@ -7183,7 +7183,7 @@ ops:
               -
                 name: "HANDLE"
                 desc: Handle to file
-                type: PAR16
+                type: PARH
                 dir: out
             remarks: if name starts with '~','/' or '.' it is not from current folder
 
@@ -7194,7 +7194,7 @@ ops:
               -
                 name: "HANDLE"
                 desc: Handle to file
-                type: PAR16
+                type: PARH
                 dir: in
               -
                 name: "DEL"
@@ -7215,7 +7215,7 @@ ops:
               -
                 name: "HANDLE"
                 desc: Handle to file
-                type: PAR16
+                type: PARH
                 dir: in
               -
                 name: "DEL"
@@ -7246,7 +7246,7 @@ ops:
               -
                 name: "HANDLE"
                 desc: Handle to file
-                type: PAR16
+                type: PARH
                 dir: in
               -
                 name: "DEL"
@@ -7272,7 +7272,7 @@ ops:
               -
                 name: "HANDLE"
                 desc: Handle to file
-                type: PAR16
+                type: PARH
                 dir: in
               -
                 name: "DEL"
@@ -7293,7 +7293,7 @@ ops:
               -
                 name: "HANDLE"
                 desc: Handle to file
-                type: PAR16
+                type: PARH
                 dir: in
 
           LOAD_IMAGE:
@@ -7333,7 +7333,7 @@ ops:
               -
                 name: "HANDLE"
                 desc: Handle to file
-                type: PAR16
+                type: PARH
                 dir: out
               -
                 name: "WRITE"
@@ -7368,7 +7368,7 @@ ops:
               -
                 name: "HANDLE"
                 desc: Handle to file
-                type: PAR16
+                type: PARH
                 dir: out
               -
                 name: "IP"
@@ -7449,7 +7449,7 @@ ops:
               -
                 name: "HANDLE"
                 desc: Handle to file
-                type: PAR16
+                type: PARH
                 dir: in
               -
                 name: "TIME"
@@ -7463,7 +7463,7 @@ ops:
                 dir: in
               -
                 name: "VALUES"
-                desc: DATAF array (handle) containing values
+                desc: DATAF array containing values
                 type: PARF
                 dir: in
 
@@ -7474,7 +7474,7 @@ ops:
               -
                 name: "HANDLE"
                 desc: Handle to file
-                type: PAR16
+                type: PARH
                 dir: in
               -
                 name: "NAME"
@@ -7638,7 +7638,7 @@ ops:
               -
                 name: "HANDLE"
                 desc: Handle to file
-                type: PAR16
+                type: PARH
                 dir: out
             remarks: if name starts with '~','/' or '.' it is not from current folder
 
@@ -7649,7 +7649,7 @@ ops:
               -
                 name: "HANDLE"
                 desc: Handle to file
-                type: PAR16
+                type: PARH
                 dir: in
               -
                 name: "BYTES"
@@ -7669,7 +7669,7 @@ ops:
               -
                 name: "HANDLE"
                 desc: Handle to file
-                type: PAR16
+                type: PARH
                 dir: in
               -
                 name: "BYTES"
@@ -7724,7 +7724,7 @@ ops:
               -
                 name: "HANDLE"
                 desc: Array handle
-                type: PAR16
+                type: PARH
                 dir: in
             support:
               official: yes
@@ -7737,7 +7737,7 @@ ops:
               -
                 name: "HANDLE"
                 desc: Array handle
-                type: PAR16
+                type: PARH
                 dir: in
             support:
               official: no
@@ -7756,7 +7756,7 @@ ops:
               -
                 name: "HANDLE"
                 desc: Array handle
-                type: PAR16
+                type: PARH
                 dir: out
 
           CREATE16:
@@ -7770,7 +7770,7 @@ ops:
               -
                 name: "HANDLE"
                 desc: Array handle
-                type: PAR16
+                type: PARH
                 dir: out
 
           CREATE32:
@@ -7784,7 +7784,7 @@ ops:
               -
                 name: "HANDLE"
                 desc: Array handle
-                type: PAR16
+                type: PARH
                 dir: out
 
           CREATEF:
@@ -7798,7 +7798,7 @@ ops:
               -
                 name: "HANDLE"
                 desc: Array handle
-                type: PAR16
+                type: PARH
                 dir: out
 
           RESIZE:
@@ -7807,7 +7807,7 @@ ops:
               -
                 name: "HANDLE"
                 desc: Array handle
-                type: PAR16
+                type: PARH
                 dir: in
               -
                 name: "ELEMENTS"
@@ -7821,7 +7821,7 @@ ops:
               -
                 name: "HANDLE"
                 desc: Array handle
-                type: PAR16
+                type: PARH
                 dir: in
               -
                 name: "VALUE"
@@ -7835,12 +7835,12 @@ ops:
               -
                 name: "HSOURCE"
                 desc: Source array Handle
-                type: PAR16
+                type: PARH
                 dir: in
               -
                 name: "HDEST"
                 desc: Destination array handle
-                type: PAR16
+                type: PARH
                 dir: out
 
           INIT8:
@@ -7849,7 +7849,7 @@ ops:
               -
                 name: "HANDLE"
                 desc: Array handle
-                type: PAR16
+                type: PARH
                 dir: in
               -
                 name: "INDEX"
@@ -7874,7 +7874,7 @@ ops:
               -
                 name: "HANDLE"
                 desc: Array handle
-                type: PAR16
+                type: PARH
                 dir: in
               -
                 name: "INDEX"
@@ -7899,7 +7899,7 @@ ops:
               -
                 name: "HANDLE"
                 desc: Array handle
-                type: PAR16
+                type: PARH
                 dir: in
               -
                 name: "INDEX"
@@ -7924,7 +7924,7 @@ ops:
               -
                 name: "HANDLE"
                 desc: Array handle
-                type: PAR16
+                type: PARH
                 dir: in
               -
                 name: "INDEX"
@@ -7949,7 +7949,7 @@ ops:
               -
                 name: "HANDLE"
                 desc: Array handle
-                type: PAR16
+                type: PARH
                 dir: in
               -
                 name: "ELEMENTS"
@@ -7967,7 +7967,7 @@ ops:
               -
                 name: "HANDLE"
                 desc: Array handle
-                type: PAR16
+                type: PARH
                 dir: in
               -
                 name: "ELEMENTS"
@@ -7992,7 +7992,7 @@ ops:
               -
                 name: "HANDLE"
                 desc: Array handle
-                type: PAR16
+                type: PARH
                 dir: in
               -
                 name: "INDEX"
@@ -8022,7 +8022,7 @@ ops:
               -
                 name: "HANDLE"
                 desc: Array handle
-                type: PAR16
+                type: PARH
                 dir: in
               -
                 name: "INDEX"
@@ -8052,7 +8052,7 @@ ops:
               -
                 name: "HANDLE"
                 desc: Array handle
-                type: PAR16
+                type: PARH
                 dir: in
               -
                 name: "BYTES"
@@ -8068,7 +8068,7 @@ ops:
       -
         name: "HANDLE"
         desc: Array handle
-        type: PAR16
+        type: PARH
         dir: in
       -
         name: "INDEX"
@@ -8089,7 +8089,7 @@ ops:
       -
         name: "HANDLE"
         desc: Array handle
-        type: PAR16
+        type: PARH
         dir: in
       -
         name: "INDEX"
@@ -8110,7 +8110,7 @@ ops:
       -
         name: "HANDLE"
         desc: Array handle
-        type: PAR16
+        type: PARH
         dir: in
       -
         name: "VALUE"
@@ -9439,7 +9439,7 @@ ops:
         dir: in
       -
         name: "RDDATA"
-        desc: DATA8 array (handle) to read into
+        desc: DATA8 array to read into
         type: PAR8
         dir: out
       -
@@ -9499,7 +9499,7 @@ ops:
         dir: in
       -
         name: "WRDATA"
-        desc: DATA8 array (handle) of data to write
+        desc: DATA8 array of data to write
         type: PAR8
         dir: in
       -
