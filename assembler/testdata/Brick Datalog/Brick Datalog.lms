@@ -57,29 +57,29 @@ DATA32    SampleTime                                                  //  Time b
 DATA32    IdleSampleTime                                              //  Time between samples [mS]
 DATA32    FlashTimer                                                  //
 DATA16    SampleRate                                                  //  Pointer to actual sample rate
-DATA16    hDevices                                                    //
-DATA16    hValues                                                     //
-DATA16    hMins                                                       //
-DATA16    hMaxs                                                       //
-DATA16    hOffsets                                                    //
-DATA16    hSpans                                                      //
-DATA16    hFigures                                                    //
-DATA16    hDecimals                                                   //
+HANDLE    hDevices                                                    //
+HANDLE    hValues                                                     //
+HANDLE    hMins                                                       //
+HANDLE    hMaxs                                                       //
+HANDLE    hOffsets                                                    //
+HANDLE    hSpans                                                      //
+HANDLE    hFigures                                                    //
+HANDLE    hDecimals                                                   //
                                                                       //
-DATA16    hTypes2                                                     //
+HANDLE    hTypes2                                                     //
                                                                       //
-DATA16    hInits                                                      //                                                                      
-DATA16    hTypes                                                      //
-DATA16    hModes                                                      //
-DATA16    hDataSets                                                   //
-DATA16    hLogModes                                                   //
-DATA16    hMaxModes                                                   //
+HANDLE    hInits                                                      //                                                                      
+HANDLE    hTypes                                                      //
+HANDLE    hModes                                                      //
+HANDLE    hDataSets                                                   //
+HANDLE    hLogModes                                                   //
+HANDLE    hMaxModes                                                   //
                                                                       //
-DATA16    hSampleRates                                                //
+HANDLE    hSampleRates                                                //
                                                                       //
-DATA16    hhGrids                                                     //  Handle to handles to grid bitmap names
+HANDLE    hhGrids                                                     //  Handle to handles to grid bitmap names
                                                                       //
-DATA16    Handle                                                      //
+HANDLE    Handle                                                      //
                                                                       //
                                                                       //
 define    IDLE                          0                             //
@@ -356,7 +356,7 @@ Skip:                                                                 //      }
 subcall   Init                                                        //  Init(void)
 {                                                                     //  {
   DATA32  Index                                                       //
-  DATA16  Handle                                                      //
+  HANDLE  Handle                                                      //
   DATA8   Exist                                                       //
                                                                       //
   FILENAME(EXIST,DATALOG_FOLDER,Exist)                                //    FILENAME(EXIST,DATALOG_FOLDER,Exist)
@@ -415,7 +415,7 @@ InitDataDone:                                                         //
 subcall   Exit                                                        //  Exit(void)
 {                                                                     //  {
   DATA32  Index                                                       //
-  DATA16  Handle                                                      //
+  HANDLE  Handle                                                      //
                                                                       //
   MOVE8_32(0,Index)                                                   //    Index  =  0
 ExitData:                                                             //    while (Index < Index)
@@ -455,7 +455,7 @@ subcall   IdleScreen                                                  //  IdleSc
   IO_8    Changed                                                     //
                                                                       //
   DATA8   Mode                                                        //
-  DATA16  Grid                                                        //
+  HANDLE  Grid                                                        //
   DATA32  Tmp                                                         //
   DATA32  Index                                                       //
                                                                       //
@@ -496,7 +496,7 @@ NoTimeout:                                                            //    }
                                                                       //
   JR_LT8(SelectedPort,0,All)                                          //
   MOVE8_32(SelectedPort,Index)                                        //
-  ARRAY_READ(hhGrids,Index,Grid)                                      //
+  ARRAY_READ(hhGrids,Index,!Grid)                                     //
   UI_DRAW(BMPFILE,FG_COLOR,0,20,@Grid)                                //      Draw bitmap
 All:                                                                  //
   UI_DRAW(GRAPH_DRAW,SelectedPort,Actual,Lowest,Highest,Average)      //      UI_DRAW(GRAPH_DRAW,SelectedPort,Actual,Lowest,Highest,Average)
@@ -714,7 +714,7 @@ subcall   LoggingScreen                                               //  Loggin
   DATA32  Index                                                       //
   DATA32  SyncTime                                                    //
   DATA32  SyncTick                                                    //
-  DATA16  Grid                                                        //
+  HANDLE  Grid                                                        //
   DATA16  Bytes                                                       //
   DATA8   FF                                                          //
   DATA8   Data8                                                       //
@@ -790,7 +790,7 @@ InitDataDone:                                                         //
   UI_DRAW(FILLWINDOW,BG_COLOR,TOPLINE_HEIGHT,0)                       //        UI_DRAW(FILLWINDOW,BG_COLOR,TOPLINE_HEIGHT,0)
   JR_LT8(SelectedPort,0,All2)                                         //
   MOVE8_32(SelectedPort,Index)                                        //
-  ARRAY_READ(hhGrids,Index,Grid)                                      //
+  ARRAY_READ(hhGrids,Index,!Grid)                                     //
   UI_DRAW(BMPFILE,FG_COLOR,0,20,@Grid)                                //        Draw bitmap
 All2:                                                                 //
                                                                       //
@@ -902,7 +902,7 @@ NoTimeout2:                                                           //      }
   JR_LT8(SelectedPort,0,All)                                          //        if (SelectedPort >= 0)
                                                                       //        {
   MOVE8_32(SelectedPort,Index)                                        //          Index  =  SelectedPort
-  ARRAY_READ(hhGrids,Index,Grid)                                      //          Grid   =  hhGrids[Index]
+  ARRAY_READ(hhGrids,Index,!Grid)                                     //          Grid   =  hhGrids[Index]
   UI_DRAW(BMPFILE,FG_COLOR,0,20,@Grid)                                //          Draw bitmap
                                                                       //
 All:                                                                  //        }
@@ -1138,7 +1138,7 @@ subcall   SetupScreen                                                 //  SetupS
   DATA16  CursorX                                                     //
   DATA16  CursorY                                                     //
   DATA16  Inc                                                         //
-  DATA16  hModesTmp                                                   //
+  HANDLE  hModesTmp                                                   //
   DATA8   Run                                                         //
   DATA8   Tmp                                                         //
   DATA8   Port                                                        //
@@ -1438,7 +1438,7 @@ subcall   InitSensorData                                              //  InitSe
   DATA8   TmpType                                                     //
   DATA8   TmpMode                                                     //
   DATA8   Mode                                                        //
-  DATA16  Grid                                                        //
+  HANDLE  Grid                                                        //
                                                                       //
   // Init device data to log                                          //
   MOVE8_8(0,Pointer)                                                  //      Pointer  =  0
@@ -1457,7 +1457,7 @@ InitData:                                                             //      wh
   ARRAY_WRITE(hFigures,Index,TmpFigures)                              //        hFigures[Index]   =  TmpFigures
   ARRAY_WRITE(hDecimals,Index,TmpDecimals)                            //        hDecimals[Index]  =  TmpFigures
                                                                       //
-  ARRAY_READ(hhGrids,Index,Grid)                                      //        Grid          =  hhGrids[Index]
+  ARRAY_READ(hhGrids,Index,!Grid)                                     //        Grid          =  hhGrids[Index]
   MOVE16_16(20,TmpOffset)                                             //        TmpOffset     =  20
   MOVE16_16(100,TmpSpan)                                              //        TmpSpan       =  100
   STRINGS(DUPLICATE,'dl_GRc180',@Grid)                                //        Grid          =  "dl_GRc180"
@@ -1742,7 +1742,7 @@ subcall   SaveFile                                                    //  SaveFi
 {                                                                     //  {
   DATAF   Tmp                                                         //
   DATA32  Size                                                        //
-  DATA16  hFile                                                       //
+  HANDLE  hFile                                                       //
   DATA16  FileNo                                                      //
   DATA8   State                                                       //
   DATA8   Volume                                                      //

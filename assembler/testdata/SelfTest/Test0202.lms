@@ -44,8 +44,8 @@ subcall   Test0202                                                    //  void T
   DATA32  Data32                                                      //
   DATA32  Time                                                        //
   DATA32  Tick                                                        //
-  DATA16  hFile                                                       //
-  DATA16  hArray                                                      //
+  HANDLE  hFile                                                       //
+  HANDLE  hArray                                                      //
   DATA16  Data16                                                      //
   DATA16  Textsize                                                    //
   DATA8   Data8                                                       //
@@ -103,12 +103,12 @@ subcall   Test0202                                                    //  void T
   FILE(OPEN_WRITE,Testname,hFile)                                     //
   FILE(WRITE_TEXT,hFile,DEL_NONE,TESTTEXT)                            //
   FILE(CLOSE,hFile)                                                   //
-  MOVE16_F(hFile,Result)                                              //
+  MOVE16_F(!hFile,Result)                                             //
   CALL(TestRange,'FILE OPEN_WRITE    ',Result,0.0F,249.0F)            //
                                                                       //
   // Check opFILE OPEN_READ + READ_TEXT                               //
   FILE(OPEN_READ,Testname,hFile,Size)                                 //
-  MOVE16_F(hFile,Result)                                              //
+  MOVE16_F(!hFile,Result)                                             //
   CALL(TestRange,'FILE OPEN_READ     ',Result,0.0F,249.0F)            //
   STRINGS(GET_SIZE,TESTTEXT,Data16)                                   //
   MOVE16_16(Data16,Textsize)                                          //
@@ -217,7 +217,7 @@ subcall   Test0202                                                    //  void T
   STRINGS(ADD,Testname,LOGFILE,Testname)                              //
   STRINGS(ADD,Testname,TESTEXT,Testname)                              //
   FILE(OPEN_LOG,Testname,123,456,789,100,200,'Time\tSensor1\tSensor2\t\r\n',hFile) //
-  MOVE16_F(hFile,Result)                                              //
+  MOVE16_F(!hFile,Result)                                             //
   CALL(TestRange,'FILE OPEN_LOG      ',Result,0.0F,249.0F)            //
                                                                       //
   // Check opFILE WRITE_LOG                                           //
@@ -234,9 +234,9 @@ subcall   Test0202                                                    //  void T
   CALL(TestCheck,'FILE GET_LOG_NAME  ',String,Testname)               //
                                                                       //
   // Check opFILE GET_HANDLE                                          //
-  FILE(GET_HANDLE,Testname,Data16,Data8)                              //
+  FILE(GET_HANDLE,Testname,!Data16,Data8)                             //
   MOVE16_F(Data16,Result)                                             //
-  MOVE16_F(hFile,DataF)                                               //
+  MOVE16_F(!hFile,DataF)                                              //
   CALL(TestRange,'FILE GET_HANDLE    ',Result,DataF,DataF)            //
   MOVE8_F(Data8,Result)                                               //
   CALL(TestRange,'FILE GET_HANDLE    ',Result,1.0F,1.0F)              //
@@ -302,18 +302,18 @@ subcall   Test0202                                                    //  void T
   CALL(TestRange,'LOG trailer        ',Result,-1.0F,-1.0F)            //
                                                                       //
   // Check opFILE GET_HANDLE                                          //
-  FILE(GET_HANDLE,Testname,Data16,Data8)                              //
+  FILE(GET_HANDLE,Testname,!Data16,Data8)                             //
   MOVE16_F(Data16,Result)                                             //
-  MOVE16_F(hFile,DataF)                                               //
+  MOVE16_F(!hFile,DataF)                                              //
   CALL(TestRange,'FILE GET_HANDLE    ',Result,DataF,DataF)            //
   MOVE8_F(Data8,Result)                                               //
   CALL(TestRange,'FILE GET_HANDLE    ',Result,0.0F,0.0F)              //
   FILE(CLOSE,hFile)                                                   //
                                                                       //
   // Check opFILE GET_HANDLE                                          //
-  FILE(GET_HANDLE,Testname,Data16,Data8)                              //
+  FILE(GET_HANDLE,Testname,!Data16,Data8)                             //
   MOVE16_F(Data16,Result)                                             //
-  MOVE16_F(hFile,DataF)                                               //
+  MOVE16_F(!hFile,DataF)                                              //
   CALL(TestRange,'FILE GET_HANDLE    ',Result,-1.0F,-1.0F)            //
   MOVE8_F(Data8,Result)                                               //
   CALL(TestRange,'FILE GET_HANDLE    ',Result,0.0F,0.0F)              //
@@ -327,7 +327,7 @@ subcall   Test0202                                                    //  void T
   STRINGS(ADD,Testname,RAMFILE,Testname)                              //
   STRINGS(ADD,Testname,TESTEXT,Testname)                              //
   FILE(OPEN_LOG,Testname,123,456,789,1,2,'Time\tSensor1\tSensor2\t\r\n',hFile) //
-  MOVE16_F(hFile,Result)                                              //
+  MOVE16_F(!hFile,Result)                                             //
   CALL(TestRange,'FILE OPEN_LOG ram  ',Result,0.0F,249.0F)            //
                                                                       //
   // Check opFILE WRITE_LOG                                           //
@@ -344,11 +344,11 @@ subcall   Test0202                                                    //  void T
   CALL(TestCheck,'FILE GET_LOG_NAME  ',String,Testname)               //
                                                                       //
   // Check opFILE GET_HANDLE                                          //
-  FILE(GET_HANDLE,Testname,Data16,Data8)                              //
+  FILE(GET_HANDLE,Testname,!Data16,Data8)                             //
   // Handle 1 too low                                                 //
   ADD16(Data16,1,Data16)                                              //
   MOVE16_F(Data16,Result)                                             //
-  MOVE16_F(hFile,DataF)                                               //
+  MOVE16_F(!hFile,DataF)                                              //
   CALL(TestRange,'FILE GET_HANDLE    ',Result,DataF,DataF)            //
   MOVE8_F(Data8,Result)                                               //
   CALL(TestRange,'FILE GET_HANDLE    ',Result,1.0F,1.0F)              //
@@ -414,18 +414,18 @@ subcall   Test0202                                                    //  void T
   CALL(TestRange,'LOG trailer        ',Result,-1.0F,-1.0F)            //
                                                                       //
   // Check opFILE GET_HANDLE                                          //
-  FILE(GET_HANDLE,Testname,Data16,Data8)                              //
+  FILE(GET_HANDLE,Testname,!Data16,Data8)                             //
   MOVE16_F(Data16,Result)                                             //
-  MOVE16_F(hFile,DataF)                                               //
+  MOVE16_F(!hFile,DataF)                                              //
   CALL(TestRange,'FILE GET_HANDLE    ',Result,DataF,DataF)            //
   MOVE8_F(Data8,Result)                                               //
   CALL(TestRange,'FILE GET_HANDLE    ',Result,0.0F,0.0F)              //
   FILE(CLOSE,hFile)                                                   //
                                                                       //
   // Check opFILE GET_HANDLE                                          //
-  FILE(GET_HANDLE,Testname,Data16,Data8)                              //
+  FILE(GET_HANDLE,Testname,!Data16,Data8)                             //
   MOVE16_F(Data16,Result)                                             //
-  MOVE16_F(hFile,DataF)                                               //
+  MOVE16_F(!hFile,DataF)                                              //
   CALL(TestRange,'FILE GET_HANDLE    ',Result,-1.0F,-1.0F)            //
   MOVE8_F(Data8,Result)                                               //
   CALL(TestRange,'FILE GET_HANDLE    ',Result,0.0F,0.0F)              //
@@ -434,12 +434,12 @@ subcall   Test0202                                                    //  void T
   CALL(TestWrite,' MEMORY FILE')                                      //
                                                                       //
   // Check opFILE GET_POOL                                            //
-  FILE(GET_POOL,1000,Data16,Data32)                                   //
+  FILE(GET_POOL,1000,!Data16,Data32)                                  //
   MOVE16_F(Data16,Result)                                             //
   CALL(TestRange,'FILE GET_POOL      ',Result,0.0F,249.0F)            //
   MOVE32_F(Data32,Result)                                             //
   CALL(TestRange,'FILE GET_POOL      ',Result,1.0F,200000000.0F)      //
-  FILE(CLOSE,Data16)                                                  //
+  FILE(CLOSE,!Data16)                                                 //
                                                                       //
   // Check opFILE PUT_CACHE_FILE                                      //
   STRINGS(DUPLICATE,Testfolder,Testname)                              //
@@ -571,7 +571,7 @@ EndError:                                                             //    }
 }                                                                     //  }
                                                                       //
                                                                       //
-DATA16    hRFile                                                      //
+HANDLE    hRFile                                                      //
                                                                       //
 subcall   TestOpen                                                    //  void TestOpen(void)
 {                                                                     //  {

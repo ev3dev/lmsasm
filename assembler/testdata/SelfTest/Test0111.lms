@@ -74,14 +74,14 @@ subcall   Test0111                                                    //  void T
   DATA32  Devices
   DATA32  Tmp1
   DATA32  Tmp2
-  DATA16  File
+  HANDLE  File
   DATA16  Counter                                                     //
-  DATA16  hInits
-  DATA16  hValues
-  DATA16  hDevices
-  DATA16  hTypes
-  DATA16  hModes
-  DATA16  hDataSets
+  HANDLE  hInits
+  HANDLE  hValues
+  HANDLE  hDevices
+  HANDLE  hTypes
+  HANDLE  hModes
+  HANDLE  hDataSets
   DATA16  Tmp
   DATA8   Device
   DATA8   Type
@@ -312,7 +312,7 @@ EndError:                                                             //    }
 }                                                                     //  }
                                                                       //
                                                                       //
-DATA16    hFile                                                       //
+HANDLE    hFile                                                       //
                                                                       //
 subcall   TestClear                                                   //  void TestClear(void)
 {                                                                     //  {

@@ -95,7 +95,7 @@ DATA8     TmpMode                                                     //
 vmthread  MAIN                                                        //  void MAIN(void)
 {                                                                     //  {
   DATA32  Timer                                                       //
-  DATA16  hModes                                                      //
+  HANDLE  hModes                                                      //
   DATA8   Run                                                         //
   DATA8   Selection                                                   //
   DATA8   Changing                                                    //
@@ -166,7 +166,7 @@ Skip:                                                                 //      }
                                                                       //
 subcall   CheckConnections                                            //  void CheckConnections(hModes)
 {                                                                     //  {
-  IN_16   hModes                                                      //
+  IN_H    hModes                                                      //
                                                                       //
   DATA8   Connection                                                  //
   DATA8   Type                                                        //
@@ -249,7 +249,7 @@ Skip:                                                                 //    }
                                                                       //
 subcall   ShowSelectedConnection                                      //  void ShowSelectedConnection(hModes,Selection,Changing)
 {                                                                     //  {
-  IN_16   hModes                                                      //
+  IN_H    hModes                                                      //
   IN_8    Selection                                                   //
   IO_8    Changing                                                    //
                                                                       //
@@ -542,7 +542,7 @@ ChangeEnd:                                                            //    }
                                                                       //
 subcall   ShowAllConnections                                          //  void ShowAllConnections(hModes,Selection)
 {                                                                     //  {
-  IN_16   hModes                                                      //
+  IN_H    hModes                                                      //
   IN_8    Selection                                                   //
                                                                       //
   DATA8   Mode                                                        //

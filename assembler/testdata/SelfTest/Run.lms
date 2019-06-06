@@ -226,7 +226,7 @@ EndSuccess2:                                                          //    }
 }                                                                     //  }
                                                                       //
                                                                       //
-DATA16    hFile                                                       //
+HANDLE    hFile                                                       //
                                                                       //
 subcall   TestClear                                                   //  void TestClear(void)
 {                                                                     //  {

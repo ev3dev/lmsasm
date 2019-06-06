@@ -28,8 +28,8 @@ subcall   Test0201                                                    //  void T
   DATA32  Data32                                                      //
   DATA32  Place                                                       //
   DATA32  DataSize                                                    //
-  DATA16  hArray                                                      //
-  DATA16  hCopy                                                       //
+  HANDLE  hArray                                                      //
+  HANDLE  hCopy                                                       //
   DATA16  Data16                                                      //
   DATA8   Data8                                                       //
   DATAS   String LINE                                                 //
@@ -44,7 +44,7 @@ subcall   Test0201                                                    //  void T
   MOVE32_32(1,DataSize)                                               //
   MOVE32_32(0,Size)                                                   //
   ARRAY(CREATE8,Size,hArray)                                          //
-  MOVE16_F(hArray,Result)                                             //
+  MOVE16_F(!hArray,Result)                                            //
   CALL(TestRange,'CREATE8  handle    ',Result,0.0F,249.0F)            //
   ARRAY(SIZE,hArray,Elements)                                         //
   MOVE32_F(Elements,Result)                                           //
@@ -122,7 +122,7 @@ subcall   Test0201                                                    //  void T
   MOVE32_32(2,DataSize)                                               //
   MOVE32_32(0,Size)                                                   //
   ARRAY(CREATE16,Size,hArray)                                         //
-  MOVE16_F(hArray,Result)                                             //
+  MOVE16_F(!hArray,Result)                                            //
   CALL(TestRange,'CREATE16 handle    ',Result,0.0F,249.0F)            //
   ARRAY(SIZE,hArray,Elements)                                         //
   MOVE32_F(Elements,Result)                                           //
@@ -200,7 +200,7 @@ subcall   Test0201                                                    //  void T
   MOVE32_32(4,DataSize)                                               //
   MOVE32_32(0,Size)                                                   //
   ARRAY(CREATE32,Size,hArray)                                         //
-  MOVE16_F(hArray,Result)                                             //
+  MOVE16_F(!hArray,Result)                                            //
   CALL(TestRange,'CREATE32 handle    ',Result,0.0F,249.0F)            //
   ARRAY(SIZE,hArray,Elements)                                         //
   MOVE32_F(Elements,Result)                                           //
@@ -278,7 +278,7 @@ subcall   Test0201                                                    //  void T
   MOVE32_32(4,DataSize)                                               //
   MOVE32_32(0,Size)                                                   //
   ARRAY(CREATEF,Size,hArray)                                          //
-  MOVE16_F(hArray,Result)                                             //
+  MOVE16_F(!hArray,Result)                                            //
   CALL(TestRange,'CREATEF  handle    ',Result,0.0F,249.0F)            //
   ARRAY(SIZE,hArray,Elements)                                         //
   MOVE32_F(Elements,Result)                                           //
@@ -434,7 +434,7 @@ EndError:                                                             //    }
 }                                                                     //  }
                                                                       //
                                                                       //
-DATA16    hFile                                                       //
+HANDLE    hFile                                                       //
                                                                       //
 subcall   TestOpen                                                    //  void TestOpen(void)
 {                                                                     //  {

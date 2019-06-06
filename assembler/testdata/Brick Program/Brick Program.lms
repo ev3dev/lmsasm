@@ -81,10 +81,10 @@ define    REFRESH             2                                       //  Refres
 define    ACTIVATE            3                                       //  Activate block
 define    DRAW_ICON           4                                       //  Draw icon
                                                                       //
-DATA16    hBlockLib                                                   //  Block library
-DATA16    hBlockStream                                                //  Block stream (program)
-DATA16    hBlockPar1                                                  //  Par1 array
-DATA16    hBlockPar2                                                  //  Par2 array
+HANDLE    hBlockLib                                                   //  Block library
+HANDLE    hBlockStream                                                //  Block stream (program)
+HANDLE    hBlockPar1                                                  //  Par1 array
+HANDLE    hBlockPar2                                                  //  Par2 array
                                                                       //
 DATA8     Changed                                                     //  Changes in program flag
                                                                       //
@@ -1059,7 +1059,7 @@ subcall   SaveFilename                                                //  SaveFi
 {                                                                     //  {
   DATAF   Tmp                                                         //
   DATA32  Size                                                        //
-  DATA16  hFile                                                       //
+  HANDLE  hFile                                                       //
   DATA16  FileNo                                                      //
   DATA8   State                                                       //
   DATAS   String FILENAMESIZE                                         //
@@ -1122,7 +1122,7 @@ subcall   FileBlock                                                   //  FileBl
                                                                       //
   DATA32  Index                                                       //    Array index
   DATA32  Size                                                        //
-  DATA16  hFile                                                       //
+  HANDLE  hFile                                                       //
   DATA16  Par1                                                        //    Local parameter 1
   DATA16  Par2                                                        //    Local parameter 2
   DATA16  X3                                                          //
@@ -1331,7 +1331,7 @@ subcall   GetData32                                                   //  GetDat
 {                                                                     //  {
   IN_32   Index                                                       //
   OUT_32  Result                                                      //
-  IN_16   hProgram                                                    //
+  IN_H    hProgram                                                    //
                                                                       //
   DATA8   Data8                                                       //
   DATA8   Align                                                       //
@@ -1365,7 +1365,7 @@ subcall   GetData16                                                   //  GetDat
 {                                                                     //  {
   IN_32   Index                                                       //
   OUT_16  Result                                                      //
-  IN_16   hProgram                                                    //
+  IN_H    hProgram                                                    //
                                                                       //
   DATA16  Data16                                                      //
   DATA8   Data8                                                       //
@@ -1387,7 +1387,7 @@ subcall   PutData16                                                   //  PutDat
 {                                                                     //  {
   IN_32   Index                                                       //
   IN_16   Data                                                        //
-  IN_16   hProgram                                                    //
+  IN_H    hProgram                                                    //
                                                                       //
   DATA16  Data16                                                      //
   DATA8   Data8                                                       //
@@ -1409,7 +1409,7 @@ subcall   GetData8                                                    //  GetDat
 {                                                                     //  {
   IN_32   Index                                                       //
   OUT_16  Result                                                      //
-  IN_16   hProgram                                                    //
+  IN_H    hProgram                                                    //
                                                                       //
   DATA8   Data8                                                       //
                                                                       //
@@ -1425,7 +1425,7 @@ subcall   PutData8                                                    //  PutDat
 {                                                                     //  {
   IN_32   Index                                                       //
   IN_16   Data                                                        //
-  IN_16   hProgram                                                    //
+  IN_H    hProgram                                                    //
                                                                       //
   DATA8   Data8                                                       //
                                                                       //
@@ -1443,8 +1443,8 @@ subcall   LoadFile                                                    //  void L
                                                                       //
   DATA32  Size                                                        //
   DATA32  Index                                                       //    Array index
-  DATA16  hFile                                                       //
-  DATA16  hProgram                                                    //
+  HANDLE  hFile                                                       //
+  HANDLE  hProgram                                                    //
   DATA32  StartOfCalls                                                //    Offset to start of calls
   DATA16  NoOfObjects                                                 //    Number of objects
   DATA16  Start                                                       //
@@ -1520,8 +1520,8 @@ subcall   SaveFile                                                    //  void S
                                                                       //
   DATA32  Size                                                        //
   DATA32  Index                                                       //    Array index
-  DATA16  hFile                                                       //
-  DATA16  hProgram                                                    //
+  HANDLE  hFile                                                       //
+  HANDLE  hProgram                                                    //
   DATA32  StartOfCalls                                                //
   DATA16  NoOfObjects                                                 //
   DATA16  Start                                                       //
@@ -1604,7 +1604,7 @@ subcall   StartBlock                                                  //  StartB
   DATA32  Timer                                                       //
   DATA32  Size                                                        //
   DATA32  Index                                                       //    Array index
-  DATA16  hFile                                                       //
+  HANDLE  hFile                                                       //
   DATA16  Par1                                                        //    Local parameter 1
   DATA16  Par2                                                        //    Local parameter 2
   DATA16  X3                                                          //  

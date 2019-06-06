@@ -44,7 +44,7 @@ DATA32    Data32_1
 DATA32    Data32_2
 DATA32    Data32_3
 DATA32    Data32_4
-DATA16    hData8
+HANDLE    hData8
 DATA8     Data8
 ARRAY8    DataS 10
 ARRAY8    Text 36

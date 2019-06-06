@@ -113,7 +113,7 @@ EndError:                                                             //    }
 }                                                                     //  }
                                                                       //
                                                                       //
-DATA16    hFile                                                       //
+HANDLE    hFile                                                       //
                                                                       //
 subcall   TestOpen                                                    //  void TestOpen(void)
 {                                                                     //  {

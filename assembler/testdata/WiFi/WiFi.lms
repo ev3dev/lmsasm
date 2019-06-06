@@ -1669,7 +1669,7 @@ subcall   ShowBlock                                                   //  ShowBl
                                                                       //
 subcall   UpdateFile                                                  //  UpdateFile
 {                                                                     //  {
-  DATA16  Handle                                                      //
+  HANDLE  Handle                                                      //
   DATA8   On                                                          //
   DATA8   State                                                       //    DATA8   State
   DATAS   Name FILENAMESIZE                                           //

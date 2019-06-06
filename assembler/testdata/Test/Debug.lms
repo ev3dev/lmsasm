@@ -34,7 +34,7 @@ define    MAX_COMMAND_GLOBALS           64                            //
                                                                       //
 DATA32    pDirectGlobals                                              //
 DATA32    pDirectImage                                                //
-DATA16    hDirectImage                                                //
+HANDLE    hDirectImage                                                //
 DATA8     OldStatus                                                   //
 DATA8     OldTermStatus                                               //
                                                                       //

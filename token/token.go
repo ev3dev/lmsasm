@@ -120,16 +120,19 @@ const (
 	IN_32            = "IN_32"
 	IN_F             = "IN_F"
 	IN_S             = "IN_S"
+	IN_H             = "IN_H"
 	OUT_8            = "OUT_8"
 	OUT_16           = "OUT_16"
 	OUT_32           = "OUT_32"
 	OUT_F            = "OUT_F"
 	OUT_S            = "OUT_S"
+	OUT_H            = "OUT_H"
 	IO_8             = "IO_8"
 	IO_16            = "IO_16"
 	IO_32            = "IO_32"
 	IO_F             = "IO_F"
 	IO_S             = "IO_S"
+	IO_H             = "IO_H"
 )
 
 // String returns the string corresponding to the token tok.
@@ -196,9 +199,9 @@ func Lookup(ident string) Token {
 		"ARRAY8", "ARRAY16", "ARRAY32", "ARRAYF",
 		"HANDLE":
 		return DATATYPE
-	case "IN_8", "IN_16", "IN_32", "IN_F", "IN_S",
-		"OUT_8", "OUT_16", "OUT_32", "OUT_F", "OUT_S",
-		"IO_8", "IO_16", "IO_32", "IO_F", "IO_S":
+	case "IN_8", "IN_16", "IN_32", "IN_F", "IN_S", "IN_H",
+		"OUT_8", "OUT_16", "OUT_32", "OUT_F", "OUT_S", "OUT_H",
+		"IO_8", "IO_16", "IO_32", "IO_F", "IO_S", "IO_H":
 		return PARAMTYPE
 	default:
 		return IDENT

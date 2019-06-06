@@ -36,7 +36,7 @@ define    FAVOURITE           1                                       //  Item t
                                                                       //
 vmthread  MAIN                                                        //  void    MAIN(void)
 {                                                                     //  {
-  DATA16  Handle                                                      //
+  HANDLE  Handle                                                      //
   DATA8   On                                                          //
   DATAS   Name FILENAMESIZE                                           //
   DATA8   ShowVersion                                                 //

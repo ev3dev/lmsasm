@@ -37,7 +37,7 @@ vmthread  MAIN                                                        //  void M
 {                                                                     //  {
   DATAF   Data                                                        //
   DATA16  Inc                                                         //
-  DATA16  Handle                                                      //
+  HANDLE  Handle                                                      //
   DATA8   Value                                                       //
   DATA8   Index                                                       //
   DATA8   State                                                       //

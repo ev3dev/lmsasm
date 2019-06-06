@@ -23,9 +23,9 @@ subcall   Test0103                                                    //  void T
 {                                                                     //  {
   DATAF   Result                                                      //
   DATA16  Size                                                        //
-  DATA16  hSrc1                                                       //
-  DATA16  hSrc2                                                       //
-  DATA16  hDestination                                                //
+  HANDLE  hSrc1                                                       //
+  HANDLE  hSrc2                                                       //
+  HANDLE  hDestination                                                //
   DATAS   String LINE                                                 //
                                                                       //
   // Set success as default                                           //
@@ -259,7 +259,7 @@ EndError:                                                             //    }
 }                                                                     //  }
                                                                       //
                                                                       //
-DATA16    hFile                                                       //
+HANDLE    hFile                                                       //
                                                                       //
 subcall   TestOpen                                                    //  void TestOpen(void)
 {                                                                     //  {

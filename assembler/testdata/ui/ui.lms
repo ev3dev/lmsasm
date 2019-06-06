@@ -659,8 +659,8 @@ subcall   FileScreen                                                  //  void F
 {                                                                     //  {
   DATA32  pFile                                                       //    DATA32  pFile
   DATA32  Size                                                        //    DATA32  Size
-  DATA16  hFile                                                       //
-  DATA16  hTextbox                                                    //
+  HANDLE  hFile                                                       //
+  HANDLE  hTextbox                                                    //
   DATA16  Line                                                        //
   DATA8   Status1                                                     //    DATA8   Status1
   DATA8   Status2                                                     //    DATA8   Status2

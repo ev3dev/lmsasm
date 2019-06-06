@@ -135,7 +135,7 @@ func getParamSpecSize(spec *ast.ParamSpec) (size int32, err error) {
 	switch spec.Type {
 	case token.IN_8, token.OUT_8, token.IO_8:
 		size = 1
-	case token.IN_16, token.OUT_16, token.IO_16:
+	case token.IN_16, token.OUT_16, token.IO_16, token.IN_H, token.OUT_H, token.IO_H:
 		size = 2
 	case token.IN_32, token.OUT_32, token.IO_32, token.IN_F, token.OUT_F, token.IO_F:
 		size = 4
@@ -181,7 +181,7 @@ func emitParamType(typ token.ParamType) *Instruction {
 	switch typ {
 	case token.IN_8:
 		v = 0x80
-	case token.IN_16:
+	case token.IN_16, token.IN_H:
 		v = 0x81
 	case token.IN_32:
 		v = 0x82
@@ -191,7 +191,7 @@ func emitParamType(typ token.ParamType) *Instruction {
 		v = 0x84
 	case token.OUT_8:
 		v = 0x40
-	case token.OUT_16:
+	case token.OUT_16, token.OUT_H:
 		v = 0x41
 	case token.OUT_32:
 		v = 0x42
@@ -201,7 +201,7 @@ func emitParamType(typ token.ParamType) *Instruction {
 		v = 0x44
 	case token.IO_8:
 		v = 0xc0
-	case token.IO_16:
+	case token.IO_16, token.IO_H:
 		v = 0xc1
 	case token.IO_32:
 		v = 0xc2
@@ -400,7 +400,13 @@ func emitVar(variable variableInfo, global bool, paramType bytecodes.ParamType) 
 	}, nil
 }
 
-func emitHandle(offset int16, global bool, paramType bytecodes.ParamType) (*Instruction, error) {
+func emitHandle(variable variableInfo, global bool, paramType bytecodes.ParamType) (*Instruction, error) {
+	if variable.valueType != token.HANDLE {
+		// TODO: additional type checking could be done to ensure this is an array
+		// handle vs. a file handle
+		return nil, errors.New("Expecting HANDLE variable")
+	}
+
 	switch paramType {
 	case bytecodes.ParamTypeString, bytecodes.ParamTypeVariable:
 		// OK
@@ -421,12 +427,12 @@ func emitHandle(offset int16, global bool, paramType bytecodes.ParamType) (*Inst
 	}
 
 	buf := new(bytes.Buffer)
-	if -128 < offset && offset < 128 {
+	if -128 < variable.offset && variable.offset < 128 {
 		buf.WriteByte(flags | PRIMPAR_1_BYTE)
-		buf.WriteByte(byte(offset))
+		buf.WriteByte(byte(variable.offset))
 	} else {
 		buf.WriteByte(flags | PRIMPAR_2_BYTES)
-		binary.Write(buf, binary.LittleEndian, offset)
+		binary.Write(buf, binary.LittleEndian, int16(variable.offset))
 	}
 
 	return &Instruction{
@@ -550,7 +556,7 @@ func emitExpr(expr ast.Expr, paramType bytecodes.ParamType, direction bytecodes.
 					global = true
 				}
 				if ok {
-					inst, err = emitHandle(int16(info.offset), global, paramType)
+					inst, err = emitHandle(info, global, paramType)
 				} else {
 					err = errors.New("Unknown handle")
 				}
@@ -672,6 +678,8 @@ func tokenParamTypeToBytecodeParamType(paramType token.ParamType) (bytecodes.Par
 		return bytecodes.ParamTypeFloat, bytecodes.DirectionIn
 	case token.IN_S:
 		return bytecodes.ParamTypeString, bytecodes.DirectionIn
+	case token.IN_H:
+		return bytecodes.ParamTypeHandle, bytecodes.DirectionIn
 	case token.OUT_8:
 		return bytecodes.ParamTypeInt8, bytecodes.DirectionOut
 	case token.OUT_16:
@@ -682,6 +690,8 @@ func tokenParamTypeToBytecodeParamType(paramType token.ParamType) (bytecodes.Par
 		return bytecodes.ParamTypeFloat, bytecodes.DirectionOut
 	case token.OUT_S:
 		return bytecodes.ParamTypeString, bytecodes.DirectionOut
+	case token.OUT_H:
+		return bytecodes.ParamTypeHandle, bytecodes.DirectionOut
 	case token.IO_8:
 		return bytecodes.ParamTypeInt8, bytecodes.DirectionInOut
 	case token.IO_16:
@@ -692,6 +702,8 @@ func tokenParamTypeToBytecodeParamType(paramType token.ParamType) (bytecodes.Par
 		return bytecodes.ParamTypeFloat, bytecodes.DirectionInOut
 	case token.IO_S:
 		return bytecodes.ParamTypeString, bytecodes.DirectionInOut
+	case token.IO_H:
+		return bytecodes.ParamTypeHandle, bytecodes.DirectionInOut
 	}
 	panic("Bad token.ParamType")
 }
@@ -708,6 +720,8 @@ func valueTypeOk(valueType token.ValueType, paramType bytecodes.ParamType) bool 
 		return paramType == bytecodes.ParamTypeFloat || paramType == bytecodes.ParamTypeVariable
 	case token.DATAS:
 		return paramType == bytecodes.ParamTypeString || paramType == bytecodes.ParamTypeInt8 || paramType == bytecodes.ParamTypeVariable
+	case token.HANDLE:
+		return paramType == bytecodes.ParamTypeHandle || paramType == bytecodes.ParamTypeVariable
 	}
 	panic("Bad token.ValueType")
 }
@@ -724,6 +738,8 @@ func tokenParamTypeToTokenValueType(paramType token.ParamType) token.ValueType {
 		return token.DATAF
 	case token.IN_S, token.OUT_S, token.IO_S:
 		return token.DATAS
+	case token.IN_H, token.OUT_H, token.IO_H:
+		return token.HANDLE
 	}
 	panic("Bad token.ParamType")
 }
