@@ -904,7 +904,11 @@ func (a *Assembler) Assemble(options *AssembleOptions) (Program, error) {
 								// If this is a CALL(), then lookup parameter types from the subcall object
 								paramTypes, err := paramTypes(a.file, (s.Args[0]).(*ast.Ident))
 								if err == nil {
-									paramType, direction = tokenParamTypeToBytecodeParamType(paramTypes[n-1])
+									if n > len(paramTypes) {
+										a.errors.Add(a.fs.Position(arg.Pos()), "Too many arguments to subcall")
+									} else {
+										paramType, direction = tokenParamTypeToBytecodeParamType(paramTypes[n-1])
+									}
 								} else {
 									a.errors.Add(a.fs.Position(arg.Pos()), err.Error())
 								}
