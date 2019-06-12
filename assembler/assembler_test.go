@@ -105,8 +105,8 @@ var literals = []literalInfo{
 	{&ast.BasicLit{Kind: token.INT, Value: "2147483647"}, []byte{0x83, 0xff, 0xff, 0xff, 0x7f}, 0},
 	{&ast.BasicLit{Kind: token.INT, Value: "0x01"}, []byte{0x01}, 0},
 	{&ast.BasicLit{Kind: token.INT, Value: "-2147483647"}, []byte{0x83, 0x01, 0x00, 0x00, 0x80}, 0},
-	{&ast.BasicLit{Kind: token.INT, Value: "0xAAAAAAAA"}, []byte{0x83, 0xaa, 0xaa, 0xaa, 0xaa}, AllowUnsignedIntConstant},
-	{&ast.BasicLit{Kind: token.INT, Value: "0xFFFFFFFF"}, []byte{0x83, 0xff, 0xff, 0xff, 0xff}, AllowUnsignedIntConstant},
+	{&ast.BasicLit{Kind: token.INT, Value: "0xAAAAAAAA"}, []byte{0x83, 0xaa, 0xaa, 0xaa, 0xaa}, 0},
+	{&ast.BasicLit{Kind: token.INT, Value: "0xFFFFFFFF"}, []byte{0x83, 0xff, 0xff, 0xff, 0xff}, 0},
 	{&ast.BasicLit{Kind: token.FLOAT, Value: "0.0F"}, []byte{0x83, 0x00, 0x00, 0x00, 0x00}, 0},
 	{&ast.BasicLit{Kind: token.FLOAT, Value: "0.0F"}, []byte{0x00}, OptimizeFloatConst},
 	{&ast.BasicLit{Kind: token.FLOAT, Value: "1.0F"}, []byte{0x83, 0x00, 0x00, 0x80, 0x3f}, 0},
@@ -135,12 +135,12 @@ func TestBasicLit(t *testing.T) {
 				t.Fatalf("error from emitIntConst: %v", err)
 			}
 		case token.FLOAT:
-			inst , err = emitFloatConst(l.Value, "", bytecodes.ParamTypeFloat, r.quirks)
+			inst, err = emitFloatConst(l.Value, "", bytecodes.ParamTypeFloat, r.quirks)
 			if err != nil {
 				t.Fatalf("error from emitFloatConst: %v", err)
 			}
 		case token.STRING:
-			inst,err = emitStringConst(l.Value, "", bytecodes.ParamTypeString)
+			inst, err = emitStringConst(l.Value, "", bytecodes.ParamTypeString)
 			if err != nil {
 				t.Fatalf("error from emitStringConst: %v", err)
 			}
@@ -176,7 +176,7 @@ func TestOfficial(t *testing.T) {
 		}
 		t.Log("Assembling", n)
 		a := NewAssembler(fs, f)
-		options := AssembleOptions{Version: 109, Quirks: OptimizeFloatConst | AllowUnsignedIntConstant}
+		options := AssembleOptions{Version: 109, Quirks: OptimizeFloatConst}
 		p, err := a.Assemble(&options)
 		if err != nil {
 			t.Error("Failed to assemble file:", err)

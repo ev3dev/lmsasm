@@ -247,8 +247,8 @@ func emitIntConst(value, qualifier string, paramType bytecodes.ParamType, quirks
 	i, err := strconv.ParseInt(value, 0, 32)
 	b := lcBytes(PRIMPAR_CONST, int32(i))
 	if err != nil {
-		// There are some test programs that use values like 0xFFFFFFFF for DATA32
-		if quirks&AllowUnsignedIntConstant != 0 {
+		// Allow unsigned int, but only for hex literals
+		if strings.HasPrefix(value, "0x") {
 			u, err := strconv.ParseUint(value, 0, 32)
 			if err != nil {
 				return nil, err
@@ -626,7 +626,6 @@ const (
 	OptimizeFloatConst       QuirkFlags = 1 << iota // allow float constant values to be smaller than PRIMPAR_LONG | PRIMPAR_CONST | PRIMPAR_4_BYTES
 	OptimizeLabels                                  // allow labels offset constant values to be smaller than PRIMPAR_LONG | PRIMPAR_CONST | PRIMPAR_2_BYTES
 	OptimizeDuplicateObjects                        // allow multiple object pointer to point to the same bytecodes
-	AllowUnsignedIntConstant                        // allow unsigned integer constants like 0xFFFFFFFF
 )
 
 // AssembleOptions specify options for the Assemble() function
