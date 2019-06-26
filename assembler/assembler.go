@@ -1067,6 +1067,9 @@ func (a *Assembler) Assemble(options *AssembleOptions) (Program, error) {
 						continue
 					}
 					instEqual := func() bool {
+						if len(o.Instructions) != len(o2.Instructions) {
+							return false
+						}
 						for i := range o.Instructions {
 							if !bytes.Equal(o.Instructions[i].Bytes, o2.Instructions[i].Bytes) {
 								return false
