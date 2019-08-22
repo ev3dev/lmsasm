@@ -206,3 +206,215 @@ func TestOfficial(t *testing.T) {
 	noGood:
 	}
 }
+
+func TestMissingParameter(t *testing.T) {
+	code := `vmthread main {
+		DATA8 x
+		CP_EQ8(x,,x)
+	}`
+	s, err := bytecodes.Scope("ev3", "official")
+	if err != nil {
+		t.Fatal("Failed to read bytecodes:", err)
+	}
+	fs := token.NewFileSet()
+	f, err := parser.ParseFile(fs, "test.lms", code, s, parser.DeclarationErrors)
+	if err != nil {
+		t.Fatal("Failed to parse file:", err)
+	}
+	a := NewAssembler(fs, f)
+	options := AssembleOptions{}
+	_, err = a.Assemble(&options)
+	if err == nil {
+		t.Fatal("Compile should have failed because of missing parameter")
+	}
+
+	// verify that test was valid
+	code = strings.ReplaceAll(code, ",,", ",0,")
+	f, err = parser.ParseFile(fs, "test.lms", code, s, parser.DeclarationErrors)
+	if err != nil {
+		t.Fatal("Failed to parse file:", err)
+	}
+	a = NewAssembler(fs, f)
+	_, err = a.Assemble(&options)
+	if err != nil {
+		t.Fatalf("Compile should have succeeded: %v", err)
+	}
+}
+
+func TestMissingParameterInCALL(t *testing.T) {
+	code := `vmthread main {
+		DATA8 x
+		CALL(sub,x,,x)
+	}
+	
+	subcall sub {
+		IN_8 a
+		IN_8 b
+		IN_8 c
+	}`
+	s, err := bytecodes.Scope("ev3", "official")
+	if err != nil {
+		t.Fatal("Failed to read bytecodes:", err)
+	}
+	fs := token.NewFileSet()
+	f, err := parser.ParseFile(fs, "test.lms", code, s, parser.DeclarationErrors)
+	if err != nil {
+		t.Fatal("Failed to parse file:", err)
+	}
+	a := NewAssembler(fs, f)
+	options := AssembleOptions{}
+	_, err = a.Assemble(&options)
+	if err == nil {
+		t.Fatal("Compile should have failed because of missing parameter")
+	}
+
+	// verify that test was valid
+	code = strings.ReplaceAll(code, ",,", ",0,")
+	f, err = parser.ParseFile(fs, "test.lms", code, s, parser.DeclarationErrors)
+	if err != nil {
+		t.Fatal("Failed to parse file:", err)
+	}
+	a = NewAssembler(fs, f)
+	_, err = a.Assemble(&options)
+	if err != nil {
+		t.Fatalf("Compile should have succeeded: %v", err)
+	}
+}
+
+func TestMissingParameterWithSubcommand(t *testing.T) {
+	code := `vmthread main {
+		PROGRAM_INFO(OBJ_STOP,,0)
+	}`
+	s, err := bytecodes.Scope("ev3", "official")
+	if err != nil {
+		t.Fatal("Failed to read bytecodes:", err)
+	}
+	fs := token.NewFileSet()
+	f, err := parser.ParseFile(fs, "test.lms", code, s, parser.DeclarationErrors)
+	if err != nil {
+		t.Fatal("Failed to parse file:", err)
+	}
+	a := NewAssembler(fs, f)
+	options := AssembleOptions{}
+	_, err = a.Assemble(&options)
+	if err == nil {
+		t.Fatal("Compile should have failed because of missing parameter")
+	}
+
+	// verify that test was valid
+	code = strings.ReplaceAll(code, ",,", ",0,")
+	f, err = parser.ParseFile(fs, "test.lms", code, s, parser.DeclarationErrors)
+	if err != nil {
+		t.Fatal("Failed to parse file:", err)
+	}
+	a = NewAssembler(fs, f)
+	_, err = a.Assemble(&options)
+	if err != nil {
+		t.Fatalf("Compile should have succeeded: %v", err)
+	}
+}
+
+func TestMissingParameterWithPARNO(t *testing.T) {
+	code := `vmthread main {
+		DATA8 x
+		// layer, port, type, mode, format, PARNO, ...
+		INPUT_READEXT(0,0,0,0,0,4,x,x,,x)
+	}`
+	s, err := bytecodes.Scope("ev3", "official")
+	if err != nil {
+		t.Fatal("Failed to read bytecodes:", err)
+	}
+	fs := token.NewFileSet()
+	f, err := parser.ParseFile(fs, "test.lms", code, s, parser.DeclarationErrors)
+	if err != nil {
+		t.Fatal("Failed to parse file:", err)
+	}
+	a := NewAssembler(fs, f)
+	options := AssembleOptions{}
+	_, err = a.Assemble(&options)
+	if err == nil {
+		t.Fatal("Compile should have failed because of missing parameter")
+	}
+
+	// verify that test was valid
+	code = strings.ReplaceAll(code, ",,", ",0,")
+	f, err = parser.ParseFile(fs, "test.lms", code, s, parser.DeclarationErrors)
+	if err != nil {
+		t.Fatal("Failed to parse file:", err)
+	}
+	a = NewAssembler(fs, f)
+	_, err = a.Assemble(&options)
+	if err != nil {
+		t.Fatalf("Compile should have succeeded: %v", err)
+	}
+}
+
+func TestMissingParameterWithPARVALUES(t *testing.T) {
+	code := `vmthread main {
+		ARRAY8 x 2
+		// DESTINATION, LENGTH, ...
+		INIT_BYTES(x,2,,0)
+	}`
+	s, err := bytecodes.Scope("ev3", "official")
+	if err != nil {
+		t.Fatal("Failed to read bytecodes:", err)
+	}
+	fs := token.NewFileSet()
+	f, err := parser.ParseFile(fs, "test.lms", code, s, parser.DeclarationErrors)
+	if err != nil {
+		t.Fatal("Failed to parse file:", err)
+	}
+	a := NewAssembler(fs, f)
+	options := AssembleOptions{}
+	_, err = a.Assemble(&options)
+	if err == nil {
+		t.Fatal("Compile should have failed because of missing parameter")
+	}
+
+	// verify that test was valid
+	code = strings.ReplaceAll(code, ",,", ",0,")
+	f, err = parser.ParseFile(fs, "test.lms", code, s, parser.DeclarationErrors)
+	if err != nil {
+		t.Fatal("Failed to parse file:", err)
+	}
+	a = NewAssembler(fs, f)
+	_, err = a.Assemble(&options)
+	if err != nil {
+		t.Fatalf("Compile should have succeeded: %v", err)
+	}
+}
+
+func TestMissingParameterWithSubcommandAndPARNO(t *testing.T) {
+	code := `vmthread main {
+		DATA8 x
+		// layer, port, type, mode, PARNO, ...
+		INPUT_DEVICE(READY_SI,0,0,0,DATA_8,4,x,x,,x)
+	}`
+	s, err := bytecodes.Scope("ev3", "official")
+	if err != nil {
+		t.Fatal("Failed to read bytecodes:", err)
+	}
+	fs := token.NewFileSet()
+	f, err := parser.ParseFile(fs, "test.lms", code, s, parser.DeclarationErrors)
+	if err != nil {
+		t.Fatal("Failed to parse file:", err)
+	}
+	a := NewAssembler(fs, f)
+	options := AssembleOptions{}
+	_, err = a.Assemble(&options)
+	if err == nil {
+		t.Fatal("Compile should have failed because of missing parameter")
+	}
+
+	// verify that test was valid
+	code = strings.ReplaceAll(code, ",,", ",0,")
+	f, err = parser.ParseFile(fs, "test.lms", code, s, parser.DeclarationErrors)
+	if err != nil {
+		t.Fatal("Failed to parse file:", err)
+	}
+	a = NewAssembler(fs, f)
+	_, err = a.Assemble(&options)
+	if err != nil {
+		t.Fatalf("Compile should have succeeded: %v", err)
+	}
+}

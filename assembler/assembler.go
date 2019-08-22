@@ -893,6 +893,7 @@ func (a *Assembler) Assemble(options *AssembleOptions) (Program, error) {
 						i := emitUint8(opcode.Value, "opcode")
 						pc += i.size
 						instructions = append(instructions, i)
+						expectedNumArgs := len(opcode.Params)
 						for n, arg := range s.Args {
 							// These are the "anything goes" settings, so assume that by default
 							// Then try to figure out what the parameter type really is
@@ -900,17 +901,24 @@ func (a *Assembler) Assemble(options *AssembleOptions) (Program, error) {
 							var direction = bytecodes.DirectionIn
 
 							// FIXME: look up CALL opcode instead of using 0x09
-							if opcode.Value == 0x09 && n > 0 {
-								// If this is a CALL(), then lookup parameter types from the subcall object
-								paramTypes, err := paramTypes(a.file, (s.Args[0]).(*ast.Ident))
-								if err == nil {
-									if n > len(paramTypes) {
-										a.errors.Add(a.fs.Position(arg.Pos()), "Too many arguments to subcall")
-									} else {
-										paramType, direction = tokenParamTypeToBytecodeParamType(paramTypes[n-1])
-									}
+							if opcode.Value == 0x09 {
+								if n == 0 {
+									// TODO: could do further verification that this is a handle to a valid subcall
+									paramType = opcode.Params[n].Type
+									direction = opcode.Params[n].Dir
+									expectedNumArgs = 1
 								} else {
-									a.errors.Add(a.fs.Position(arg.Pos()), err.Error())
+									// If this is a CALL(), then lookup parameter types from the subcall object
+									paramTypes, err := paramTypes(a.file, (s.Args[0]).(*ast.Ident))
+									if err == nil {
+										expectedNumArgs = len(paramTypes) + 1
+										// if n is out of range, error will be handled later by expectedNumArgs
+										if n <= len(paramTypes) {
+											paramType, direction = tokenParamTypeToBytecodeParamType(paramTypes[n-1])
+										}
+									} else {
+										a.errors.Add(a.fs.Position(arg.Pos()), err.Error())
+									}
 								}
 							} else if n > 0 && opcode.Params[0].Type == bytecodes.ParamTypeSubparam {
 								// If this is an opcode with a subcommand, then lookup the parameter
@@ -936,8 +944,9 @@ func (a *Assembler) Assemble(options *AssembleOptions) (Program, error) {
 								if paramType == bytecodes.ParamTypeSubparam {
 									match := false
 									if ident, ok := arg.(*ast.Ident); ok {
-										for subp := range opcode.Params[n].Commands {
+										for subp, subcmd := range opcode.Params[n].Commands {
 											if subp == ident.Name {
+												expectedNumArgs = len(subcmd.Params) + 1
 												match = true
 												break
 											}
@@ -970,6 +979,23 @@ func (a *Assembler) Assemble(options *AssembleOptions) (Program, error) {
 								direction = lastParam.Dir
 							}
 
+							// making the assumption that PARVALUES is always preceded by a length argument
+							if n == lastParamIndex-1 && lastParam.Type == bytecodes.ParamTypeValues {
+								if value, err := resolveConstInt(arg); err == nil {
+									expectedNumArgs += int(value) - 1
+								} else {
+									a.errors.Add(a.fs.Position(arg.Pos()), err.Error())
+								}
+							}
+
+							if paramType == bytecodes.ParamTypeNumberParams {
+								if value, err := resolveConstInt(arg); err == nil {
+									expectedNumArgs += int(value)
+								} else {
+									a.errors.Add(a.fs.Position(arg.Pos()), err.Error())
+								}
+							}
+
 							i, err := emitExpr(arg, paramType, direction, globals, locals, options.Quirks)
 							if err == nil {
 								pc += i.size
@@ -977,6 +1003,10 @@ func (a *Assembler) Assemble(options *AssembleOptions) (Program, error) {
 							} else {
 								a.errors.Add(a.fs.Position(arg.Pos()), err.Error())
 							}
+						}
+						if expectedNumArgs != len(s.Args) {
+							a.errors.Add(a.fs.Position(s.Op.Pos()), fmt.Sprintf("Expecting %v arguments but have %v",
+								expectedNumArgs, len(s.Args)))
 						}
 					} else {
 						a.errors.Add(a.fs.Position(s.Op.Pos()), "Expecting opcode")
