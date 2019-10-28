@@ -2056,7 +2056,7 @@ ops:
   # cCompare "COMPARE"
 
   CP_LT8:
-    desc: If LEFT is less than RIGTH - set FLAG
+    desc: If LEFT is less than RIGHT - set FLAG
     value: 0x44
     params:
       -
@@ -2073,7 +2073,7 @@ ops:
         dir: out
 
   CP_LT16:
-    desc: If LEFT is less than RIGTH - set FLAG
+    desc: If LEFT is less than RIGHT - set FLAG
     value: 0x45
     params:
       -
@@ -2090,7 +2090,7 @@ ops:
         dir: out
 
   CP_LT32:
-    desc: If LEFT is less than RIGTH - set FLAG
+    desc: If LEFT is less than RIGHT - set FLAG
     value: 0x46
     params:
       -
@@ -2107,7 +2107,7 @@ ops:
         dir: out
 
   CP_LTF:
-    desc: If LEFT is less than RIGTH - set FLAG
+    desc: If LEFT is less than RIGHT - set FLAG
     value: 0x47
     params:
       -
@@ -2124,7 +2124,7 @@ ops:
         dir: out
 
   CP_GT8:
-    desc: If LEFT is greater than RIGTH - set FLAG
+    desc: If LEFT is greater than RIGHT - set FLAG
     value: 0x48
     params:
       -
@@ -2141,7 +2141,7 @@ ops:
         dir: out
 
   CP_GT16:
-    desc: If LEFT is greater than RIGTH - set FLAG
+    desc: If LEFT is greater than RIGHT - set FLAG
     value: 0x49
     params:
       -
@@ -2158,7 +2158,7 @@ ops:
         dir: out
 
   CP_GT32:
-    desc: If LEFT is greater than RIGTH - set FLAG
+    desc: If LEFT is greater than RIGHT - set FLAG
     value: 0x4A
     params:
       -
@@ -2175,7 +2175,7 @@ ops:
         dir: out
 
   CP_GTF:
-    desc: If LEFT is greater than RIGTH - set FLAG
+    desc: If LEFT is greater than RIGHT - set FLAG
     value: 0x4B
     params:
       -
@@ -2192,7 +2192,7 @@ ops:
         dir: out
 
   CP_EQ8:
-    desc: If LEFT is equal to RIGTH - set FLAG
+    desc: If LEFT is equal to RIGHT - set FLAG
     value: 0x4C
     params:
       -
@@ -2209,7 +2209,7 @@ ops:
         dir: out
 
   CP_EQ16:
-    desc: If LEFT is equal to RIGTH - set FLAG
+    desc: If LEFT is equal to RIGHT - set FLAG
     value: 0x4D
     params:
       -
@@ -2226,7 +2226,7 @@ ops:
         dir: out
 
   CP_EQ32:
-    desc: If LEFT is equal to RIGTH - set FLAG
+    desc: If LEFT is equal to RIGHT - set FLAG
     value: 0x4E
     params:
       -
@@ -2243,7 +2243,7 @@ ops:
         dir: out
 
   CP_EQF:
-    desc: If LEFT is equal to RIGTH - set FLAG
+    desc: If LEFT is equal to RIGHT - set FLAG
     value: 0x4F
     params:
       -
@@ -2260,7 +2260,7 @@ ops:
         dir: out
 
   CP_NEQ8:
-    desc: If LEFT is not equal to RIGTH - set FLAG
+    desc: If LEFT is not equal to RIGHT - set FLAG
     value: 0x50
     params:
       -
@@ -2277,7 +2277,7 @@ ops:
         dir: out
 
   CP_NEQ16:
-    desc: If LEFT is not equal to RIGTH - set FLAG
+    desc: If LEFT is not equal to RIGHT - set FLAG
     value: 0x51
     params:
       -
@@ -2294,7 +2294,7 @@ ops:
         dir: out
 
   CP_NEQ32:
-    desc: If LEFT is not equal to RIGTH - set FLAG
+    desc: If LEFT is not equal to RIGHT - set FLAG
     value: 0x52
     params:
       -
@@ -2311,7 +2311,7 @@ ops:
         dir: out
 
   CP_NEQF:
-    desc: If LEFT is not equal to RIGTH - set FLAG
+    desc: If LEFT is not equal to RIGHT - set FLAG
     value: 0x53
     params:
       -
@@ -2328,7 +2328,7 @@ ops:
         dir: out
 
   CP_LTEQ8:
-    desc: If LEFT is less than or equal to RIGTH - set FLAG
+    desc: If LEFT is less than or equal to RIGHT - set FLAG
     value: 0x54
     params:
       -
@@ -2345,7 +2345,7 @@ ops:
         dir: out
 
   CP_LTEQ16:
-    desc: If LEFT is less than or equal to RIGTH - set FLAG
+    desc: If LEFT is less than or equal to RIGHT - set FLAG
     value: 0x55
     params:
       -
@@ -2362,7 +2362,7 @@ ops:
         dir: out
 
   CP_LTEQ32:
-    desc: If LEFT is less than or equal to RIGTH - set FLAG
+    desc: If LEFT is less than or equal to RIGHT - set FLAG
     value: 0x56
     params:
       -
@@ -2379,7 +2379,7 @@ ops:
         dir: out
 
   CP_LTEQF:
-    desc: If LEFT is less than or equal to RIGTH - set FLAG
+    desc: If LEFT is less than or equal to RIGHT - set FLAG
     value: 0x57
     params:
       -
@@ -2396,7 +2396,7 @@ ops:
         dir: out
 
   CP_GTEQ8:
-    desc: If LEFT is greater than or equal to RIGTH - set FLAG
+    desc: If LEFT is greater than or equal to RIGHT - set FLAG
     value: 0x58
     params:
       -
@@ -2413,7 +2413,7 @@ ops:
         dir: out
 
   CP_GTEQ16:
-    desc: If LEFT is greater than or equal to RIGTH - set FLAG
+    desc: If LEFT is greater than or equal to RIGHT - set FLAG
     value: 0x59
     params:
       -
@@ -2430,7 +2430,7 @@ ops:
         dir: out
 
   CP_GTEQ32:
-    desc: If LEFT is greater than or equal to RIGTH - set FLAG
+    desc: If LEFT is greater than or equal to RIGHT - set FLAG
     value: 0x5A
     params:
       -
@@ -2447,7 +2447,7 @@ ops:
         dir: out
 
   CP_GTEQF:
-    desc: If LEFT is greater than or equal to RIGTH - set FLAG
+    desc: If LEFT is greater than or equal to RIGHT - set FLAG
     value: 0x5B
     params:
       -
