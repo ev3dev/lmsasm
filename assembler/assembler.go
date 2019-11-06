@@ -444,10 +444,8 @@ func emitHandle(variable variableInfo, global bool, paramType bytecodes.ParamTyp
 
 func emitObjCall(obj *ast.ObjDecl) *Instruction {
 	buf := new(bytes.Buffer)
-	if obj.Tok != token.SUBCALL {
-		buf.WriteByte(byte(obj.Index + 1))
-	} else {
-		buf.Write(lcBytes(0, obj.Index+1))
+	buf.Write(lcBytes(PRIMPAR_CONST, obj.Index+1))
+	if obj.Tok == token.SUBCALL {
 		buf.WriteByte(obj.ParamCount)
 	}
 
