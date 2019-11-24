@@ -4,8 +4,8 @@ set -e
 set -x
 
 build_release() {
-    GOOS=$1
-    GOARCH=$2
+    export GOOS=$1
+    export GOARCH=$2
     mkdir -p $RELEASE_DIR/lmsasm-$TRAVIS_TAG-$GOOS-$GOARCH
     cd $RELEASE_DIR/lmsasm-$TRAVIS_TAG-$GOOS-$GOARCH
     go build github.com/ev3dev/lmsasm/lmsasm
