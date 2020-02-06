@@ -229,7 +229,7 @@ func TestMissingParameter(t *testing.T) {
 	}
 
 	// verify that test was valid
-	code = strings.ReplaceAll(code, ",,", ",0,")
+	code = strings.Replace(code, ",,", ",0,", -1)
 	f, err = parser.ParseFile(fs, "test.lms", code, s, parser.DeclarationErrors)
 	if err != nil {
 		t.Fatal("Failed to parse file:", err)
@@ -269,7 +269,7 @@ func TestMissingParameterInCALL(t *testing.T) {
 	}
 
 	// verify that test was valid
-	code = strings.ReplaceAll(code, ",,", ",0,")
+	code = strings.Replace(code, ",,", ",0,", -1)
 	f, err = parser.ParseFile(fs, "test.lms", code, s, parser.DeclarationErrors)
 	if err != nil {
 		t.Fatal("Failed to parse file:", err)
@@ -302,7 +302,7 @@ func TestMissingParameterWithSubcommand(t *testing.T) {
 	}
 
 	// verify that test was valid
-	code = strings.ReplaceAll(code, ",,", ",0,")
+	code = strings.Replace(code, ",,", ",0,", -1)
 	f, err = parser.ParseFile(fs, "test.lms", code, s, parser.DeclarationErrors)
 	if err != nil {
 		t.Fatal("Failed to parse file:", err)
@@ -337,7 +337,7 @@ func TestMissingParameterWithPARNO(t *testing.T) {
 	}
 
 	// verify that test was valid
-	code = strings.ReplaceAll(code, ",,", ",0,")
+	code = strings.Replace(code, ",,", ",0,", -1)
 	f, err = parser.ParseFile(fs, "test.lms", code, s, parser.DeclarationErrors)
 	if err != nil {
 		t.Fatal("Failed to parse file:", err)
@@ -372,7 +372,7 @@ func TestMissingParameterWithPARVALUES(t *testing.T) {
 	}
 
 	// verify that test was valid
-	code = strings.ReplaceAll(code, ",,", ",0,")
+	code = strings.Replace(code, ",,", ",0,", -1)
 	f, err = parser.ParseFile(fs, "test.lms", code, s, parser.DeclarationErrors)
 	if err != nil {
 		t.Fatal("Failed to parse file:", err)
@@ -407,7 +407,7 @@ func TestMissingParameterWithSubcommandAndPARNO(t *testing.T) {
 	}
 
 	// verify that test was valid
-	code = strings.ReplaceAll(code, ",,", ",0,")
+	code = strings.Replace(code, ",,", ",0,", -1)
 	f, err = parser.ParseFile(fs, "test.lms", code, s, parser.DeclarationErrors)
 	if err != nil {
 		t.Fatal("Failed to parse file:", err)
