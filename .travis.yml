@@ -1,6 +1,5 @@
 language: go
 go:
-- '1.6' # xenial
 - '1.7' # stretch
 - '1.10' # bionic
 - '1.11' # buster
