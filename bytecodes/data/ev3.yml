@@ -985,6 +985,51 @@ enums:
       DEVCMDS:
         value: 0x13
 
+  CONN: &CONN
+    desc: Connection types
+    members:
+      CONN_UNKNOWN:
+        desc: Connection is fake (test)
+        value: 111
+      CONN_DAISYCHAIN:
+        desc: Connection is daisy chained
+        value: 117
+      CONN_NXT_COLOR:
+        desc: Connection type is NXT color sensor
+        value: 118
+      CONN_NXT_DUMB:
+        desc: Connection type is NXT analog sensor
+        value: 119
+      CONN_NXT_IIC:
+        desc: Connection type is NXT IIC sensor
+        value: 120
+      CONN_INPUT_DUMB:
+        desc: >
+          Connection type is LMS2012 input device with ID resistor
+        value: 121
+      CONN_INPUT_UART:
+        desc: Connection type is LMS2012 UART sensor
+        value: 122
+      CONN_OUTPUT_DUMB:
+        desc: >
+          Connection type is LMS2012 output device with ID resistor
+        value: 123
+      CONN_OUTPUT_INTELLIGENT:
+        desc: >
+          Connection type is LMS2012 output device with communication
+        value: 124
+      CONN_OUTPUT_TACHO:
+        desc: >
+          Connection type is LMS2012 tacho motor with series ID
+          resistance
+        value: 125
+      CONN_NONE:
+        desc: Port empty or not available
+        value: 126
+      CONN_ERROR:
+        desc: Port not empty and type is invalid
+        value: 127
+
 ops:
   # VM
 
@@ -6048,48 +6093,7 @@ ops:
                 desc: Connection type
                 type: PAR8
                 dir: out
-                enum: &CONN
-                  CONN_UNKNOWN:
-                    desc: Connection is fake (test)
-                    value: 111
-                  CONN_DAISYCHAIN:
-                    desc: Connection is daisy chained
-                    value: 117
-                  CONN_NXT_COLOR:
-                    desc: Connection type is NXT color sensor
-                    value: 118
-                  CONN_NXT_DUMB:
-                    desc: Connection type is NXT analog sensor
-                    value: 119
-                  CONN_NXT_IIC:
-                    desc: Connection type is NXT IIC sensor
-                    value: 120
-                  CONN_INPUT_DUMB:
-                    desc: >
-                      Connection type is LMS2012 input device with ID resistor
-                    value: 121
-                  CONN_INPUT_UART:
-                    desc: Connection type is LMS2012 UART sensor
-                    value: 122
-                  CONN_OUTPUT_DUMB:
-                    desc: >
-                      Connection type is LMS2012 output device with ID resistor
-                    value: 123
-                  CONN_OUTPUT_INTELLIGENT:
-                    desc: >
-                      Connection type is LMS2012 output device with communication
-                    value: 124
-                  CONN_OUTPUT_TACHO:
-                    desc: >
-                      Connection type is LMS2012 tacho motor with series ID
-                      resistance
-                    value: 125
-                  CONN_NONE:
-                    desc: Port empty or not available
-                    value: 126
-                  CONN_ERROR:
-                    desc: Port not empty and type is invalid
-                    value: 127
+                enum: *CONN
 
           STOP_ALL:
             desc: Stop all devices (e.c. motors, ...)
