@@ -111,6 +111,7 @@ var tokenList = []tokenInfo{
 	{token.STRING, "'\\r'"},
 	{token.STRING, "'\\t'"},
 	{token.STRING, "'\\q'"},
+	{token.STRING, "'\\\\'"},
 	{token.STRING, "'" + f100 + "'"},
 
 	{token.COMMENT, "// operators"},
