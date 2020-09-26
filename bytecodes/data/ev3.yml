@@ -877,9 +877,9 @@ enums:
       ENCRYPTS:
         value: 2
     support:
-      official: yes
-      xtended: no
-      compat: yes
+      official: true
+      xtended: false
+      compat: true
 
   LMS_ENCRYPT: &LMS_ENCRYPT
     desc: Encryption Types
@@ -893,9 +893,9 @@ enums:
       LMS_ENCRYPTS:
         value: 2
     support:
-      official: no
-      xtended: yes
-      compat: no
+      official: false
+      xtended: true
+      compat: false
     remarks: renamed from ENCRYPT
 
   COLOR: &COLOR
@@ -975,9 +975,9 @@ enums:
         value: 0x11
         desc: UART device fire   (ultrasonic)
         support:
-          official: yes
-          xtended: yes
-          compat: no
+          official: true
+          xtended: true
+          compat: false
         remarks: Value is duplicate of DEVCMD_RESET.
       DEVCMD_CHANNEL:
         value: 0x12
@@ -1272,9 +1272,9 @@ ops:
                 type: PAR8
                 dir: out
             support:
-              official: no
-              xtended: yes
-              compat: yes
+              official: false
+              xtended: true
+              compat: true
     remarks: Dispatch status can change to FAILBREAK
 
   LABEL:
@@ -4180,9 +4180,9 @@ ops:
                 type: PAR8
                 dir: out
             support:
-              official: yes
-              xtended: yes
-              compat: no
+              official: true
+              xtended: true
+              compat: false
 
           GET_BUMPED:
             value: 14
@@ -4198,9 +4198,9 @@ ops:
                 type: PAR8
                 dir: out
             support:
-              official: no
-              xtended: no
-              compat: yes
+              official: false
+              xtended: false
+              compat: true
             remarks: Renamed from GET_BUMBED
 
           GET_CLICK:
@@ -4472,9 +4472,9 @@ ops:
                 type: PAR16
                 dir: in
             support:
-              official: yes
-              xtended: no
-              compat: no
+              official: true
+              xtended: false
+              compat: false
 
           RECTANGLE:
             value: 10
@@ -4505,9 +4505,9 @@ ops:
                 type: PAR16
                 dir: in
             support:
-              official: no
-              xtended: yes
-              compat: yes
+              official: false
+              xtended: true
+              compat: true
             remarks: renamed from RECT
 
           NOTIFICATION:
@@ -6633,9 +6633,9 @@ ops:
         enum: *TYPE
         dir: out
     support:
-      official: no
-      xtended: no
-      compat: no
+      official: false
+      xtended: false
+      compat: false
     remarks: This bytecode is defined but not implemented
 
   OUTPUT_SET_TYPE:
@@ -6854,9 +6854,9 @@ ops:
         type: PAR32
         dir: out
     support:
-      official: no
-      xtended: no
-      compat: no
+      official: false
+      xtended: false
+      compat: false
     remarks: This bytecode is defined but not implemented
 
   OUTPUT_STEP_POWER:
@@ -7731,9 +7731,9 @@ ops:
                 type: PARH
                 dir: in
             support:
-              official: yes
-              xtended: no
-              compat: no
+              official: true
+              xtended: false
+              compat: false
 
           DESTROY:
             value: 0
@@ -7744,9 +7744,9 @@ ops:
                 type: PARH
                 dir: in
             support:
-              official: no
-              xtended: yes
-              compat: yes
+              official: false
+              xtended: true
+              compat: true
             remarks: renamed from DELETE
 
           CREATE8:
@@ -7961,9 +7961,9 @@ ops:
                 type: PAR32
                 dir: out
             support:
-              official: yes
-              xtended: no
-              compat: no
+              official: true
+              xtended: false
+              compat: false
 
           SET_SIZE:
             value: 12
@@ -7979,9 +7979,9 @@ ops:
                 type: PAR32
                 dir: out
             support:
-              official: no
-              xtended: yes
-              compat: yes
+              official: false
+              xtended: true
+              compat: true
             remarks: Renamed from SIZE
 
           READ_CONTENT:
@@ -8645,9 +8645,9 @@ ops:
                 type: PAR16
                 dir: out
             support:
-              official: no
-              xtended: no
-              compat: yes
+              official: false
+              xtended: false
+              compat: true
 
           SEARCH_ITEMS:
             desc: Get number of item from search.
@@ -9417,9 +9417,9 @@ ops:
         dir: in
         enum: *CONN
     support:
-      official: no
-      xtended: yes
-      compat: yes
+      official: false
+      xtended: true
+      compat: true
     remarks: Note that this won't do much if the auto-id has not been disabled
 
   INPUT_IIC_READ:
@@ -9453,9 +9453,9 @@ ops:
         dir: out
         enum: *RESULT
     support:
-      official: no
-      xtended: yes
-      compat: yes
+      official: false
+      xtended: true
+      compat: true
 
   INPUT_IIC_STATUS:
     desc: Read I2C status of specified port
@@ -9478,9 +9478,9 @@ ops:
         dir: out
         enum: *RESULT
     support:
-      official: no
-      xtended: yes
-      compat: yes
+      official: false
+      xtended: true
+      compat: true
 
   INPUT_IIC_WRITE:
     desc: Write I2C data to specified port
@@ -9518,9 +9518,9 @@ ops:
         dir: out
         enum: *RESULT
     support:
-      official: no
-      xtended: yes
-      compat: yes
+      official: false
+      xtended: true
+      compat: true
 
   INPUT_SET_AUTOID:
     desc: Enabled or disable auto-id for a specific sensor port
@@ -9542,9 +9542,9 @@ ops:
         type: PAR8
         dir: in
     support:
-      official: no
-      xtended: yes
-      compat: yes
+      official: false
+      xtended: true
+      compat: true
 
   MAILBOX_SIZE:
     desc: Returns the size of the mailbox.
@@ -9561,9 +9561,9 @@ ops:
         type: PAR8
         dir: out
     support:
-      official: no
-      xtended: yes
-      compat: yes
+      official: false
+      xtended: true
+      compat: true
 
   FILE_MD5SUM:
     desc: Get md5 sum of a file
@@ -9585,9 +9585,9 @@ ops:
         type: PAR8
         dir: out
     support:
-      official: no
-      xtended: yes
-      compat: yes
+      official: false
+      xtended: true
+      compat: true
     remarks: Dispatch status unchanged
 
   # For the 3rd party VMs
@@ -9607,9 +9607,9 @@ ops:
         type: PAR8
         dir: out
     support:
-      official: no
-      xtended: yes
-      compat: yes
+      official: false
+      xtended: true
+      compat: true
 
   DYNLOAD_VMEXIT:
     desc: Clean up the dynamic VM loading system
@@ -9617,9 +9617,9 @@ ops:
     params: []
     remarks: Calls the VM's exit_vm() function to tidy up
     support:
-      official: no
-      xtended: yes
-      compat: yes
+      official: false
+      xtended: true
+      compat: true
 
   DYNLOAD_ENTRY_0:
     desc: Execute Entry Point function 0 in Third Party VM
@@ -9646,9 +9646,9 @@ ops:
         type: PARV
         dir: out
     support:
-      official: no
-      xtended: yes
-      compat: yes
+      official: false
+      xtended: true
+      compat: true
 
   DYNLOAD_ENTRY_1:
     desc: Execute Entry Point function 1 in Third Party VM
@@ -9675,9 +9675,9 @@ ops:
         type: PARV
         dir: out
     support:
-      official: no
-      xtended: yes
-      compat: yes
+      official: false
+      xtended: true
+      compat: true
 
   DYNLOAD_ENTRY_2:
     desc: Execute Entry Point function 2 in Third Party VM
@@ -9704,9 +9704,9 @@ ops:
         type: PARV
         dir: out
     support:
-      official: no
-      xtended: yes
-      compat: yes
+      official: false
+      xtended: true
+      compat: true
 
   DYNLOAD_ENTRY_3:
     desc: Execute Entry Point function 3 in Third Party VM
@@ -9733,9 +9733,9 @@ ops:
         type: PARV
         dir: out
     support:
-      official: no
-      xtended: yes
-      compat: yes
+      official: false
+      xtended: true
+      compat: true
 
   DYNLOAD_ENTRY_4:
     desc: Execute Entry Point function 4 in Third Party VM
@@ -9762,9 +9762,9 @@ ops:
         type: PARV
         dir: out
     support:
-      official: no
-      xtended: yes
-      compat: yes
+      official: false
+      xtended: true
+      compat: true
 
   DYNLOAD_ENTRY_5:
     desc: Execute Entry Point function 5 in Third Party VM
@@ -9791,9 +9791,9 @@ ops:
         type: PARV
         dir: out
     support:
-      official: no
-      xtended: yes
-      compat: yes
+      official: false
+      xtended: true
+      compat: true
 
   DYNLOAD_ENTRY_6:
     desc: Execute Entry Point function 6 in Third Party VM
@@ -9820,9 +9820,9 @@ ops:
         type: PARV
         dir: out
     support:
-      official: no
-      xtended: yes
-      compat: yes
+      official: false
+      xtended: true
+      compat: true
 
   DYNLOAD_ENTRY_7:
     desc: Execute Entry Point function 7 in Third Party VM
@@ -9849,9 +9849,9 @@ ops:
         type: PARV
         dir: out
     support:
-      official: no
-      xtended: yes
-      compat: yes
+      official: false
+      xtended: true
+      compat: true
 
   DYNLOAD_ENTRY_8:
     desc: Execute Entry Point function 8 in Third Party VM
@@ -9878,9 +9878,9 @@ ops:
         type: PARV
         dir: out
     support:
-      official: no
-      xtended: yes
-      compat: yes
+      official: false
+      xtended: true
+      compat: true
 
   DYNLOAD_ENTRY_9:
     desc: Execute Entry Point function 9 in Third Party VM
@@ -9907,9 +9907,9 @@ ops:
         type: PARV
         dir: out
     support:
-      official: no
-      xtended: yes
-      compat: yes
+      official: false
+      xtended: true
+      compat: true
 
   DYNLOAD_GET_VM:
     desc: Get the index of the currently loaded VM
@@ -9921,9 +9921,9 @@ ops:
         type: PAR8
         dir: out
     support:
-      official: no
-      xtended: yes
-      compat: yes
+      official: false
+      xtended: true
+      compat: true
 
   # TST
 
