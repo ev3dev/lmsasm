@@ -317,8 +317,8 @@ func checkScanPos(t *testing.T, s *Scanner, offset, line, column int, char token
 	checkPos(t, s.Pos(), want)
 	if ch := s.Scan(); ch != char {
 		t.Errorf("ch = %s, want %s", ch.String(), char.String())
-		if string(ch) != s.TokenText() {
-			t.Errorf("tok = %q, want %q", s.TokenText(), string(ch))
+		if ch.String() != s.TokenText() {
+			t.Errorf("tok = %q, want %q", s.TokenText(), ch.String())
 		}
 	}
 	checkPos(t, s.Position, want)
